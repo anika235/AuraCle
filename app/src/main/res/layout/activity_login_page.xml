@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginPage">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textStyle="bold"
+        android:text="Welcome Back"
+        android:textSize="40sp"
+        />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/custom_email_icon"
+        android:drawableLeft="@drawable/email_icon"
+        android:drawablePadding="20dp"
+        android:ems="20"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:padding="20dp" />
+
+    <EditText
+        android:id="@+id/confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/custom_lock_icon"
+        android:drawableLeft="@drawable/password_icon"
+        android:drawablePadding="20dp"
+        android:ems="20"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="20dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/forgotpassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="370dp"
+        android:text="@string/forgotpass"
+        android:textColor="@color/blue"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/loginbutton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="470dp"
+        android:backgroundTint="@color/blue"
+        android:text="SIGN IN"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="540dp"
+        android:textColor="@color/grey"
+        android:text="or sign in with"
+        android:textSize="15sp"
+        />
+    <ImageView
+        android:id="@+id/googleButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="150dp"
+        android:src="@drawable/google"
+        android:layout_marginTop="570dp"
+        />
+    <ImageView
+        android:id="@+id/fbButton"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="210dp"
+        android:src="@drawable/fb"
+        android:layout_marginTop="570dp"
+        />
+
+
+</RelativeLayout>
