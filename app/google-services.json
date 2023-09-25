@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "142864793996",
+    "project_id": "auracle-85d79",
+    "storage_bucket": "auracle-85d79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142864793996:android:22ac9351165092ce2716a9",
+        "android_client_info": {
+          "package_name": "com.example.auracle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142864793996-bfvoll1out0tsdm0n4144l6kfqp3bpci.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.auracle",
+            "certificate_hash": "32ab5fcdbc8f57f0fb2f384ab6e87f05120ea9a4"
+          }
+        },
+        {
+          "client_id": "142864793996-e6bc5akk7l7u0g2o30tetb1rbc4l362u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXKVQZXHlsP4hwZ39SEuC3oFSDmWYllw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142864793996-e6bc5akk7l7u0g2o30tetb1rbc4l362u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
