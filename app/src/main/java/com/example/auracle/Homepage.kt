@@ -18,14 +18,14 @@ class Homepage : AppCompatActivity() {
 
         binding = ActivityHomepageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replacefragment(HomeFragment())
+        replaceFragment(HomeFragment())
 
-        binding.bottomNavigationView.setOnItemReselectedListener {
+        binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId){
-                R.id.home_fragment -> replacefragment(HomeFragment())
-                R.id.explore_fragment -> replacefragment(exploreFragment())
-                R.id.library_fragment -> replacefragment(LibraryFragment())
+                R.id.home_fragment -> replaceFragment(HomeFragment())
+                R.id.explore_fragment -> replaceFragment(exploreFragment())
+                R.id.library_fragment -> replaceFragment(LibraryFragment())
 
                 else->{
                 }
@@ -35,16 +35,12 @@ class Homepage : AppCompatActivity() {
         Log.d(TAG, Authenticate().user().toString())
     }
 
-    private fun replacefragment(fragment: Fragment)
+    private fun replaceFragment(fragment: Fragment)
     {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         fragmentTransaction.commit()
-    }
-
-    fun switchToStart() {
-        startActivity(Intent(this, StartPage::class.java))
     }
 
 }
