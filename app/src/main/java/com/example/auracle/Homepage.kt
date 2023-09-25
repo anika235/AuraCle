@@ -1,11 +1,9 @@
 package com.example.auracle
 
-import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.inputmethod.InputBinding
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.auracle.databinding.ActivityHomepageBinding
 import com.example.auracle.firebase.Authenticate
@@ -17,6 +15,7 @@ class Homepage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityHomepageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replacefragment(HomeFragment())
@@ -42,6 +41,10 @@ class Homepage : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         fragmentTransaction.commit()
+    }
+
+    fun switchToStart() {
+        startActivity(Intent(this, StartPage::class.java))
     }
 
 }

@@ -21,9 +21,17 @@ class Authenticate {
         return auth.signInWithEmailAndPassword(email, password)
     }
 
+    fun signOut() {
+        auth.signOut()
+    }
+
     fun user(): FirebaseUser? {
         return auth.currentUser
     }
 
+    fun isSignedIn(): Boolean {
+        this.user() ?: return false // fancy kotlin way to check if user is null
+        return true
+    }
 
 }
