@@ -3,12 +3,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LibraryFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvPodcastList"
+    <Button
+        style="@style/Widget.Material3.Button.TextButton"
+        android:id="@+id/SubscriptionButton"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="25dp"/>
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="Subscriptions"
+        app:icon="@drawable/subscriptions"
+        android:textSize="20dp"
+        app:iconTint = "@color/black"
+        app:iconSize = "30dp"
+        />
+
+    <Button
+        style="@style/Widget.Material3.Button.TextButton"
+        android:id="@+id/DownloadButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/black"
+        android:text="Download"
+        app:icon="@drawable/download"
+        android:textSize="20dp"
+        app:iconTint = "@color/black"
+        app:iconSize = "30dp"
+        />
+
+    <Button
+        style="@style/Widget.Material3.Button.TextButton"
+        android:id="@+id/HistoryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="100dp"
+        android:textColor="@color/black"
+        android:text="History"
+        app:iconTint = "@color/black"
+        android:textSize="20dp"
+        app:icon="@drawable/history"
+        app:iconSize = "30dp"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signoutbutton"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="470dp"
+        android:layout_marginLeft="-50dp"
+        android:textSize="20dp"
+        android:backgroundTint="@color/grey"
+        android:text="SIGN OUT"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
 
 </FrameLayout>

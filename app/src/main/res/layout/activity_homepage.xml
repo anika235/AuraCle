@@ -8,26 +8,33 @@
         android:layout_height="match_parent"
         tools:context=".Homepage">
 
+        <ImageView
+            android:id="@+id/upor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/upor" />
+
+        <!-- FrameLayout with constraints -->
         <FrameLayout
             android:id="@+id/frame_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView" />
 
-        </FrameLayout>
-
+        <!-- BottomNavigationView with constraints -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frame_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_nav">
-
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/bottom_nav" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
