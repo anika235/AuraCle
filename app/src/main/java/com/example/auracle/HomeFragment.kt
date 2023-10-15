@@ -3,40 +3,38 @@ package com.example.auracle
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.example.auracle.api.ApiTester
+import com.example.auracle.databinding.FragmentHomeBinding
 import com.example.auracle.firebase.Authenticate
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class HomeFragment : Fragment() {
 
-    private lateinit var signoutButton: Button
+    private val TAG = "HomeFragment"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        val v = inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate((layoutInflater))
 
-        signoutButton = v.findViewById(R.id.signOutButton)
-        signoutButton.setOnClickListener{
+        binding.btnHomeSignOut.setOnClickListener {
             Authenticate().signOut()
             requireActivity().startActivity(Intent(requireActivity(), StartPage::class.java))
         }
-//        val nxtbutton : Button = view.findViewById(R.id.explorebutton)
-//        nxtbutton.setOnClickListener {
-//            val fragment = exploreFragment()
-//
-//        }
 
-        return v
+        return binding.root
     }
+
 
 }

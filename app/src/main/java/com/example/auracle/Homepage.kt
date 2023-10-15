@@ -24,7 +24,7 @@ class Homepage : AppCompatActivity() {
 
             when(it.itemId){
                 R.id.home_fragment -> replaceFragment(HomeFragment())
-                R.id.explore_fragment -> replaceFragment(exploreFragment())
+                R.id.explore_fragment -> replaceFragment(ExploreFragment())
                 R.id.library_fragment -> replaceFragment(LibraryFragment())
 
                 else->{
@@ -39,7 +39,7 @@ class Homepage : AppCompatActivity() {
     {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout, fragment)
+        fragmentTransaction.replace(binding.fragmentDisplay.id, fragment)
         fragmentTransaction.commit()
     }
 

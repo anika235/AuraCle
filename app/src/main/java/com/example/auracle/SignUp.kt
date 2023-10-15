@@ -1,25 +1,18 @@
 package com.example.auracle
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.auracle.databinding.ActivitySignUpBinding
 import com.example.auracle.firebase.Authenticate
 import com.google.android.material.snackbar.Snackbar
-import java.util.Timer
-import kotlin.concurrent.schedule
 
 class SignUp : AppCompatActivity() {
 
     private val TAG = "SignUp"
 
-    private lateinit var txtNewEmail: EditText
-    private lateinit var txtPassword: EditText
-    private lateinit var btnSignUp: Button
-    private lateinit var btnSwitchToSignIn: TextView
+    private lateinit var binding: ActivitySignUpBinding
     private val auth = Authenticate()
 
 
@@ -30,22 +23,19 @@ class SignUp : AppCompatActivity() {
             switchToHome()
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
 
-        txtNewEmail = findViewById(R.id.newEmail)
-        txtPassword = findViewById(R.id.enterPassword)
-        btnSignUp = findViewById(R.id.Signupkorobutton)
-        btnSwitchToSignIn = findViewById(R.id.switchToSignIn)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-
-        btnSignUp.setOnClickListener{
+        binding.btnSignUp.setOnClickListener {
             signUp()
-            Log.d(TAG, "After Signup")
         }
-        btnSwitchToSignIn.setOnClickListener {
+
+        binding.btnSignUpToSignIn.setOnClickListener {
             startActivity(Intent(this, LoginPage::class.java))
             finish()
         }
+
     }
 
     private fun signUp() {
@@ -55,8 +45,8 @@ class SignUp : AppCompatActivity() {
             return
         }
 
-        val email = txtNewEmail.text
-        val password = txtPassword.text
+        val email = binding.txtSignUpEmail.text
+        val password = binding.txtSignUpPassword.text
 
         val authService = Authenticate()
         Log.d(TAG, authService.user().toString())
@@ -65,9 +55,12 @@ class SignUp : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful)
                     switchToHome()
-
                 else
-                    Snackbar.make(btnSignUp, "Account not Created: ${task.exception?.message}", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.btnSignUp,
+                        "Account not Created: ${task.exception?.message}",
+                        Snackbar.LENGTH_LONG
+                    ).show()
 
             }
 
@@ -77,6 +70,9 @@ class SignUp : AppCompatActivity() {
     private fun validForm(): Boolean {
 
         var validForm = true
+
+        val txtNewEmail = binding.txtSignUpEmail
+        val txtPassword = binding.txtSignUpPassword
 
         if (txtNewEmail.text.isBlank() || txtNewEmail.text.isEmpty()) {
             txtNewEmail.error = "Email is empty"

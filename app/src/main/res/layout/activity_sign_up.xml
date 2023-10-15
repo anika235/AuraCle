@@ -16,7 +16,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/newName"
+        android:id="@+id/txtSignUpName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -31,7 +31,7 @@
         android:padding="20dp" />
 
     <EditText
-        android:id="@+id/newEmail"
+        android:id="@+id/txtSignUpEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -48,7 +48,7 @@
         android:padding="20dp" />
 
     <EditText
-        android:id="@+id/enterPassword"
+        android:id="@+id/txtSignUpPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -75,10 +75,10 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Already have and account? " />
+            android:text="Already have and account?" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/switchToSignIn"
+            android:id="@+id/btnSignUpToSignIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="sign in"
@@ -89,7 +89,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/Signupkorobutton"
+        android:id="@+id/btnSignUp"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -110,18 +110,18 @@
         android:textSize="15sp" />
 
     <ImageView
-        android:id="@+id/googleButton"
+        android:id="@+id/btnGoogleSignIn"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="150dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="600dp"
         android:src="@drawable/google" />
 
     <ImageView
-        android:id="@+id/fbButton"
+        android:id="@+id/btnFacebookSignIn"
         android:layout_width="40dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="210dp"
+        android:layout_marginStart="210dp"
         android:layout_marginTop="600dp"
         android:src="@drawable/fb" />
 

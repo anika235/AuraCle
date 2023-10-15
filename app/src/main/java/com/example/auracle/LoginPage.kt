@@ -1,25 +1,18 @@
 package com.example.auracle
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import com.example.auracle.databinding.ActivityLoginPageBinding
 import com.example.auracle.firebase.Authenticate
 import com.google.android.material.snackbar.Snackbar
-import java.util.Timer
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.schedule
 
 class LoginPage : AppCompatActivity() {
 
     private val TAG = "Login Page"
-    private lateinit var txtEmail: EditText
-    private lateinit var txtPassword: EditText
-    private lateinit var btnSignIn: Button
+
+    private lateinit var binding: ActivityLoginPageBinding
+
     private val auth = Authenticate()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +22,12 @@ class LoginPage : AppCompatActivity() {
             switchToHome()
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login_page)
 
-        txtEmail = findViewById(R.id.email)
-        txtPassword = findViewById(R.id.confirm_password)
-        btnSignIn = findViewById(R.id.loginbutton)
+        binding = ActivityLoginPageBinding.inflate(layoutInflater)
 
-        btnSignIn.setOnClickListener{
+        setContentView(binding.root)
+
+        binding.btnSignIn.setOnClickListener {
             signIn()
         }
     }
@@ -45,16 +37,19 @@ class LoginPage : AppCompatActivity() {
         if (!validForm())
             return
 
-        val email = txtEmail.text
-        val password = txtPassword.text
+        val email = binding.txtEmail.text
+        val password = binding.txtPassword.text
 
         auth.signIn(email.toString(), password.toString())
             .addOnCompleteListener { task ->
                 if (task.isSuccessful)
                     switchToHome()
-
                 else
-                    Snackbar.make(btnSignIn, "Login Unsuccessful: ${task.exception?.message}", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.btnSignIn,
+                        "Login Unsuccessful: ${task.exception?.message}",
+                        Snackbar.LENGTH_LONG
+                    ).show()
 
             }
     }
@@ -62,6 +57,9 @@ class LoginPage : AppCompatActivity() {
     private fun validForm(): Boolean {
 
         var validForm = true
+
+        val txtEmail = binding.txtEmail
+        val txtPassword = binding.txtPassword
 
         if (txtEmail.text.isBlank() || txtEmail.text.isEmpty()) {
             txtEmail.error = "Email is empty"

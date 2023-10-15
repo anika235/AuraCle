@@ -8,24 +8,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.auracle.databinding.FragmentLibraryBinding
 import com.example.auracle.podcastcard.PodcastCard
 import com.example.auracle.podcastcard.PodcastCardAdapter
 
 class LibraryFragment : Fragment() {
 
-    private lateinit var rcvPodcasts: RecyclerView
+    private lateinit var binding: FragmentLibraryBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+//    private lateinit var rcvPodcasts: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_library, container, false)
+        binding = FragmentLibraryBinding.inflate(layoutInflater)
 
         val podcastList = arrayListOf<PodcastCard>()
         val cardId = arrayOf(
@@ -38,12 +36,13 @@ class LibraryFragment : Fragment() {
 
         for (id in cardId) podcastList.add(PodcastCard(id))
 
-        rcvPodcasts = view.findViewById(R.id.rcvPodcastList)
+        val rcvPodcasts = binding.rcvPodcastList
+
         rcvPodcasts.layoutManager = GridLayoutManager(context, 3)
         rcvPodcasts.adapter = PodcastCardAdapter(podcastList)
         rcvPodcasts.setHasFixedSize(true)
 
-        return view
+        return binding.root
     }
 
 }
