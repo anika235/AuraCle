@@ -52,7 +52,7 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/signoutbutton"
+        android:id="@+id/btnSignOut"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
