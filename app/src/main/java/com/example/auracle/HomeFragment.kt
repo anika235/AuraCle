@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
         binding.btnHomeSignOut.setOnClickListener {
             Authenticate().signOut()
             requireActivity().startActivity(Intent(requireActivity(), StartPage::class.java))
-        }d
+        }
 
         return binding.root
     }
