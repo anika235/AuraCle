@@ -10,7 +10,7 @@ class ApiTester {
     private val LOG = "ApiTester"
     private val client = OkHttpClient()
 
-    fun testApi() {
+    suspend fun makeACall() {
         val request = Request.Builder()
             .url("https://api.publicapis.org/entries")
             .build()
@@ -27,6 +27,7 @@ class ApiTester {
         } catch (e: Exception) {
             Log.e(LOG, "Exception")
             Log.e(LOG, e.toString())
+//            e.printStackTrace()
         }
 
     }
