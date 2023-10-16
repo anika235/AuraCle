@@ -9,9 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.lifecycleScope
 import com.example.auracle.api.ApiTester
 import com.example.auracle.databinding.FragmentHomeBinding
 import com.example.auracle.firebase.Authenticate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -20,6 +24,7 @@ class HomeFragment : Fragment() {
     private val TAG = "HomeFragment"
 
     private lateinit var binding: FragmentHomeBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +38,13 @@ class HomeFragment : Fragment() {
             requireActivity().startActivity(Intent(requireActivity(), StartPage::class.java))
         }
 
+        lifecycleScope.launch(Dispatchers.IO) {
+            ApiTester().testApi()
+        }
+
         return binding.root
     }
+
 
 
 }
