@@ -21,23 +21,6 @@ class LibraryFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentLibraryBinding.inflate(layoutInflater)
 
-        val podcastList = arrayListOf<PodcastCard>()
-        val cardId = arrayOf(
-            R.drawable.p1,
-            R.drawable.p2,
-            R.drawable.p3,
-            R.drawable.p4,
-            R.drawable.p5,
-        )
-
-        for (id in cardId) podcastList.add(PodcastCard(id))
-
-        val rcvPodcasts = binding.rcvPodcastList
-
-        rcvPodcasts.layoutManager = GridLayoutManager(context, 3)
-        rcvPodcasts.adapter = PodcastCardAdapter(podcastList)
-        rcvPodcasts.setHasFixedSize(true)
-
         return binding.root
     }
 

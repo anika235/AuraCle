@@ -28,12 +28,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate((layoutInflater))
 
-        binding.btnHomeSignOut.setOnClickListener {
-            Authenticate().signOut()
-            requireActivity().startActivity(Intent(requireActivity(), StartPage::class.java))
-        }
-
-        return binding.root
+                return binding.root
     }
 
 

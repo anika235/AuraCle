@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ExploreFragment">
 
-    <TextView
+    <SearchView
+        android:id="@+id/searh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/custom_input"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvPodcastList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="explore fragment" />
+        android:layout_below="@id/searh"
+        android:layout_marginTop="25dp"/>
 
-</FrameLayout>
+</RelativeLayout>

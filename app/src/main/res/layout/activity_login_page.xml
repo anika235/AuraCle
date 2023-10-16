@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--<layout>-->
-
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,9 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
+        android:textStyle="bold"
         android:text="Welcome Back"
         android:textSize="40sp"
-        android:textStyle="bold" />
+        />
 
     <EditText
         android:id="@+id/txtEmail"
@@ -76,25 +76,26 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="540dp"
-        android:text="or sign in with"
         android:textColor="@color/grey"
-        android:textSize="15sp" />
-
+        android:text="or sign in with"
+        android:textSize="15sp"
+        />
     <ImageView
         android:id="@+id/btnGoogleSignIn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="150dp"
+        android:src="@drawable/google"
         android:layout_marginTop="570dp"
-        android:src="@drawable/google" />
-
+        />
     <ImageView
         android:id="@+id/btnFacebookSignIn"
         android:layout_width="40dp"
         android:layout_height="50dp"
         android:layout_marginLeft="210dp"
+        android:src="@drawable/fb"
         android:layout_marginTop="570dp"
-        android:src="@drawable/fb" />
+        />
 
 
-</RelativeLayout><!--</layout>-->
+</RelativeLayout>
