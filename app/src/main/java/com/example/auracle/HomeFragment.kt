@@ -26,13 +26,13 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate((layoutInflater))
 
-        binding.btnHomeToExplore.setOnClickListener {
-            val txt = binding.thing.text.toString()
-            lifecycleScope.launch(Dispatchers.IO) {
-
-                ListenNoteApi().search(txt)
-            }
-        }
+//        binding.btnHomeToExplore.setOnClickListener {
+//            val txt = binding.thing.text.toString()
+//            lifecycleScope.launch(Dispatchers.IO) {
+//
+//                ListenNoteApi().search(txt)
+//            }
+//        }
 
         return binding.root
     }

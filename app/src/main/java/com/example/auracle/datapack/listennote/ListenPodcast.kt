@@ -1,6 +1,4 @@
-package com.example.auracle.data.listennote
-
-import com.google.gson.annotations.SerializedName
+package com.example.auracle.datapack.listennote
 
 
 data class ListenPodcast(

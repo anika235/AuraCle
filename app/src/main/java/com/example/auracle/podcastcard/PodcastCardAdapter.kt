@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.R
-import com.example.auracle.data.PodcastCard
+import com.example.auracle.datapack.PodcastCardData
 
-class PodcastCardAdapter(private val favoritePodcastList: ArrayList<PodcastCard>):
-    RecyclerView.Adapter<PodcastCardViewHolder>() {
+class PodcastCardAdapter(private val favoritePodcastList: ArrayList<PodcastCardData>): RecyclerView.Adapter<PodcastCardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastCardViewHolder {
         return PodcastCardViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.podcast_card, parent, false))
     }
