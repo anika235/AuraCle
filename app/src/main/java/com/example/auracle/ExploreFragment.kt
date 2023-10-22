@@ -8,11 +8,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.auracle.api.ListenNoteApi
 
 import com.example.auracle.databinding.FragmentExploreBinding
 import com.example.auracle.fixeddata.Data
 import com.example.auracle.genrecard.GenreCardAdapter
+import com.example.auracle.searchpodcastcard.SearchPodcastCardAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ExploreFragment : Fragment() {
 
@@ -24,25 +32,19 @@ class ExploreFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentExploreBinding.inflate(layoutInflater)
-
-//        val podcastList = arrayListOf<PodcastCard>()
-//        val cardId = arrayOf(
-//            R.drawable.p1,
-//            R.drawable.p2,
-//            R.drawable.p3,
-//            R.drawable.p4,
-//            R.drawable.p5,
-//        )
-//
-//        for (id in cardId) podcastList.add(PodcastCard(id))
-//
-//        val rcvPodcasts = binding.rcvPodcastList
-//
-//        rcvPodcasts.layoutManager = GridLayoutManager(context, 3)
-//        rcvPodcasts.adapter = PodcastCardAdapter(podcastList)
-//        rcvPodcasts.setHasFixedSize(true)
-
         populateGenreCards()
+
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrBlank())
+                    onSearch(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
 
         return binding.root
     }
@@ -51,9 +53,27 @@ class ExploreFragment : Fragment() {
         val rcvGenreList = binding.rcvGenreList
 
         rcvGenreList.layoutManager = GridLayoutManager(context, 2)
-        rcvGenreList.adapter = GenreCardAdapter(Data.genreList)
+        rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList)
         rcvGenreList.setHasFixedSize(true)
-        Log.wtf("Explore", Data.genreList.toString())
+//        Log.wtf("Explore", Data.highLevelGenreList.toString())
+    }
+
+    private fun onSearch(query: String) {
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val podcastList = ListenNoteApi().search(query)
+            if (!podcastList.isNullOrEmpty()) {
+                withContext(Dispatchers.Main) {
+
+//                    Log.d("ExploreFragment", "Podcast List: $podcastList")
+                    binding.rcvGenreList.visibility = View.GONE
+
+                    binding.rcvPodcastList.visibility = View.VISIBLE
+                    binding.rcvPodcastList.layoutManager = LinearLayoutManager(context)
+                    binding.rcvPodcastList.adapter = SearchPodcastCardAdapter(podcastList)
+                }
+            }
+        }
 
     }
 

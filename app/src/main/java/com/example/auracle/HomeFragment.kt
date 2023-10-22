@@ -5,13 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import com.example.auracle.api.ApiTester
-import com.example.auracle.api.ListenNoteApi
-import com.example.auracle.api.ListenNoteRoutes
 import com.example.auracle.databinding.FragmentHomeBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
