@@ -57,4 +57,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth-ktx")
     implementation ("com.google.android.material:material:1.9.0")
     implementation("com.squareup.okhttp3:okhttp")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.listennotes:podcast-api:1.1.5")
 }

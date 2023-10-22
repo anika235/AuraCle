@@ -1,19 +1,17 @@
 package com.example.auracle
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.auracle.api.ApiTester
+import com.example.auracle.api.ListenNoteApi
+import com.example.auracle.api.ListenNoteRoutes
 import com.example.auracle.databinding.FragmentHomeBinding
-import com.example.auracle.firebase.Authenticate
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class HomeFragment : Fragment() {
 
@@ -28,7 +26,15 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate((layoutInflater))
 
-                return binding.root
+        binding.btnHomeToExplore.setOnClickListener {
+            val txt = binding.thing.text.toString()
+            lifecycleScope.launch(Dispatchers.IO) {
+
+                ListenNoteApi().search(txt)
+            }
+        }
+
+        return binding.root
     }
 
 

@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.auracle.databinding.FragmentLibraryBinding
-import com.example.auracle.podcastcard.PodcastCard
-import com.example.auracle.podcastcard.PodcastCardAdapter
 
 class LibraryFragment : Fragment() {
 

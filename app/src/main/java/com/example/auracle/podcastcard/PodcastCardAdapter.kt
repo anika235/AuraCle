@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.R
+import com.example.auracle.data.PodcastCard
 
 class PodcastCardAdapter(private val favoritePodcastList: ArrayList<PodcastCard>):
     RecyclerView.Adapter<PodcastCardViewHolder>() {

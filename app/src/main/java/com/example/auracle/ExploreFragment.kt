@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.auracle.databinding.FragmentExploreBinding
-import com.example.auracle.podcastcard.PodcastCard
+import com.example.auracle.data.PodcastCard
 import com.example.auracle.podcastcard.PodcastCardAdapter
 
 class ExploreFragment : Fragment() {
