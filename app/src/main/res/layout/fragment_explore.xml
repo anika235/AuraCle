@@ -3,28 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ExploreFragment">
 
-    <com.google.android.material.search.SearchBar
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/search"
-        android:hint="@android:string/search_go"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:iconifiedByDefault="false"
         android:background="@drawable/custom_input"
-        />
-<!--    <com.google.android.material.search.SearchBar-->
-<!--        android:id="@+id/thing"-->
+        android:hint="@android:string/search_go"/>
+
+<!--    <com.google.android.material.search.SearchView-->
+<!--        android:id="@+id/search"-->
 <!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_margin="20dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:background="@drawable/custom_input"-->
 <!--        android:hint="@android:string/search_go" />-->
+
+
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvGenreList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="25dp"/>
+        android:layout_height="match_parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvPodcastList"
