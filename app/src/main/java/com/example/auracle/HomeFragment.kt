@@ -1,5 +1,6 @@
 package com.example.auracle
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,13 +21,14 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate((layoutInflater))
 
-//        binding.btnHomeToExplore.setOnClickListener {
+        binding.btnHomeToExplore.setOnClickListener {
+            requireActivity().startActivity(Intent(requireActivity(), player::class.java))
 //            val txt = binding.thing.text.toString()
 //            lifecycleScope.launch(Dispatchers.IO) {
 //
 //                ListenNoteApi().search(txt)
 //            }
-//        }
+        }
 
         return binding.root
     }

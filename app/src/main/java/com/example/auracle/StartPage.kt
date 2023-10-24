@@ -1,11 +1,8 @@
 package com.example.auracle
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatActivity
 import com.example.auracle.databinding.ActivityStartpageBinding
 import com.example.auracle.firebase.Authenticate
 
@@ -17,7 +14,7 @@ class StartPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
 //        Is Logged in, switches to homepage
         if (Authenticate().isSignedIn())
