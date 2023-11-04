@@ -2,11 +2,11 @@ package com.example.auracle
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.parseAsHtml
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auracle.api.ListenNoteApi
 import com.example.auracle.databinding.ActivityPodcastDetailsBinding
+import com.example.auracle.datapack.listennote.ListenEpisodeShort
 import com.example.auracle.episodecard.EpisodeCardAdapter
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.squareup.picasso.Picasso
@@ -18,8 +18,9 @@ class PodcastDetails : AppCompatActivity() {
 
     private lateinit var binding: ActivityPodcastDetailsBinding
     private lateinit var podcastId: String
-
-
+    companion object {
+        lateinit var episodes: ArrayList<ListenEpisodeShort>
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,7 +42,7 @@ class PodcastDetails : AppCompatActivity() {
 
             val podcastDetails = ListenNoteApi().podcastDetails(podcastId)
             withContext(Dispatchers.Main) {
-
+                episodes = podcastDetails.episodes;
                 val time = ""
                 if (podcastDetails.audioLengthSec!! / 3600 > 0) {
                     time.plus("${podcastDetails.audioLengthSec!! / 3600}h ")
@@ -55,6 +56,7 @@ class PodcastDetails : AppCompatActivity() {
                 binding.txtPodcastAuthor.text = podcastDetails.publisher
                 binding.txtPodcastTotalTime.text = time
                 binding.txtPodcastDescription.text = podcastDetails.description
+                binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(this@PodcastDetails, episodes)
 
                 binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(podcastDetails.episodes)
 

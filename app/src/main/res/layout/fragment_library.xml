@@ -16,7 +16,7 @@
         android:text="Subscriptions"
         app:icon="@drawable/subscriptions"
         android:textSize="20sp"
-        app:iconTint = "@color/black"
+        app:iconTint = "@color/green"
         app:iconSize = "30dp"
         />
 
@@ -31,7 +31,7 @@
         android:text="Download"
         app:icon="@drawable/download"
         android:textSize="20sp"
-        app:iconTint = "@color/black"
+        app:iconTint = "@color/blue"
         app:iconSize = "30dp"
         />
 
@@ -50,18 +50,50 @@
         app:iconSize = "30dp"
 
         />
+    <Button
+        style="@style/Widget.Material3.Button.TextButton"
+        android:id="@+id/FavouritesButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="150dp"
+        android:textColor="@color/black"
+        android:text="Favorites"
+        app:iconTint = "@color/red"
+        android:textSize="20sp"
+        app:icon="@drawable/favorites"
+        app:iconSize = "30dp"
+
+        />
+
+    <Button
+        style="@style/Widget.Material3.Button.TextButton"
+        android:id="@+id/QueueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="200dp"
+        android:textColor="@color/black"
+        android:text="Queue"
+        app:iconTint = "@color/blue"
+        android:textSize="20sp"
+        app:icon="@drawable/queue"
+        app:iconSize = "30dp"
+
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignOut"
         style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="500dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="130dp"
         android:layout_marginTop="470dp"
-        android:layout_marginStart="-50dp"
         android:textSize="20sp"
-        android:backgroundTint="@color/grey"
+        android:backgroundTint="@color/blue"
         android:text="SIGN OUT"
         android:textStyle="bold"
-        android:textColor="@color/black" />
+        android:textColor="@color/white" />
+
 
 </FrameLayout>
