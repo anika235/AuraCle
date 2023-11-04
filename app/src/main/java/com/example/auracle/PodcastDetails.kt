@@ -56,7 +56,6 @@ class PodcastDetails : AppCompatActivity() {
                 binding.txtPodcastTotalTime.text = time
                 binding.txtPodcastDescription.text = podcastDetails.description
 
-
                 binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(podcastDetails.episodes)
 
                 binding.podcastDetailSkeleton.showOriginal()
