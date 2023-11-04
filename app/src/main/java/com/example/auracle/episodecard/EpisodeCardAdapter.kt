@@ -1,15 +1,16 @@
 package com.example.auracle.episodecard
 
-import android.util.Log
-import android.widget.TextView
-import android.widget.Toast
+import android.content.Context
+import android.content.Intent
+import androidx.core.content.ContextCompat
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
+import com.example.auracle.player
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class EpisodeCardAdapter(private val episodeList: ArrayList<ListenEpisodeShort>): RecyclerView.Adapter<EpisodeCardViewHolder>(){
+class EpisodeCardAdapter(private val context: Context, private val episodeList: ArrayList<ListenEpisodeShort>): RecyclerView.Adapter<EpisodeCardViewHolder>(){
     override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): EpisodeCardViewHolder {
         return EpisodeCardViewHolder(android.view.LayoutInflater.from(parent.context).inflate(com.example.auracle.R.layout.episode_card, parent, false))
     }
@@ -26,8 +27,10 @@ class EpisodeCardAdapter(private val episodeList: ArrayList<ListenEpisodeShort>)
         holder.episodeDate.text = SimpleDateFormat("yyyy-MM-dd").format(Date(currentItem.pubDateMs!!))
         holder.episodePlay.text = audioLen
         holder.episodePlay.setOnClickListener {
-            Log.w("Play button AUDIO", currentItem.audio.toString())
-            Toast.makeText(it.context, "Audio URL Logged", Toast.LENGTH_LONG).show()
+            val intent = Intent(context, player::class.java)
+            intent.putExtra("index", position)
+            intent.putExtra("class", "EpisodeCardAdapter")
+            ContextCompat.startActivity(context, intent, null)
         }
         holder.episodeSubscribe.setOnClickListener {
 
