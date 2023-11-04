@@ -3,26 +3,32 @@ package com.example.auracle
 import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.auracle.api.ListenNoteApi
 import com.example.auracle.databinding.ActivityPlayerBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class player : AppCompatActivity() {
+class Player : AppCompatActivity() {
 
     companion object{
         lateinit var podcastlistPA: ArrayList<ListenEpisodeShort>
         var podcastPosition: Int = 0
-        var mediaPlayer: MediaPlayer? = null
+        val mediaPlayer = MediaPlayer()
         var isPlaying:Boolean = false
 
     }
-    private lateinit var podcastId: String
+//    private lateinit var podcastId: String
     private lateinit var binding: ActivityPlayerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         initializeLayout()
         binding.playPauseButton.setOnClickListener{
             if(isPlaying) pausePodcast()
@@ -32,21 +38,29 @@ class player : AppCompatActivity() {
     }
     private fun setLayout()
     {
-        val podcastDetails = ListenNoteApi().podcastDetails(podcastId)
-        Picasso.get().load(podcastDetails.thumbnail).into(binding.PodcastThumbnail)
+//        val podcastDetails = ListenNoteApi().podcastDetails(podcastId)
+
+        binding.podcastLoadingSkeleton.showSkeleton()
+        Picasso.get().load(podcastlistPA[podcastPosition].thumbnail).into(binding.PodcastThumbnail)
         binding.PodcastNamePA.text = podcastlistPA[podcastPosition].title
     }
     private fun createMediaPlayer()
     {
         try {
-            if (mediaPlayer == null) mediaPlayer = MediaPlayer()
-            mediaPlayer!!.reset()
+
+            mediaPlayer.reset()
             val audioPath = podcastlistPA[podcastPosition].audio
-            mediaPlayer!!.setDataSource(audioPath)
-            mediaPlayer!!.prepare()
-            mediaPlayer!!.start()
-            isPlaying = true
-            binding.playPauseButton.setIconResource(R.drawable.pause)
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                mediaPlayer.setDataSource(audioPath)
+                mediaPlayer.prepare()
+
+                withContext(Dispatchers.Main) {
+                    binding.podcastLoadingSkeleton.showOriginal()
+                    playPodcast()
+                }
+
+            }
         }
         catch (e: Exception) {
             return
@@ -68,7 +82,7 @@ class player : AppCompatActivity() {
     {
         binding.playPauseButton.setIconResource(R.drawable.pause)
         isPlaying = true
-        mediaPlayer!!.start()
+        mediaPlayer.start()
 
     }
 
@@ -76,7 +90,7 @@ class player : AppCompatActivity() {
     {
         binding.playPauseButton.setIconResource(R.drawable.play)
         isPlaying = false
-        mediaPlayer!!.pause()
+        mediaPlayer.pause()
 
     }
 
