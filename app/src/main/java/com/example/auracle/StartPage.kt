@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.auracle.databinding.ActivityStartpageBinding
 import com.example.auracle.firebase.Authenticate
 
@@ -16,6 +17,8 @@ class StartPage : AppCompatActivity() {
 
 
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+        installSplashScreen()
 
 //        Is Logged in, switches to homepage
         if (Authenticate().isSignedIn())

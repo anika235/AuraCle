@@ -82,7 +82,6 @@ class ExploreFragment : Fragment() {
 //                    Log.d("ExploreFragment", "Podcast List: $podcastList")
                     skeleton.showOriginal()
                     binding.rcvPodcastList.adapter = SearchPodcastCardAdapter(podcastList)
-
                 }
             }
         }
