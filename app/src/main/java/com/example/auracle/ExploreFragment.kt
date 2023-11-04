@@ -18,6 +18,7 @@ import com.example.auracle.databinding.FragmentExploreBinding
 import com.example.auracle.fixeddata.Data
 import com.example.auracle.genrecard.GenreCardAdapter
 import com.example.auracle.searchpodcastcard.SearchPodcastCardAdapter
+import com.faltenreich.skeletonlayout.applySkeleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,6 +33,10 @@ class ExploreFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentExploreBinding.inflate(layoutInflater)
+
+        binding.rcvGenreList.layoutManager = GridLayoutManager(context, 2)
+        binding.rcvPodcastList.layoutManager = LinearLayoutManager(context)
+
         populateGenreCards()
 
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -57,7 +62,7 @@ class ExploreFragment : Fragment() {
         binding.rcvGenreList.visibility = View.VISIBLE
         binding.rcvPodcastList.visibility = View.GONE
 
-        rcvGenreList.layoutManager = GridLayoutManager(context, 2)
+
         rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList)
         rcvGenreList.setHasFixedSize(true)
 //        Log.wtf("Explore", Data.highLevelGenreList.toString())
@@ -65,17 +70,19 @@ class ExploreFragment : Fragment() {
 
     private fun onSearch(query: String) {
 
+        binding.rcvGenreList.visibility = View.GONE
+        binding.rcvPodcastList.visibility = View.VISIBLE
+        val skeleton = binding.rcvPodcastList.applySkeleton(R.layout.search_podcast_card)
+        skeleton.showSkeleton()
+
         lifecycleScope.launch(Dispatchers.IO) {
             val podcastList = ListenNoteApi().search(query)
             if (!podcastList.isNullOrEmpty()) {
                 withContext(Dispatchers.Main) {
-
 //                    Log.d("ExploreFragment", "Podcast List: $podcastList")
-                    binding.rcvGenreList.visibility = View.GONE
-                    binding.rcvPodcastList.visibility = View.VISIBLE
-
-                    binding.rcvPodcastList.layoutManager = LinearLayoutManager(context)
+                    skeleton.showOriginal()
                     binding.rcvPodcastList.adapter = SearchPodcastCardAdapter(podcastList)
+
                 }
             }
         }

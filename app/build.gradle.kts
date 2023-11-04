@@ -61,4 +61,5 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.listennotes:podcast-api:1.1.5")
     implementation ("com.squareup.picasso:picasso:2.8")
+    implementation ("com.faltenreich:skeletonlayout:5.0.0")
 }

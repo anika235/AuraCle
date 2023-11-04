@@ -2,6 +2,7 @@ package com.example.auracle.episodecard
 
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
@@ -26,6 +27,7 @@ class EpisodeCardAdapter(private val episodeList: ArrayList<ListenEpisodeShort>)
         holder.episodePlay.text = audioLen
         holder.episodePlay.setOnClickListener {
             Log.w("Play button AUDIO", currentItem.audio.toString())
+            Toast.makeText(it.context, "Audio URL Logged", Toast.LENGTH_LONG).show()
         }
         holder.episodeSubscribe.setOnClickListener {
 

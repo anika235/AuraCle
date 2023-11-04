@@ -25,8 +25,11 @@ class PodcastDetails : AppCompatActivity() {
 
         binding = ActivityPodcastDetailsBinding.inflate(layoutInflater)
         binding.rcvPodcastEpisodeList.addItemDecoration(MaterialDividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        binding.rcvPodcastEpisodeList.layoutManager = LinearLayoutManager(this)
 
         podcastId = intent.getStringExtra("podcast_id")!!
+
+        binding.podcastDetailSkeleton.showSkeleton()
 
         getPodcastDetails()
 
@@ -54,8 +57,10 @@ class PodcastDetails : AppCompatActivity() {
                 binding.txtPodcastDescription.text = podcastDetails.description
 
 
-                binding.rcvPodcastEpisodeList.layoutManager = LinearLayoutManager(baseContext)
                 binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(podcastDetails.episodes)
+
+                binding.podcastDetailSkeleton.showOriginal()
+
 
             }
 
