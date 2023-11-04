@@ -1,6 +1,7 @@
 package com.example.auracle.api
 
 import android.util.Log
+import com.example.auracle.datapack.listennote.ListenPodcastLong
 import com.example.auracle.datapack.listennote.ListenPodcastShort
 import com.example.auracle.datapack.listennote.ListenSearch
 import retrofit2.Retrofit
@@ -26,6 +27,16 @@ class ListenNoteApi {
         } catch (e: Exception) {
             Log.e("ListenNoteApi", "Error: ${e.message}")
             null
+        }
+    }
+
+    fun podcastDetails(id: String): ListenPodcastLong {
+        val podcastDetails = retrofit.podcastDetail(id).execute()
+        return try {
+            podcastDetails.body()!!
+        } catch (e: Exception) {
+            Log.e("ListenNoteApi", "Error: ${e.message}")
+            ListenPodcastLong()
         }
     }
 

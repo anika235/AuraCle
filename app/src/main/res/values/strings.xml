@@ -15,6 +15,8 @@
     <string name="timer_btn">Timer</string>
     <string name="share_btn">Share</string>
     <string name="end_tv">Loading..</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="visit_website">Visit Website</string>
 
 
 </resources>

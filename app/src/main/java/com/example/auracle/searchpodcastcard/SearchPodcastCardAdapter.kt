@@ -1,12 +1,16 @@
 package com.example.auracle.searchpodcastcard
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
+import com.example.auracle.ExploreFragment
+import com.example.auracle.PodcastDetails
 import com.example.auracle.R
 import com.example.auracle.datapack.listennote.ListenPodcastShort
 import com.squareup.picasso.Picasso
+
 
 class SearchPodcastCardAdapter(private val searchPodcastList: ArrayList<ListenPodcastShort>): RecyclerView.Adapter<SearchPodcastCardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchPodcastCardViewHolder {
@@ -24,5 +28,13 @@ class SearchPodcastCardAdapter(private val searchPodcastList: ArrayList<ListenPo
         holder.podcastTitle.text = currentItem.titleOriginal
         holder.podcastAuthor.text = currentItem.publisherOriginal
         holder.podcastDescription.text = currentItem.descriptionHighlighted?.parseAsHtml()
+        holder.podcastClickable.setOnClickListener {
+//            itemClickListener(currentItem.id!!)
+
+            it.context.startActivity(Intent(it.context, PodcastDetails::class.java).apply {
+                putExtra("podcast_id", currentItem.id)
+            })
+
+        }
     }
 }

@@ -38,6 +38,8 @@ class ExploreFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank())
                     onSearch(query)
+                else
+                    populateGenreCards()
                 return false
             }
 
@@ -51,6 +53,9 @@ class ExploreFragment : Fragment() {
 
     private fun populateGenreCards() {
         val rcvGenreList = binding.rcvGenreList
+
+        binding.rcvGenreList.visibility = View.VISIBLE
+        binding.rcvPodcastList.visibility = View.GONE
 
         rcvGenreList.layoutManager = GridLayoutManager(context, 2)
         rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList)
@@ -67,8 +72,8 @@ class ExploreFragment : Fragment() {
 
 //                    Log.d("ExploreFragment", "Podcast List: $podcastList")
                     binding.rcvGenreList.visibility = View.GONE
-
                     binding.rcvPodcastList.visibility = View.VISIBLE
+
                     binding.rcvPodcastList.layoutManager = LinearLayoutManager(context)
                     binding.rcvPodcastList.adapter = SearchPodcastCardAdapter(podcastList)
                 }
@@ -76,5 +81,7 @@ class ExploreFragment : Fragment() {
         }
 
     }
+
+
 
 }

@@ -3,6 +3,7 @@ package com.example.auracle
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.auracle.databinding.ActivityStartpageBinding
 import com.example.auracle.firebase.Authenticate
 
@@ -18,7 +19,10 @@ class StartPage : AppCompatActivity() {
 
 //        Is Logged in, switches to homepage
         if (Authenticate().isSignedIn())
-            startActivity(Intent(this, Homepage::class.java))
+//            startActivity(Intent(this, Homepage::class.java))
+            startActivity(Intent(this, PodcastDetails::class.java).apply {
+                putExtra("podcast_id", "ea09b575d07341599d8d5b71f205517b")
+            })
 
         super.onCreate(savedInstanceState)
 
