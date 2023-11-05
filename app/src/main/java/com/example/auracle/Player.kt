@@ -1,7 +1,11 @@
 package com.example.auracle
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.auracle.databinding.ActivityPlayerBinding
@@ -11,13 +15,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class Player : AppCompatActivity() {
+class Player : AppCompatActivity(), ServiceConnection {
 
     companion object{
         lateinit var podcastlistPA: ArrayList<ListenEpisodeShort>
         var podcastPosition: Int = 0
-        val mediaPlayer = MediaPlayer()
         var isPlaying:Boolean = false
+        var musicService: MusicService? = null
 
     }
     private lateinit var binding: ActivityPlayerBinding
@@ -26,6 +30,10 @@ class Player : AppCompatActivity() {
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val intent = Intent(this, MusicService::class.java)
+        bindService(intent, this, BIND_AUTO_CREATE)
+        startService(intent)
 
         initializeLayout()
         binding.playPauseButton.setOnClickListener{
@@ -53,13 +61,14 @@ class Player : AppCompatActivity() {
     private fun createMediaPlayer()
     {
         try {
+            if(musicService!!.mediaPlayer  == null) musicService!!.mediaPlayer = MediaPlayer()
 
-            mediaPlayer.reset()
+            musicService!!.mediaPlayer!!.reset()
             val audioPath = podcastlistPA[podcastPosition].audio
 
             lifecycleScope.launch(Dispatchers.IO) {
-                mediaPlayer.setDataSource(audioPath)
-                mediaPlayer.prepare()
+                musicService!!.mediaPlayer!!.setDataSource(audioPath)
+                musicService!!.mediaPlayer!!.prepare()
 
                 withContext(Dispatchers.Main) {
                     binding.podcastLoadingSkeleton.showOriginal()
@@ -80,7 +89,6 @@ class Player : AppCompatActivity() {
                 podcastlistPA = ArrayList()
                 podcastlistPA.addAll(PodcastDetails.episodes)
                 setLayout()
-                createMediaPlayer()
             }
         }
     }
@@ -88,14 +96,14 @@ class Player : AppCompatActivity() {
     {
         binding.playPauseButton.setIconResource(R.drawable.pause)
         isPlaying = true
-        mediaPlayer.start()
+        musicService!!.mediaPlayer!!.start()
     }
 
     private fun pausePodcast()
     {
         binding.playPauseButton.setIconResource(R.drawable.play)
         isPlaying = false
-        mediaPlayer.pause()
+        musicService!!.mediaPlayer!!.pause()
     }
     private fun prevNextPodcast(increment : Boolean)
     {
@@ -126,6 +134,17 @@ class Player : AppCompatActivity() {
             else
                 --podcastPosition
         }
+    }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        val binder = service as MusicService.MyBinder
+        musicService = binder.currenServise()
+        createMediaPlayer()
+        musicService!!.showNotification()
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+        musicService = null
     }
 
 }
