@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
-import com.example.auracle.player
+import com.example.auracle.Player
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -27,7 +27,7 @@ class EpisodeCardAdapter(private val context: Context, private val episodeList: 
         holder.episodeDate.text = SimpleDateFormat("yyyy-MM-dd").format(Date(currentItem.pubDateMs!!))
         holder.episodePlay.text = audioLen
         holder.episodePlay.setOnClickListener {
-            val intent = Intent(context, player::class.java)
+            val intent = Intent(context, Player::class.java)
             intent.putExtra("index", position)
             intent.putExtra("class", "EpisodeCardAdapter")
             ContextCompat.startActivity(context, intent, null)

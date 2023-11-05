@@ -26,7 +26,7 @@
             android:name=".PodcastDetails"
             android:exported="false" />
         <activity
-            android:name=".player"
+            android:name=".Player"
             android:exported="false" />
         <activity
             android:name=".SignUp"

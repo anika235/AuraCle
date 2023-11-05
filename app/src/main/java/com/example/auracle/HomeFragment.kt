@@ -22,7 +22,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate((layoutInflater))
 
         binding.btnHomeToExplore.setOnClickListener {
-            requireActivity().startActivity(Intent(requireActivity(), player::class.java))
+            requireActivity().startActivity(Intent(requireActivity(), Player::class.java))
 //            val txt = binding.thing.text.toString()
 //            lifecycleScope.launch(Dispatchers.IO) {
 //
