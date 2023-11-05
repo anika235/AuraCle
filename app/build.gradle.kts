@@ -62,6 +62,6 @@ dependencies {
     implementation ("com.listennotes:podcast-api:1.1.5")
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation ("com.faltenreich:skeletonlayout:5.0.0")
-    implementation("androidx.media:media:1.6.0")
+    implementation ("androidx.media:media:1.6.0")
 
 }
