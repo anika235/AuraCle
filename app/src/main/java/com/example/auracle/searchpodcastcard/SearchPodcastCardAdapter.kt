@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
-import com.example.auracle.ExploreFragment
 import com.example.auracle.PodcastDetails
 import com.example.auracle.R
-import com.example.auracle.datapack.listennote.ListenPodcastShort
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.squareup.picasso.Picasso
 
 
-class SearchPodcastCardAdapter(private val searchPodcastList: ArrayList<ListenPodcastShort>): RecyclerView.Adapter<SearchPodcastCardViewHolder>() {
+class SearchPodcastCardAdapter(private val searchPodcastList: ArrayList<ListenSearchPodcast>): RecyclerView.Adapter<SearchPodcastCardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchPodcastCardViewHolder {
         return SearchPodcastCardViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_podcast_card, parent, false))
     }

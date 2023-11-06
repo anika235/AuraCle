@@ -2,6 +2,7 @@ package com.example.auracle.api
 
 import com.example.auracle.datapack.listennote.ListenPodcastLong
 import com.example.auracle.datapack.listennote.ListenSearch
+import com.example.auracle.datapack.listennote.ListenSearchBest
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -19,5 +20,9 @@ interface ListenNoteRoutes {
     @Headers("X-ListenAPI-Key: $apiKey")
     @GET("podcasts/{id}")
     fun podcastDetail(@Path("id") id: String): Call<ListenPodcastLong>
+
+    @Headers("X-ListenAPI-Key: $apiKey")
+    @GET("best_podcasts")
+    fun bestPodcasts(@QueryMap options: Map<String, String?>): Call<ListenSearchBest>
 
 }

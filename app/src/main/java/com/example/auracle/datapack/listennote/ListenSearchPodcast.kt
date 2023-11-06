@@ -3,7 +3,7 @@ package com.example.auracle.datapack.listennote
 import com.google.gson.annotations.SerializedName
 
 
-data class ListenPodcastShort(
+data class ListenSearchPodcast(
 
     @SerializedName("rss"                      ) var rss                    : String?        = null,
     @SerializedName("description_highlighted"  ) var descriptionHighlighted : String?        = null,
@@ -29,6 +29,13 @@ data class ListenPodcastShort(
     @SerializedName("website"                  ) var website                : String?        = null,
     @SerializedName("listen_score"             ) var listenScore            : String?        = null,
     @SerializedName("listen_score_global_rank" ) var listenScoreGlobalRank  : String?        = null
+) {
+    constructor(longPodcast: ListenPodcastLong): this() {
+        id = longPodcast.id
+        thumbnail = longPodcast.thumbnail
+        titleOriginal = longPodcast.title
+        publisherOriginal = longPodcast.publisher
+        descriptionHighlighted = longPodcast.description
 
-
-)
+    }
+}

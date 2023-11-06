@@ -2,8 +2,7 @@ package com.example.auracle.api
 
 import android.util.Log
 import com.example.auracle.datapack.listennote.ListenPodcastLong
-import com.example.auracle.datapack.listennote.ListenPodcastShort
-import com.example.auracle.datapack.listennote.ListenSearch
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -14,7 +13,7 @@ class ListenNoteApi {
         .build()
         .create(ListenNoteRoutes::class.java)
 
-    fun search(query: String): ArrayList<ListenPodcastShort>? {
+    fun search(query: String): ArrayList<ListenSearchPodcast>? {
         val options = mapOf(
             "q" to query,
             "type" to "podcast"
@@ -37,6 +36,22 @@ class ListenNoteApi {
         } catch (e: Exception) {
             Log.e("ListenNoteApi", "Error: ${e.message}")
             ListenPodcastLong()
+        }
+    }
+
+    fun bestSearch(byGenre: String? = null): ArrayList<ListenSearchPodcast> {
+
+        val options = mapOf(
+            "genre_id" to byGenre,
+        )
+        val bestSearch = retrofit.bestPodcasts(options).execute()
+        val podcasts = bestSearch.body()?.podcasts
+        val podcastList = podcasts?.map { ListenSearchPodcast(it) }
+        return try {
+            podcastList as ArrayList<ListenSearchPodcast>
+        } catch (e: Exception) {
+            Log.e("ListenNoteApi", "Error: ${e.message}")
+            ArrayList()
         }
     }
 

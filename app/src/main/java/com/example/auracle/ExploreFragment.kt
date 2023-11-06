@@ -26,6 +26,7 @@ import kotlinx.coroutines.withContext
 class ExploreFragment : Fragment() {
 
     private lateinit var binding: FragmentExploreBinding
+    private val listenNoteApi = ListenNoteApi()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +64,9 @@ class ExploreFragment : Fragment() {
         binding.rcvPodcastList.visibility = View.GONE
 
 
-        rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList)
+        rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList) {
+            searchByGenre(it.id.toString())
+        }
         rcvGenreList.setHasFixedSize(true)
 //        Log.wtf("Explore", Data.highLevelGenreList.toString())
     }
@@ -76,7 +79,7 @@ class ExploreFragment : Fragment() {
         skeleton.showSkeleton()
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val podcastList = ListenNoteApi().search(query)
+            val podcastList = listenNoteApi.search(query)
             if (!podcastList.isNullOrEmpty()) {
                 withContext(Dispatchers.Main) {
 //                    Log.d("ExploreFragment", "Podcast List: $podcastList")
@@ -86,6 +89,23 @@ class ExploreFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun searchByGenre(genreId: String? = null) {
+        binding.rcvGenreList.visibility = View.GONE
+        binding.rcvPodcastList.visibility = View.VISIBLE
+        val skeleton = binding.rcvPodcastList.applySkeleton(R.layout.search_podcast_card)
+        skeleton.showSkeleton()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val podcastList = listenNoteApi.bestSearch(genreId)
+            if (podcastList.isNotEmpty()) {
+                withContext(Dispatchers.Main) {
+                    skeleton.showOriginal()
+                    binding.rcvPodcastList.adapter = SearchPodcastCardAdapter(podcastList)
+                }
+            }
+        }
     }
 
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.R
 import com.example.auracle.datapack.listennote.ListenGenre
 
-class GenreCardAdapter(private val genreList: ArrayList<ListenGenre>): RecyclerView.Adapter<GenreCardViewHolder>() {
+class GenreCardAdapter(private val genreList: ArrayList<ListenGenre>, private val onItemClicked: ((ListenGenre) -> Unit)): RecyclerView.Adapter<GenreCardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreCardViewHolder {
         return GenreCardViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.genre_card, parent, false))
     }
@@ -21,6 +21,8 @@ class GenreCardAdapter(private val genreList: ArrayList<ListenGenre>): RecyclerV
         holder.genreName.text = currentItem.name
         holder.genreImage.setImageResource(currentItem.imgId!!)
         holder.genreBg.setCardBackgroundColor(Color.parseColor(currentItem.bgColor))
-
+        holder.genreCard.setOnClickListener {
+            onItemClicked(currentItem)
+        }
     }
 }

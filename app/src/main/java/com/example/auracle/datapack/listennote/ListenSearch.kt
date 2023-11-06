@@ -8,7 +8,7 @@ data class ListenSearch(
     @SerializedName("took"        ) var took: Double? = null,
     @SerializedName("count"       ) var count: Int? = null,
     @SerializedName("total"       ) var total: Int? = null,
-    @SerializedName("results"     ) var results: ArrayList<ListenPodcastShort> = arrayListOf(),
+    @SerializedName("results"     ) var results: ArrayList<ListenSearchPodcast> = arrayListOf(),
     @SerializedName("next_offset" ) var nextOffset: Int? = null
 
 )
