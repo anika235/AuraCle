@@ -1,8 +1,7 @@
-package com.example.auracle.searchpodcastcard
+package com.example.auracle.rcvsearchpodcastcard
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder

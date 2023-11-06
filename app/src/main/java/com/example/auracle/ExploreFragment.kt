@@ -1,7 +1,6 @@
 package com.example.auracle
 
 import android.os.Bundle
-import android.util.Log
 
 import androidx.fragment.app.Fragment
 
@@ -17,8 +16,8 @@ import com.example.auracle.api.ListenNoteApi
 import com.example.auracle.databinding.FragmentExploreBinding
 import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.example.auracle.fixeddata.Data
-import com.example.auracle.genrecard.GenreCardAdapter
-import com.example.auracle.searchpodcastcard.SearchPodcastCardAdapter
+import com.example.auracle.rcvgenrecard.GenreCardAdapter
+import com.example.auracle.rcvsearchpodcastcard.SearchPodcastCardAdapter
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.example.auracle.genrecard
+package com.example.auracle.rcvgenrecard
 
 import android.graphics.Color
 import android.view.LayoutInflater

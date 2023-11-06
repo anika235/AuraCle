@@ -1,4 +1,4 @@
-package com.example.auracle.searchpodcastcard
+package com.example.auracle.rcvsearchpodcastcard
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

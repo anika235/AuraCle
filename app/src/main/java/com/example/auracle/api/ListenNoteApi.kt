@@ -41,9 +41,9 @@ class ListenNoteApi {
 
     fun bestSearch(byGenre: String? = null): ArrayList<ListenSearchPodcast> {
 
-        val options = mapOf(
+        val options = if(byGenre != null) mapOf(
             "genre_id" to byGenre,
-        )
+        ) else mapOf()
         val bestSearch = retrofit.bestPodcasts(options).execute()
         val podcasts = bestSearch.body()?.podcasts
         val podcastList = podcasts?.map { ListenSearchPodcast(it) }
