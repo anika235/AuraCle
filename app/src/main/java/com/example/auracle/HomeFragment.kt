@@ -42,8 +42,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun populateGenrePopularList() {
-        val genreList = Data.highLevelGenreList
-        genreList.add(0, ListenGenre(null, "All", null, null))
+        var genreList = Data.highLevelGenreList
+        genreList = (arrayListOf(ListenGenre(null, "All", null, null)) + genreList) as ArrayList<ListenGenre>
+
         binding.rcvPopularList.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rcvPopularList.adapter = PopularGenreAdapter(
