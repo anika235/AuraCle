@@ -11,7 +11,7 @@ import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.squareup.picasso.Picasso
 
 
-class SearchPodcastCardAdapter(private val searchPodcastList: ArrayList<ListenSearchPodcast>): RecyclerView.Adapter<SearchPodcastCardViewHolder>() {
+class SearchPodcastCardAdapter(private val searchPodcastList: ArrayList<ListenSearchPodcast>, private val onItemClicked: ((ListenSearchPodcast) -> Unit)): RecyclerView.Adapter<SearchPodcastCardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchPodcastCardViewHolder {
         return SearchPodcastCardViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_podcast_card, parent, false))
     }
@@ -30,9 +30,10 @@ class SearchPodcastCardAdapter(private val searchPodcastList: ArrayList<ListenSe
         holder.podcastClickable.setOnClickListener {
 //            itemClickListener(currentItem.id!!)
 
-            it.context.startActivity(Intent(it.context, PodcastDetails::class.java).apply {
-                putExtra("podcast_id", currentItem.id)
-            })
+            onItemClicked(currentItem)
+//            it.context.startActivity(Intent(it.context, PodcastDetails::class.java).apply {
+//                putExtra("podcast_id", currentItem.id)
+//            })
 
         }
     }

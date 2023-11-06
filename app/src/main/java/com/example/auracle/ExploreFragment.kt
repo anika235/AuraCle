@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auracle.api.ListenNoteApi
 
 import com.example.auracle.databinding.FragmentExploreBinding
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.example.auracle.fixeddata.Data
 import com.example.auracle.genrecard.GenreCardAdapter
 import com.example.auracle.searchpodcastcard.SearchPodcastCardAdapter
@@ -68,6 +69,7 @@ class ExploreFragment : Fragment() {
         rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList) {
             searchByGenre(it.id.toString())
 //            tryToChange()
+//            toPodcastDetails("ASDFFASD")
         }
         rcvGenreList.setHasFixedSize(true)
 //        Log.wtf("Explore", Data.highLevelGenreList.toString())
@@ -81,6 +83,12 @@ class ExploreFragment : Fragment() {
         return skeleton
     }
 
+    private fun onResultSetAdapter(podcastList: ArrayList<ListenSearchPodcast>) {
+        binding.rcvPodcastList.adapter = SearchPodcastCardAdapter(podcastList) {
+            toPodcastDetails(it.id!!)
+        }
+    }
+
     private fun onSearch(query: String) {
 
         val skeleton = searchInitiateUIChanges()
@@ -91,7 +99,7 @@ class ExploreFragment : Fragment() {
                 withContext(Dispatchers.Main) {
 //                    Log.d("ExploreFragment", "Podcast List: $podcastList")
                     skeleton.showOriginal()
-                    binding.rcvPodcastList.adapter = SearchPodcastCardAdapter(podcastList)
+                    onResultSetAdapter(podcastList)
                 }
             }
         }
@@ -107,19 +115,23 @@ class ExploreFragment : Fragment() {
             if (podcastList.isNotEmpty()) {
                 withContext(Dispatchers.Main) {
                     skeleton.showOriginal()
-                    binding.rcvPodcastList.adapter = SearchPodcastCardAdapter(podcastList)
+                    onResultSetAdapter(podcastList)
                 }
             }
         }
     }
 
 
-
-    private fun tryToChange(){
+    private fun toPodcastDetails(podcastId: String) {
         Log.w("ExploreFragment", "tryToChange")
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        val fragment = HomeFragment()
+        val fragment = PodcastDetailsFragment()
+        val args = Bundle()
+        args.putString("podcastId", podcastId)
+
+        fragment.arguments = args
+
         fragmentTransaction.replace(R.id.fragmentDisplay, fragment)
         fragmentTransaction.commit()
     }
