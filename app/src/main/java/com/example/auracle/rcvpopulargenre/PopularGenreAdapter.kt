@@ -4,13 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.auracle.R
 import com.example.auracle.datapack.listennote.ListenGenre
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.faltenreich.skeletonlayout.Skeleton
 
 class PopularGenreAdapter(
     private val genreList: ArrayList<ListenGenre>,
-//    private val loadPodcasts: ((Int?, RecyclerView, Skeleton) -> Unit)
+    private val loadPodcasts: ((Int?, PopularGenreViewHolder) -> Unit)
 ) :
     RecyclerView.Adapter<PopularGenreViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularGenreViewHolder {
@@ -32,6 +34,6 @@ class PopularGenreAdapter(
         titleText += if (currentItem.id != null) " in ${currentItem.name}" else " & Trending"
         holder.popularTitle.text = titleText
 
-//        loadPodcasts(currentItem.id, holder.rcvPopularList, holder.popularGenreSkeleton)
+        loadPodcasts(currentItem.id, holder)
     }
 }

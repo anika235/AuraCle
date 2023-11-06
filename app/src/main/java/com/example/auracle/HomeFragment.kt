@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.api.ListenNoteApi
 import com.example.auracle.com.example.auracle.rcvpopulargenre.PopularGenreAdapter
+import com.example.auracle.com.example.auracle.rcvpopulargenre.PopularGenreViewHolder
 import com.example.auracle.com.example.auracle.rcvpopularpodcast.PopularPodcastAdapter
 import com.example.auracle.databinding.FragmentHomeBinding
 import com.example.auracle.datapack.listennote.ListenGenre
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.example.auracle.fixeddata.Data
 import com.faltenreich.skeletonlayout.Skeleton
 import kotlinx.coroutines.Dispatchers
@@ -42,27 +44,51 @@ class HomeFragment : Fragment() {
     private fun populateGenrePopularList() {
         val genreList = Data.highLevelGenreList
         genreList.add(0, ListenGenre(null, "All", null, null))
-        binding.rcvPopularList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.rcvPopularList.adapter = PopularGenreAdapter(genreList) { id, rvcPopularPodcast, popularGenreSkeleton ->
-            populatePodcastPopularList(id, rvcPopularPodcast, popularGenreSkeleton)
-        }
+        binding.rcvPopularList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rcvPopularList.adapter = PopularGenreAdapter(
+            genreList,
+            this::populatePodcastPopularList
+        )
     }
 
-    private fun populatePodcastPopularList(id: Int?, rvcPopularPodcast: RecyclerView, popularGenreSkeleton: Skeleton) {
-        popularGenreSkeleton.showSkeleton()
-        rvcPopularPodcast.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    private fun populatePodcastPopularList(id: Int?, viewHolder: PopularGenreViewHolder) {
+        viewHolder.popularGenreSkeleton.showSkeleton()
+
+        viewHolder.popularPodcastGhost.visibility = View.VISIBLE
+        viewHolder.rcvPopularList.visibility = View.GONE
+
 
         lifecycleScope.launch(Dispatchers.IO) {
 
             val bestPodcastList = listenNoteApi.bestSearch(id?.toString())
 
             withContext(Dispatchers.Main) {
-                rvcPopularPodcast.adapter = PopularPodcastAdapter(bestPodcastList)
-                popularGenreSkeleton.showOriginal()
+                viewHolder.rcvPopularList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                viewHolder.rcvPopularList.adapter = PopularPodcastAdapter(bestPodcastList) {
+                    onItemClicked(it)
+                }
+
+                viewHolder.popularPodcastGhost.visibility = View.GONE
+                viewHolder.rcvPopularList.visibility = View.VISIBLE
+
+                viewHolder.popularGenreSkeleton.showOriginal()
             }
 
         }
+    }
 
+    private fun onItemClicked(podcast: ListenSearchPodcast) {
+        val fragment = PodcastDetailsFragment()
+        val args = Bundle()
+        args.putString("podcastId", podcast.id)
+        fragment.arguments = args
+
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        fragmentTransaction.replace(R.id.fragmentDisplay, fragment)
+        fragmentTransaction.commit()
     }
 
 }
