@@ -73,7 +73,15 @@
             android:id="@+id/btnAddToList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/baseline_add_24"/>
+            app:icon="@drawable/baseline_playlist_add_24"/>
+
+        <Button
+            android:layout_marginStart="10dp"
+            style="?attr/materialIconButtonStyle"
+            android:id="@+id/btnDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/baseline_download"/>
 
     </LinearLayout>
 

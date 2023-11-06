@@ -17,7 +17,6 @@ class MusicService : Service() {
     var mediaPlayer: MediaPlayer? = null
     private lateinit var mediaSession: MediaSessionCompat
 
-
     override fun onBind(p0: Intent?): IBinder? {
         mediaSession = MediaSessionCompat(baseContext, "My Podcast")
         return myBinder
@@ -28,34 +27,6 @@ class MusicService : Service() {
             return this@MusicService
         }
     }
-
-//    @SuppressLint("MissingPermission")
-//    fun showNotification() {
-//        ApplicationClass()
-//        val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
-//            .setContentTitle(Player.podcastlistPA[Player.podcastPosition].title)
-//            .setSmallIcon(R.drawable.podcast)
-//            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon))
-//            .setStyle(
-//                androidx.media.app.NotificationCompat.MediaStyle()
-//                    .setMediaSession(mediaSession.sessionToken)
-//            )
-//            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//            .setOnlyAlertOnce(true)
-//            .addAction(R.drawable.previous, "Previous", null)
-//            .addAction(R.drawable.play, "Play", null)
-//            .addAction(R.drawable.next_icon, "Next", null)
-//            .addAction(R.drawable.close, "Exit", null)
-////            .build()
-//
-//        with(NotificationManagerCompat.from(baseContext)) {
-//            notify(13, notification.build())
-//        }
-//
-////        startForeground(13, notification)
-//
-//    }
 
     @SuppressLint("MissingPermission")
     fun showNotification() {
@@ -76,10 +47,12 @@ class MusicService : Service() {
         val pendingIntent: PendingIntent =
             PendingIntent.getActivity(baseContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
+        val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1)
+
         return NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentTitle(Player.podcastListPA[Player.podcastPosition].title)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.ic_launcher_foreground))
+            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_launcher_foreground))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
@@ -88,8 +61,8 @@ class MusicService : Service() {
             .addAction(NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", null).build())
             .addAction(NotificationCompat.Action.Builder(R.drawable.close, "Exit", null).build())
             .setContentIntent(pendingIntent)
+            .setStyle(mediaStyle)
 
+        mediaSession.setMediaButtonReceiver(pendingIntent)
     }
-
-
 }
