@@ -4,93 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".player"
+    android:gravity="center"
     android:orientation="vertical"
-    android:gravity="center">
+    tools:context=".Player">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_weight="1"
         android:gravity="center"
-        android:layout_weight="1">
+        android:orientation="horizontal">
 
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/back"
-            android:backgroundTint="@android:color/transparent"
             android:layout_marginStart="15dp"
+            android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/back_btn"
-            app:tint="@color/black"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:src="@drawable/back"
+            app:tint="@color/black" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:text="@string/playlist_name"
-            android:textSize="20sp"
-            android:gravity="center"
             android:layout_weight="1"
-            android:textStyle="bold"/>
+            android:gravity="center"
+            android:text="@string/playlist_name"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="20dp"
             android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/favourite_btn"
             android:src="@drawable/favorite_empty"
-            android:tint="@android:color/holo_red_dark"
-            android:contentDescription="@string/favourite_btn"/>
+            app:tint="@android:color/holo_red_dark" />
     </LinearLayout>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_margin="10dp"
-        android:src="@drawable/icon"
-        android:padding="5dp"
-        app:shapeAppearanceOverlay="@style/curved"
-        app:strokeColor="@color/blue"
-        app:strokeWidth="5dp"/>
-
-    <TextView
+    <com.faltenreich.skeletonlayout.SkeletonLayout
+        android:id="@+id/podcastLoadingSkeleton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:text="@string/podcast_name"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:layout_weight="1"
-        android:textIsSelectable="true"/>
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/PodcastThumbnail"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon"
+                app:shapeAppearanceOverlay="@style/curved"
+                app:strokeColor="@color/blue"
+                app:strokeWidth="5dp" />
+
+            <TextView
+                android:id="@+id/PodcastNamePA"
+                style="?attr/textAppearanceLabelSmall"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_weight="1"
+                android:text="@string/podcast_name"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </com.faltenreich.skeletonlayout.SkeletonLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_margin="10dp"
+        android:layout_weight="1"
         android:gravity="center"
-        android:layout_weight="1">
+        android:orientation="horizontal">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/previousBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/previous"
-            app:iconSize="50dp"/>
+            app:iconSize="50dp" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/playPauseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:backgroundTint="@android:color/holo_red_light"
             app:icon="@drawable/pause"
             app:iconSize="50dp"
-            android:layout_marginHorizontal="25dp"
-            app:shapeAppearanceOverlay="@style/curved"
-            android:backgroundTint="@android:color/holo_red_light"
-            app:iconTint="@color/white"/>
+            app:iconTint="@color/white"
+            app:shapeAppearanceOverlay="@style/curved" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/nextBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/next_icon"
@@ -100,72 +118,78 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:orientation="horizontal"
         android:layout_margin="20dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tvSeekbarStart"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:textSize="15sp"
+            android:gravity="center"
             android:text="@string/start_tv"
-            android:gravity="center"/>
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
         <SeekBar
+            android:id="@+id/seekBarPA"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/tvSeekbarEnd"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:textSize="15sp"
+            android:gravity="center"
             android:text="@string/end_tv"
-            android:gravity="center"/>
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/repeat"
-            android:tint="@android:color/holo_red_dark"
             android:contentDescription="@string/repeat_btn"
-            android:layout_weight="1"/>
+            android:src="@drawable/repeat"
+            android:tint="@android:color/holo_red_dark" />
+
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/equalizer"
-            android:tint="@android:color/holo_red_dark"
             android:contentDescription="@string/equalizer_btn"
-            android:layout_weight="1"/>
+            android:src="@drawable/equalizer"
+            android:tint="@android:color/holo_red_dark" />
+
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/timer"
-            android:tint="@android:color/holo_red_dark"
             android:contentDescription="@string/timer_btn"
-            android:layout_weight="1"/>
+            android:src="@drawable/timer"
+            android:tint="@android:color/holo_red_dark" />
+
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/share"
-            android:tint="@android:color/holo_red_dark"
             android:contentDescription="@string/share_btn"
-            android:layout_weight="1"/>
+            android:src="@drawable/share"
+            android:tint="@android:color/holo_red_dark" />
 
     </LinearLayout>
 </LinearLayout>

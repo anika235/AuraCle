@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
+        android:name=".ApplicationClass"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -11,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AuraCle"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
         <activity
             android:name=".SplashScreen"
@@ -25,7 +31,7 @@
             android:name=".PodcastDetails"
             android:exported="false" />
         <activity
-            android:name=".player"
+            android:name=".Player"
             android:exported="false" />
         <activity
             android:name=".SignUp"
@@ -39,6 +45,7 @@
         <activity
             android:name=".StartPage"
             android:exported="false" />
+        <service android:name=".MusicService"/>
 
     </application>
 
