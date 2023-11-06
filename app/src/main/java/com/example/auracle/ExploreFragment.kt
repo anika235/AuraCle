@@ -18,6 +18,7 @@ import com.example.auracle.databinding.FragmentExploreBinding
 import com.example.auracle.fixeddata.Data
 import com.example.auracle.genrecard.GenreCardAdapter
 import com.example.auracle.searchpodcastcard.SearchPodcastCardAdapter
+import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -66,17 +67,23 @@ class ExploreFragment : Fragment() {
 
         rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList) {
             searchByGenre(it.id.toString())
+//            tryToChange()
         }
         rcvGenreList.setHasFixedSize(true)
 //        Log.wtf("Explore", Data.highLevelGenreList.toString())
     }
 
-    private fun onSearch(query: String) {
-
+    private fun searchInitiateUIChanges(): Skeleton {
         binding.rcvGenreList.visibility = View.GONE
         binding.rcvPodcastList.visibility = View.VISIBLE
         val skeleton = binding.rcvPodcastList.applySkeleton(R.layout.search_podcast_card)
         skeleton.showSkeleton()
+        return skeleton
+    }
+
+    private fun onSearch(query: String) {
+
+        val skeleton = searchInitiateUIChanges()
 
         lifecycleScope.launch(Dispatchers.IO) {
             val podcastList = listenNoteApi.search(query)
@@ -92,10 +99,8 @@ class ExploreFragment : Fragment() {
     }
 
     private fun searchByGenre(genreId: String? = null) {
-        binding.rcvGenreList.visibility = View.GONE
-        binding.rcvPodcastList.visibility = View.VISIBLE
-        val skeleton = binding.rcvPodcastList.applySkeleton(R.layout.search_podcast_card)
-        skeleton.showSkeleton()
+
+        val skeleton = searchInitiateUIChanges()
 
         lifecycleScope.launch(Dispatchers.IO) {
             val podcastList = listenNoteApi.bestSearch(genreId)
@@ -109,5 +114,14 @@ class ExploreFragment : Fragment() {
     }
 
 
+
+    private fun tryToChange(){
+        Log.w("ExploreFragment", "tryToChange")
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        val fragment = HomeFragment()
+        fragmentTransaction.replace(R.id.fragmentDisplay, fragment)
+        fragmentTransaction.commit()
+    }
 
 }
