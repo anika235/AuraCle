@@ -1,11 +1,9 @@
 package com.example.auracle.searchpodcastcard
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
-import com.example.auracle.PodcastDetails
 import com.example.auracle.R
 import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.squareup.picasso.Picasso

@@ -1,16 +1,15 @@
 package com.example.auracle
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auracle.api.ListenNoteApi
-import com.example.auracle.databinding.ActivityPodcastDetailsBinding
 import com.example.auracle.databinding.FragmentPodcastDetailsBinding
+import com.example.auracle.datapack.listennote.ListenEpisodeShort
 import com.example.auracle.episodecard.EpisodeCardAdapter
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.squareup.picasso.Picasso
@@ -22,6 +21,10 @@ class PodcastDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentPodcastDetailsBinding
     private lateinit var podcastId: String
+
+    companion object {
+        lateinit var episodes: ArrayList<ListenEpisodeShort>
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,8 @@ class PodcastDetailsFragment : Fragment() {
             val podcastDetails = ListenNoteApi().podcastDetails(podcastId)
             withContext(Dispatchers.Main) {
 
+                episodes = podcastDetails.episodes
+
                 val time = ""
                 if (podcastDetails.audioLengthSec!! / 3600 > 0) {
                     time.plus("${podcastDetails.audioLengthSec!! / 3600}h ")
@@ -72,11 +77,9 @@ class PodcastDetailsFragment : Fragment() {
                 binding.txtPodcastTotalTime.text = time
                 binding.txtPodcastDescription.text = podcastDetails.description
 
-                binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(podcastDetails.episodes)
+                binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(requireContext(), podcastDetails.episodes)
 
                 binding.podcastDetailSkeleton.showOriginal()
-
-
             }
 
         }

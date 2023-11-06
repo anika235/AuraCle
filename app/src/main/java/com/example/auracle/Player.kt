@@ -88,7 +88,7 @@ class Player : AppCompatActivity(), ServiceConnection {
         when (intent.getStringExtra("class")) {
             "EpisodeCardAdapter" -> {
                 podcastListPA = ArrayList()
-                podcastListPA.addAll(PodcastDetails.episodes)
+                podcastListPA.addAll(PodcastDetailsFragment.episodes)
                 setLayout()
             }
         }

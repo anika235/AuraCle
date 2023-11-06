@@ -68,11 +68,8 @@ class ExploreFragment : Fragment() {
 
         rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList) {
             searchByGenre(it.id.toString())
-//            tryToChange()
-//            toPodcastDetails("ASDFFASD")
         }
         rcvGenreList.setHasFixedSize(true)
-//        Log.wtf("Explore", Data.highLevelGenreList.toString())
     }
 
     private fun searchInitiateUIChanges(): Skeleton {
@@ -123,14 +120,14 @@ class ExploreFragment : Fragment() {
 
 
     private fun toPodcastDetails(podcastId: String) {
-        Log.w("ExploreFragment", "tryToChange")
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
+
         val fragment = PodcastDetailsFragment()
         val args = Bundle()
         args.putString("podcastId", podcastId)
-
         fragment.arguments = args
+
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
 
         fragmentTransaction.replace(R.id.fragmentDisplay, fragment)
         fragmentTransaction.commit()
