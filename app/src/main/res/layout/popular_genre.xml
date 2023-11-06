@@ -113,34 +113,6 @@
                     android:text="Author" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    app:shapeAppearanceOverlay="@style/curved"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:contentDescription="Podcast Thumbnail"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/genre_img_comedy" />
-
-                <TextView
-                    style="?attr/textAppearanceTitleSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Title" />
-
-                <TextView
-                    style="?attr/textAppearanceBodySmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Author" />
-            </LinearLayout>
-
-
         </LinearLayout>
 
     </LinearLayout>
