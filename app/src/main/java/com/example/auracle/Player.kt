@@ -122,7 +122,7 @@ class Player : AppCompatActivity(), ServiceConnection {
         }
     }
 
-    private fun setPodcastPosition(increment: Boolean) {
+    fun setPodcastPosition(increment: Boolean) {
         if (increment) {
             if (podcastListPA.size - 1 == podcastPosition)
                 podcastPosition = 0
