@@ -22,10 +22,11 @@ class Player : AppCompatActivity(), ServiceConnection {
         var podcastPosition: Int = 0
         var isPlaying: Boolean = false
         var musicService: MusicService? = null
+        lateinit var binding: ActivityPlayerBinding
 
     }
 
-    private lateinit var binding: ActivityPlayerBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,7 +74,7 @@ class Player : AppCompatActivity(), ServiceConnection {
 
                 withContext(Dispatchers.Main) {
                     binding.podcastLoadingSkeleton.showOriginal()
-                    musicService!!.showNotification()
+                    musicService!!.showNotification(R.drawable.pause)
                     playPodcast()
                 }
 
@@ -96,12 +97,14 @@ class Player : AppCompatActivity(), ServiceConnection {
 
     private fun playPodcast() {
         binding.playPauseButton.setIconResource(R.drawable.pause)
+        musicService!!.showNotification(R.drawable.pause)
         isPlaying = true
         musicService!!.mediaPlayer!!.start()
     }
 
     private fun pausePodcast() {
         binding.playPauseButton.setIconResource(R.drawable.play)
+        musicService!!.showNotification(R.drawable.play)
         isPlaying = false
         musicService!!.mediaPlayer!!.pause()
     }
@@ -137,6 +140,7 @@ class Player : AppCompatActivity(), ServiceConnection {
         val binder = service as MusicService.MyBinder
         musicService = binder.currenServise()
         createMediaPlayer()
+        musicService!!.showNotification(R.drawable.pause)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {

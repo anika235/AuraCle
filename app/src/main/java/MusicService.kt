@@ -29,9 +29,9 @@ class MusicService : Service() {
     }
 
     @SuppressLint("MissingPermission")
-    fun showNotification() {
+    fun showNotification(playPauseBtn: Int) {
         ApplicationClass.createNotificationChannel(baseContext)
-        val notification = createNotification()
+        val notification = createNotification(playPauseBtn)
 
         with(NotificationManagerCompat.from(baseContext)) {
             notify(13, notification.build())
@@ -39,7 +39,19 @@ class MusicService : Service() {
 
     }
 
-    private fun createNotification(): NotificationCompat.Builder {
+    private fun createNotification(playPauseBtn: Int): NotificationCompat.Builder {
+
+        val PrevIntent =  Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.PREVIOUS)
+        val prevpendingIntent = PendingIntent.getBroadcast(baseContext, 0, PrevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val PlayIntent =  Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.PLAY)
+        val playpendingIntent = PendingIntent.getBroadcast(baseContext, 0, PlayIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val nextIntent =  Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.NEXT)
+        val nextpendingIntent = PendingIntent.getBroadcast(baseContext, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val exitIntent =  Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.EXIT)
+        val exitpendingIntent = PendingIntent.getBroadcast(baseContext, 0, exitIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val intent = Intent(baseContext, Homepage::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -56,10 +68,10 @@ class MusicService : Service() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
-            .addAction(NotificationCompat.Action.Builder(R.drawable.previous, "Previous", null).build())
-            .addAction(NotificationCompat.Action.Builder(R.drawable.play, "Play", null).build())
-            .addAction(NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", null).build())
-            .addAction(NotificationCompat.Action.Builder(R.drawable.close, "Exit", null).build())
+            .addAction(NotificationCompat.Action.Builder(R.drawable.previous, "Previous", prevpendingIntent).build())
+            .addAction(NotificationCompat.Action.Builder(playPauseBtn, "Play", playpendingIntent).build())
+            .addAction(NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", nextpendingIntent).build())
+            .addAction(NotificationCompat.Action.Builder(R.drawable.close, "Exit", exitpendingIntent).build())
             .setContentIntent(pendingIntent)
             .setStyle(mediaStyle)
 
