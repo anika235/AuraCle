@@ -1,19 +1,14 @@
 package com.example.auracle
 
-import android.app.Service.STOP_FOREGROUND_DETACH
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.system.exitProcess
 
 class NotificationReceiver:BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -22,11 +17,6 @@ class NotificationReceiver:BroadcastReceiver() {
             ApplicationClass.PREVIOUS -> prevEpisode()
             ApplicationClass.PLAY -> if(Player.isPlaying) pausePodcast() else playPodcast()
             ApplicationClass.NEXT -> nextEpisode()
-            ApplicationClass.EXIT -> {
-                Player.musicService.stopForeground(STOP_FOREGROUND_DETACH)
-                Player.musicService.onDestroy()
-                exitProcess(1)
-            }
         }
     }
     private fun playPodcast(){

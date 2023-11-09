@@ -16,8 +16,9 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/backButtonPA"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginStart="15dp"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/back_btn"
@@ -35,14 +36,6 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@string/favourite_btn"
-            android:src="@drawable/favorite_empty"
-            app:tint="@android:color/holo_red_dark" />
     </LinearLayout>
 
     <com.faltenreich.skeletonlayout.SkeletonLayout
@@ -156,6 +149,7 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/repeatButtonPA"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -169,8 +163,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@string/equalizer_btn"
-            android:src="@drawable/equalizer"
+            android:contentDescription="@string/favourite_btn"
+            android:src="@drawable/favorite_empty"
             android:tint="@android:color/holo_red_dark" />
 
         <ImageButton
@@ -178,8 +172,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@string/timer_btn"
-            android:src="@drawable/timer"
+            android:contentDescription="@string/Playlist"
+            android:src="@drawable/baseline_playlist_add_24"
             android:tint="@android:color/holo_red_dark" />
 
         <ImageButton

@@ -7,7 +7,9 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -17,6 +19,7 @@ class MusicService : Service() {
     private var myBinder = MyBinder()
     var mediaPlayer = MediaPlayer()
     private lateinit var mediaSession: MediaSessionCompat
+    private lateinit var runnable: Runnable
 
     override fun onBind(p0: Intent?): IBinder? {
         mediaSession = MediaSessionCompat(baseContext, "My Podcast")
@@ -51,9 +54,6 @@ class MusicService : Service() {
         val nextIntent =  Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.NEXT)
         val nextPendingIntent = PendingIntent.getBroadcast(baseContext, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val exitIntent =  Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.EXIT)
-        val exitPendingIntent = PendingIntent.getBroadcast(baseContext, 0, exitIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
         val intent = Intent(baseContext, Homepage::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -71,7 +71,6 @@ class MusicService : Service() {
             .addAction(NotificationCompat.Action.Builder(R.drawable.previous, "Previous", prevPendingIntent).build())
             .addAction(NotificationCompat.Action.Builder(playPauseBtn, "Play", playPendingIntent).build())
             .addAction(NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", nextPendingIntent).build())
-            .addAction(NotificationCompat.Action.Builder(R.drawable.close, "Exit", exitPendingIntent).build())
             .setContentIntent(pendingIntent)
             .setStyle(mediaStyle)
 
@@ -89,6 +88,17 @@ class MusicService : Service() {
             }
         })
         return notification
+    }
+
+    fun seekBarSetup() {
+        runnable = Runnable {
+            val player = Player()
+            val currentPosition = mediaPlayer!!.currentPosition.toLong()
+            Player.binding.tvSeekbarStart.text = player.formatDuration(currentPosition)
+            Player.binding.seekBarPA.progress = currentPosition.toInt()
+            Handler(Looper.getMainLooper()).postDelayed(runnable, 1000)
+        }
+        Handler(Looper.getMainLooper()).postDelayed(runnable, 1000)
     }
 
 }
