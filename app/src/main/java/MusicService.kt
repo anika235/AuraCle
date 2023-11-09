@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso
 
 class MusicService : Service() {
     private var myBinder = MyBinder()
-    var mediaPlayer: MediaPlayer? = null
+    var mediaPlayer = MediaPlayer()
     private lateinit var mediaSession: MediaSessionCompat
 
     override fun onBind(p0: Intent?): IBinder? {

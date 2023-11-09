@@ -3,11 +3,13 @@ package com.example.auracle
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.database.Observable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.auracle.databinding.ActivityPlayerBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
@@ -23,13 +25,15 @@ class Player : AppCompatActivity(), ServiceConnection {
         lateinit var podcastListPA: ArrayList<ListenEpisodeShort>
         var podcastPosition: Int = 0
         var isPlaying: Boolean = false
-        var musicService: MusicService? = null
+        var musicService = MusicService()
         lateinit var binding: ActivityPlayerBinding
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,7 +51,7 @@ class Player : AppCompatActivity(), ServiceConnection {
         binding.nextBtn.setOnClickListener { prevNextPodcast(increment = true) }
         binding.seekBarPA.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, progress: Int, fromUser: Boolean) {
-                if(fromUser) musicService!!.mediaPlayer!!.seekTo(progress)
+                if(fromUser) musicService.mediaPlayer.seekTo(progress)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) = Unit
@@ -64,23 +68,23 @@ class Player : AppCompatActivity(), ServiceConnection {
 
     private fun createMediaPlayer() {
         try {
-            if (musicService!!.mediaPlayer == null) musicService!!.mediaPlayer = MediaPlayer()
 
-            musicService!!.mediaPlayer!!.reset()
+            musicService.mediaPlayer.reset()
             val audioPath = podcastListPA[podcastPosition].audio
 
             lifecycleScope.launch(Dispatchers.IO) {
-                musicService!!.mediaPlayer!!.setDataSource(audioPath)
-                musicService!!.mediaPlayer!!.prepare()
+                musicService.mediaPlayer.setDataSource(audioPath)
+                musicService.mediaPlayer.prepare()
 
                 withContext(Dispatchers.Main) {
                     binding.podcastLoadingSkeleton.showOriginal()
-                    musicService!!.showNotification(R.drawable.pause)
+
                     playPodcast()
-                    binding.tvSeekbarStart.text = formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
-                    binding.tvSeekbarEnd.text = formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+
+                    binding.tvSeekbarStart.text = formatDuration(musicService.mediaPlayer.currentPosition.toLong())
+                    binding.tvSeekbarEnd.text = formatDuration(musicService.mediaPlayer.duration.toLong())
                     binding.seekBarPA.progress = 0
-                    binding.seekBarPA.max = musicService!!.mediaPlayer!!.duration
+                    binding.seekBarPA.max = musicService.mediaPlayer.duration
                 }
 
             }
@@ -102,16 +106,16 @@ class Player : AppCompatActivity(), ServiceConnection {
 
     private fun playPodcast() {
         binding.playPauseButton.setIconResource(R.drawable.pause)
-        musicService!!.showNotification(R.drawable.pause)
+        musicService.showNotification(R.drawable.pause)
         isPlaying = true
-        musicService!!.mediaPlayer!!.start()
+        musicService.mediaPlayer.start()
     }
 
     private fun pausePodcast() {
         binding.playPauseButton.setIconResource(R.drawable.play)
-        musicService!!.showNotification(R.drawable.play)
+        musicService.showNotification(R.drawable.play)
         isPlaying = false
-        musicService!!.mediaPlayer!!.pause()
+        musicService.mediaPlayer.pause()
     }
 
     private fun prevNextPodcast(increment: Boolean) {
@@ -126,7 +130,7 @@ class Player : AppCompatActivity(), ServiceConnection {
         }
     }
 
-    fun setPodcastPosition(increment: Boolean) {
+    private fun setPodcastPosition(increment: Boolean) {
         if (increment) {
             if (podcastListPA.size - 1 == podcastPosition)
                 podcastPosition = 0
@@ -144,13 +148,13 @@ class Player : AppCompatActivity(), ServiceConnection {
         val binder = service as MusicService.MyBinder
         musicService = binder.currenServise()
         createMediaPlayer()
-//        musicService!!.showNotification(R.drawable.pause)
+//        musicService.showNotification(R.drawable.pause)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
-        musicService = null
+        musicService.onDestroy()
     }
-    fun formatDuration(duration: Long): String {
+    private fun formatDuration(duration: Long): String {
         val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
         val seconds = TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) % 60
         return String.format("%02d:%02d", minutes, seconds)
