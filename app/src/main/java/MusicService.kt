@@ -65,7 +65,6 @@ class MusicService : Service() {
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentTitle(Player.podcastListPA[Player.podcastPosition].title)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-//            .setLargeIcon(largeIcon)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
@@ -91,4 +90,5 @@ class MusicService : Service() {
         })
         return notification
     }
+
 }

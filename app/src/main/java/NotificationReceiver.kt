@@ -26,15 +26,17 @@ class NotificationReceiver:BroadcastReceiver() {
         Player.musicService!!.showNotification(R.drawable.pause)
         Player.binding.playPauseButton.setIconResource(R.drawable.pause)
     }
-
     private fun pausePodcast(){
         Player.isPlaying = false
         Player.musicService!!.mediaPlayer!!.pause()
         Player.musicService!!.showNotification(R.drawable.play)
         Player.binding.playPauseButton.setIconResource(R.drawable.play)
     }
+    private fun prevNextPodcast(increment: Boolean, context: Context){
+        val hello = Player()
+        hello.setPodcastPosition(increment = increment)
 
-
+    }
 
 
 }
