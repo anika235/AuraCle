@@ -1,7 +1,10 @@
 package com.example.auracle.datapack.listennote
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ListenEpisodeShort (
     @SerializedName("id"                   ) var id                 : String?  = null,
     @SerializedName("link"                 ) var link               : String?  = null,
@@ -17,4 +20,4 @@ data class ListenEpisodeShort (
     @SerializedName("explicit_content"     ) var explicitContent    : Boolean? = null,
     @SerializedName("maybe_audio_invalid"  ) var maybeAudioInvalid  : Boolean? = null,
     @SerializedName("listennotes_edit_url" ) var listennotesEditUrl : String?  = null
-)
+): Parcelable

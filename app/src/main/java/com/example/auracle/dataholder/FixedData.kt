@@ -1,9 +1,9 @@
-package com.example.auracle.fixeddata
+package com.example.auracle.dataholder
 
 import com.example.auracle.R
 import com.example.auracle.datapack.listennote.ListenGenre
 
-object Data {
+object FixedData {
     val highLevelGenreList = arrayListOf(
         ListenGenre(125, "History", 67, R.drawable.genre_img_history, "#d0aa3e"),
         ListenGenre(77, "Sports", 67, R.drawable.genre_img_sports, "#E0C9AD"),

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.api.ListenNoteApi
 import com.example.auracle.com.example.auracle.rcvpopulargenre.PopularGenreAdapter
 import com.example.auracle.com.example.auracle.rcvpopulargenre.PopularGenreViewHolder
@@ -15,8 +14,7 @@ import com.example.auracle.com.example.auracle.rcvpopularpodcast.PopularPodcastA
 import com.example.auracle.databinding.FragmentHomeBinding
 import com.example.auracle.datapack.listennote.ListenGenre
 import com.example.auracle.datapack.listennote.ListenSearchPodcast
-import com.example.auracle.fixeddata.Data
-import com.faltenreich.skeletonlayout.Skeleton
+import com.example.auracle.dataholder.FixedData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,7 +40,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun populateGenrePopularList() {
-        var genreList = Data.highLevelGenreList
+        var genreList = FixedData.highLevelGenreList
         genreList = (arrayListOf(ListenGenre(null, "All", null, null)) + genreList) as ArrayList<ListenGenre>
 
         binding.rcvPopularList.layoutManager =

@@ -18,7 +18,7 @@ class ApplicationClass:Application() {
                 val name = "AuraCle"
                 val descriptionText = "BaseChannel"
                 val importance = NotificationManager.IMPORTANCE_DEFAULT
-                val channel = NotificationChannel("auracle", name, importance).apply {
+                val channel = NotificationChannel("AuraCle", name, importance).apply {
                     description = descriptionText
                 }
 

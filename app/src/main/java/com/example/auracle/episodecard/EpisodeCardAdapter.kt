@@ -2,6 +2,7 @@ package com.example.auracle.episodecard
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
@@ -28,8 +29,13 @@ class EpisodeCardAdapter(private val context: Context, private val episodeList: 
         holder.episodePlay.text = audioLen
         holder.episodePlay.setOnClickListener {
             val intent = Intent(context, Player::class.java)
-            intent.putExtra("index", position)
-            intent.putExtra("class", "EpisodeCardAdapter")
+
+            val bundle = Bundle()
+            bundle.putInt("index", position)
+            bundle.putString("class", "EpisodeCardAdapter")
+            bundle.putParcelableArrayList("episodeList", episodeList)
+            intent.putExtra("baseInfo", bundle)
+
             ContextCompat.startActivity(context, intent, null)
         }
         holder.episodeSubscribe.setOnClickListener {

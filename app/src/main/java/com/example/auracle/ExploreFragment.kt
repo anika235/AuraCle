@@ -15,7 +15,7 @@ import com.example.auracle.api.ListenNoteApi
 
 import com.example.auracle.databinding.FragmentExploreBinding
 import com.example.auracle.datapack.listennote.ListenSearchPodcast
-import com.example.auracle.fixeddata.Data
+import com.example.auracle.dataholder.FixedData
 import com.example.auracle.rcvgenrecard.GenreCardAdapter
 import com.example.auracle.rcvsearchpodcastcard.SearchPodcastCardAdapter
 import com.faltenreich.skeletonlayout.Skeleton
@@ -65,7 +65,7 @@ class ExploreFragment : Fragment() {
         binding.rcvPodcastList.visibility = View.GONE
 
 
-        rcvGenreList.adapter = GenreCardAdapter(Data.highLevelGenreList) {
+        rcvGenreList.adapter = GenreCardAdapter(FixedData.highLevelGenreList) {
             searchByGenre(it.id.toString())
         }
         rcvGenreList.setHasFixedSize(true)
