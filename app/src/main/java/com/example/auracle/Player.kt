@@ -3,6 +3,7 @@ package com.example.auracle
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.SeekBar
@@ -101,6 +102,14 @@ class Player : AppCompatActivity(), ServiceConnection{
                     binding.seekBarPA.progress = 0
                     binding.seekBarPA.max = musicService.mediaPlayer.duration
 
+                    binding.ShareButttonPA.setOnClickListener {
+                        val shareIntent = Intent()
+                        shareIntent.action = Intent.ACTION_SEND
+                        shareIntent.type = "audio/*"
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(audioPath))
+                        startActivity(Intent.createChooser(shareIntent,"Sharing the Podcast"))
+                    }
+
                     musicService!!.mediaPlayer!!.setOnCompletionListener {prevNextPodcast(true)}
                 }
 
@@ -168,6 +177,8 @@ class Player : AppCompatActivity(), ServiceConnection{
         musicService = binder.currenServise()
         createMediaPlayer()
         musicService!!.seekBarSetup()
+        binding = ActivityPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
     }
 
