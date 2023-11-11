@@ -8,7 +8,7 @@ import com.example.auracle.Player
 
 class MediaUpdateReceiver() : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        Log.w("PlayerTTT", "onReceive: ${Player.START_PLAYING}")
+
         when (intent.action) {
             Player.START_PLAYING -> {
                 val roundaboutIntent = Intent(context, StreamService::class.java)
@@ -16,23 +16,19 @@ class MediaUpdateReceiver() : BroadcastReceiver() {
                 roundaboutIntent.putExtra("notification_action", Player.START_PLAYING)
                 context.startService(roundaboutIntent)
             }
-//                STOP_PLAYING -> pauseEpisode()
             Player.NOTIFICATION_TOGGLE_PLAYING -> {
                 val roundaboutIntent = Intent(context, StreamService::class.java)
-                roundaboutIntent.putExtra("action", "notification_action")
-                roundaboutIntent.putExtra("notification_action", Player.TOGGLE_PLAYING)
+                roundaboutIntent.putExtra("action", Player.TOGGLE_PLAYING)
                 context.startService(roundaboutIntent)
             }
             Player.NOTIFICATION_PLAY_NEXT -> {
                 val roundaboutIntent = Intent(context, StreamService::class.java)
-                roundaboutIntent.putExtra("action", "notification_action")
-                roundaboutIntent.putExtra("notification_action", Player.PLAY_NEXT)
+                roundaboutIntent.putExtra("action", Player.PLAY_NEXT)
                 context.startService(roundaboutIntent)
             }
             Player.NOTIFICATION_PLAY_PREVIOUS -> {
                 val roundaboutIntent = Intent(context, StreamService::class.java)
-                roundaboutIntent.putExtra("action", "notification_action")
-                roundaboutIntent.putExtra("notification_action", Player.PLAY_PREVIOUS)
+                roundaboutIntent.putExtra("action", Player.PLAY_PREVIOUS)
                 context.startService(roundaboutIntent)
             }
         }

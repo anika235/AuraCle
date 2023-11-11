@@ -10,8 +10,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
+import android.os.Binder
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -23,17 +26,34 @@ import com.squareup.picasso.Picasso
 
 class StreamService : Service() {
 
+    private var player: Player? = null
+    private val binder = LocalBinder()
     private val mediaPlayer = MediaPlayer()
     private var title = ""
     private var thumbnail = ""
+    private val updateTimeUi = object: Runnable {
+        override fun run() {
+            player?.updateTimeUI(mediaPlayer.currentPosition)
+            Handler(Looper.getMainLooper()).postDelayed(this, 1000)
+        }
+    }
+    private val handler = Handler(Looper.getMainLooper())
+
+    inner class LocalBinder: Binder() {
+        fun getService(): StreamService {
+            // Return this instance of StreamService so clients can call public methods
+            return this@StreamService
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
         mediaPlayer.reset()
+        mediaPlayer.setOnCompletionListener { player?.playNextEpisode() }
         mediaPlayer.setOnPreparedListener {
-            sendBroadcast(Intent(Player.START_PLAYING))
-//            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(Player.START_PLAYING))
+            player?.newEpisodePlayUI(mediaPlayer.duration)
             showNotification(title, thumbnail)
+            handler.post(updateTimeUi)
             mediaPlayer.start()
         }
     }
@@ -49,7 +69,7 @@ class StreamService : Service() {
             "notification_action" -> {
                 sendBroadcast(Intent(intent.getStringExtra("notification_action")))
             }
-            "playNew" -> {
+            Player.START_PLAYING -> {
                 val audio = intent.getStringExtra("audio")
                 val title = intent.getStringExtra("title")
                 val thumbnail = intent.getStringExtra("thumbnail")
@@ -66,18 +86,34 @@ class StreamService : Service() {
                 this.thumbnail = thumbnail
             }
 
-            "togglePlay" -> {
-                if (mediaPlayer.isPlaying)
+            Player.TOGGLE_PLAYING -> {
+                if (mediaPlayer.isPlaying){
+                    handler.removeCallbacks(updateTimeUi)
                     mediaPlayer.pause()
-                else
+                }
+                else {
+                    handler.post(updateTimeUi)
                     mediaPlayer.start()
-
+                }
+                player?.togglePlayingUI()
                 showNotification(title, thumbnail)
             }
 
-            "stop" -> {
-                mediaPlayer.stop()
-                stopSelf()
+            Player.PLAY_NEXT -> {
+                player?.playNextEpisode()
+            }
+
+            Player.PLAY_PREVIOUS -> {
+                player?.playPreviousEpisode()
+            }
+
+            Player.TOGGLE_LOOPING -> {
+                mediaPlayer.isLooping = !mediaPlayer.isLooping
+            }
+
+            Player.SEEK -> {
+                val seekTo = intent.getIntExtra("seek", 0)
+                mediaPlayer.seekTo(seekTo)
             }
         }
 
@@ -118,18 +154,18 @@ class StreamService : Service() {
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(baseContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1)
-//
+
         val nxtIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_PLAY_NEXT)
         val nxtPendingIntent = PendingIntent.getBroadcast(baseContext, 0, nxtIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val nxtAction = NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", nxtPendingIntent).build()
 
-        val prevIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_PLAY_NEXT)
+        val prevIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_PLAY_PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(baseContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val prevAction = NotificationCompat.Action.Builder(R.drawable.previous, "Next", prevPendingIntent).build()
 
         val togglePlayIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_TOGGLE_PLAYING)
         val togglePlayPendingIntent = PendingIntent.getBroadcast(baseContext, 0, togglePlayIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val togglePlayAction = NotificationCompat.Action.Builder(R.drawable.play, "Next", togglePlayPendingIntent).build()
+        val togglePlayAction = NotificationCompat.Action.Builder(if(mediaPlayer.isPlaying) R.drawable.pause else R.drawable.play, "Next", togglePlayPendingIntent).build()
 
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentTitle(title)
@@ -161,7 +197,11 @@ class StreamService : Service() {
 
     }
 
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
+    fun setParent(player: Player) {
+        this.player = player
+    }
+
+    override fun onBind(p0: Intent?): IBinder {
+        return binder
     }
 }
