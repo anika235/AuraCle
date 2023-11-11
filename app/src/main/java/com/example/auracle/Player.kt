@@ -4,15 +4,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.auracle.com.example.auracle.dataholder.PlaylistDataHolder
 import com.example.auracle.com.example.auracle.viewmodel.PlaylistViewModel
 import com.example.auracle.databinding.ActivityPlayerBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
+import com.example.auracle.service.MediaUpdateReceiver
 import com.example.auracle.service.StreamService
 
 class Player : AppCompatActivity() {
@@ -22,6 +26,12 @@ class Player : AppCompatActivity() {
         const val STOP_PLAYING = "stop_playing"
         const val PLAY_NEXT = "play_next"
         const val PLAY_PREVIOUS = "play_previous"
+        const val TOGGLE_PLAYING = "toggle_playing"
+        const val NOTIFICATION_START_PLAYING = "notification_start_playing"
+        const val NOTIFICATION_STOP_PLAYING = "notification_stop_playing"
+        const val NOTIFICATION_PLAY_NEXT = "notification_play_next"
+        const val NOTIFICATION_PLAY_PREVIOUS = "notification_play_previous"
+        const val NOTIFICATION_TOGGLE_PLAYING = "notification_toggle_playing"
     }
 
     private lateinit var binding: ActivityPlayerBinding
@@ -29,42 +39,9 @@ class Player : AppCompatActivity() {
     private var isPlaying = false
     private var buttonMask = true  // buttonMask should mask the actions of player buttons
 
-    private val mediaUpdateReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            when (intent?.action) {
-                START_PLAYING -> {
+    private val mediaUpdateReceiver = MediaUpdateReceiver()
 
-                    buttonMask = false
-                    isPlaying = true
-
-                    binding.podcastLoadingSkeleton.showOriginal()
-                    binding.playPauseButton.setIconResource(R.drawable.pause)
-                }
-//                STOP_PLAYING -> {
-//                    binding.podcastLoadingSkeleton.showSkeleton()
-//                    binding.playPauseButton.setIconResource(R.drawable.play)
-//                }
-                PLAY_NEXT -> {
-
-                    Log.w("PlayerTTT", "Play next")
-
-                    binding.podcastLoadingSkeleton.showSkeleton()
-                    binding.playPauseButton.setIconResource(R.drawable.pause)
-                    playNextEpisode()
-                }
-                PLAY_PREVIOUS -> {
-
-                    Log.w("PlayerTTT", "Play next")
-
-
-                    binding.podcastLoadingSkeleton.showSkeleton()
-                    binding.playPauseButton.setIconResource(R.drawable.pause)
-                    playPreviousEpisode()
-                }
-            }
-        }
-    }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -80,9 +57,6 @@ class Player : AppCompatActivity() {
         try {
             if (source == "EpisodeCardAdapter") {
                 playlistViewModel.initPlaylist(episodeList!!, index!!)
-            } else {
-                val playlistDataHolder = PlaylistDataHolder.getInstance()
-                playlistViewModel.initPlaylist()
             }
         } catch (e: Exception) {
             Log.d("Player", "Error: $e")
@@ -123,13 +97,15 @@ class Player : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun registerBroadcast() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(START_PLAYING)
         intentFilter.addAction(STOP_PLAYING)
         intentFilter.addAction(PLAY_NEXT)
         intentFilter.addAction(PLAY_PREVIOUS)
-        LocalBroadcastManager.getInstance(this).registerReceiver(mediaUpdateReceiver, intentFilter)
+//        LocalBroadcastManager.getInstance(this).registerReceiver(mediaUpdateReceiver, intentFilter)
+        registerReceiver(mediaUpdateReceiver, intentFilter, RECEIVER_EXPORTED)
     }
 
     private fun playNewEpisode() {
@@ -149,15 +125,39 @@ class Player : AppCompatActivity() {
         startService(playIntent)
     }
 
-    private fun playNextEpisode() {
+    fun togglePlaying() {
+        if (isPlaying) {
+            binding.playPauseButton.setIconResource(R.drawable.play)
+        } else {
+            binding.playPauseButton.setIconResource(R.drawable.pause)
+        }
+        isPlaying = !isPlaying
+
+        val playIntent = Intent(this, StreamService::class.java)
+        playIntent.putExtra("action", "togglePlay")
+        startService(playIntent)
+
+    }
+
+    fun resumeEpisode() {
+        buttonMask = false
+        isPlaying = true
+
+        binding.podcastLoadingSkeleton.showOriginal()
+        binding.playPauseButton.setIconResource(R.drawable.pause)
+    }
+
+    fun playNextEpisode() {
         playlistViewModel.toNextEpisode()
         playNewEpisode()
     }
 
-    private fun playPreviousEpisode() {
+    fun playPreviousEpisode() {
         playlistViewModel.toPreviousEpisode()
         playNewEpisode()
     }
+
+
 
 //    companion object {
 //        lateinit var podcastListPA: ArrayList<ListenEpisodeShort>

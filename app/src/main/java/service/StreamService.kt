@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -30,7 +31,8 @@ class StreamService : Service() {
         super.onCreate()
         mediaPlayer.reset()
         mediaPlayer.setOnPreparedListener {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(Player.START_PLAYING))
+            sendBroadcast(Intent(Player.START_PLAYING))
+//            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(Player.START_PLAYING))
             showNotification(title, thumbnail)
             mediaPlayer.start()
         }
@@ -44,6 +46,9 @@ class StreamService : Service() {
             stopSelf()
 
         when (action) {
+            "notification_action" -> {
+                sendBroadcast(Intent(intent.getStringExtra("notification_action")))
+            }
             "playNew" -> {
                 val audio = intent.getStringExtra("audio")
                 val title = intent.getStringExtra("title")
@@ -62,11 +67,12 @@ class StreamService : Service() {
             }
 
             "togglePlay" -> {
-                if (mediaPlayer.isPlaying) {
+                if (mediaPlayer.isPlaying)
                     mediaPlayer.pause()
-                } else {
+                else
                     mediaPlayer.start()
-                }
+
+                showNotification(title, thumbnail)
             }
 
             "stop" -> {
@@ -82,8 +88,6 @@ class StreamService : Service() {
     fun showNotification(title: String, thumbnail: String) {
         createNotificationChannel()
         val notification = createNotification(title, thumbnail)
-
-Log.w("PlayerTTT", "$notification")
 
         with(NotificationManagerCompat.from(baseContext)) {
             notify(13, notification.build())
@@ -115,16 +119,16 @@ Log.w("PlayerTTT", "$notification")
         val pendingIntent: PendingIntent = PendingIntent.getActivity(baseContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1)
 //
-        val nxtIntent = Intent(baseContext, Player::class.java).setAction(Player.PLAY_NEXT)
-        val nxtPendingIntent = PendingIntent.getActivity(baseContext, 0, nxtIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val nxtIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_PLAY_NEXT)
+        val nxtPendingIntent = PendingIntent.getBroadcast(baseContext, 0, nxtIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val nxtAction = NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", nxtPendingIntent).build()
 
-        val prevIntent = Intent(baseContext, Player::class.java).setAction(Player.PLAY_PREVIOUS)
-        val prevPendingIntent = PendingIntent.getActivity(baseContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val prevIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_PLAY_NEXT)
+        val prevPendingIntent = PendingIntent.getBroadcast(baseContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val prevAction = NotificationCompat.Action.Builder(R.drawable.previous, "Next", prevPendingIntent).build()
 
-        val togglePlayIntent = Intent(baseContext, Player::class.java).setAction(Player.STOP_PLAYING)
-        val togglePlayPendingIntent = PendingIntent.getActivity(baseContext, 0, togglePlayIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val togglePlayIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_TOGGLE_PLAYING)
+        val togglePlayPendingIntent = PendingIntent.getBroadcast(baseContext, 0, togglePlayIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val togglePlayAction = NotificationCompat.Action.Builder(R.drawable.play, "Next", togglePlayPendingIntent).build()
 
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
@@ -141,7 +145,6 @@ Log.w("PlayerTTT", "$notification")
 
         Picasso.get().load(thumbnail).into(object : com.squareup.picasso.Target {
             override fun onBitmapLoaded(bitmap: android.graphics.Bitmap?,from: Picasso.LoadedFrom?) {
-                Log.w("PlayerTTT", "$bitmap")
                 notification.setLargeIcon(bitmap)
             }
 
