@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.auracle.databinding.ActivityPlayerBinding
 import com.example.auracle.databinding.FragmentNowPlayingBinding
 import com.squareup.picasso.Picasso
 

@@ -6,13 +6,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.auracle.com.example.auracle.viewmodel.HomeViewModel
+import com.example.auracle.com.example.auracle.viewmodel.PlaylistViewModel
 import com.example.auracle.databinding.ActivityHomepageBinding
 import com.example.auracle.firebase.Authenticate
 
 class Homepage : AppCompatActivity() {
 
-    private val TAG = "HomePage"
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: PlaylistViewModel by viewModels()
     private lateinit var binding : ActivityHomepageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,6 @@ class Homepage : AppCompatActivity() {
             }
             true
         }
-        Log.d(TAG, Authenticate().user().toString())
     }
 
     private fun replaceFragment(fragment: Fragment)

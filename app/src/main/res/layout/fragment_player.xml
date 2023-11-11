@@ -32,10 +32,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/playlist_name"
+            android:text="@string/podcast_name"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
+        <View
+            android:layout_width="50dp"
+            android:layout_height="40dp"/>
 
     </LinearLayout>
 
@@ -63,13 +66,13 @@
                 app:strokeWidth="5dp" />
 
             <TextView
-                android:id="@+id/PodcastNamePA"
+                android:id="@+id/EpisodeNamePA"
                 style="?attr/textAppearanceLabelSmall"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_weight="1"
-                android:text="@string/podcast_name"
+                android:text="Episode Name"
                 android:textAlignment="center"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -113,7 +116,6 @@
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_margin="20dp"
-        android:layout_weight="1"
         android:orientation="horizontal">
 
         <TextView
@@ -127,7 +129,7 @@
 
         <SeekBar
             android:id="@+id/seekBarPA"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1" />
@@ -146,7 +148,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="horizontal">
 
         <ImageButton
@@ -157,7 +158,7 @@
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/repeat_btn"
             android:src="@drawable/repeat"
-            android:tint="@android:color/holo_red_dark" />
+            app:tint="@android:color/holo_red_dark" />
 
         <ImageButton
             android:layout_width="0dp"
@@ -166,7 +167,7 @@
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/favourite_btn"
             android:src="@drawable/favorite_empty"
-            android:tint="@android:color/holo_red_dark" />
+            app:tint="@android:color/holo_red_dark" />
 
         <ImageButton
             android:layout_width="0dp"
@@ -175,17 +176,17 @@
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/Playlist"
             android:src="@drawable/baseline_playlist_add_24"
-            android:tint="@android:color/holo_red_dark" />
+            app:tint="@android:color/holo_red_dark" />
 
         <ImageButton
-            android:id="@+id/ShareButttonPA"
+            android:id="@+id/ShareButtonPA"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/share_btn"
             android:src="@drawable/share"
-            android:tint="@android:color/holo_red_dark" />
+            app:tint="@android:color/holo_red_dark" />
 
     </LinearLayout>
 </LinearLayout>

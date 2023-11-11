@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -18,19 +17,20 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.auracle.ApplicationClass
-import com.example.auracle.Player
+import com.example.auracle.Homepage
+import com.example.auracle.PlayerFragment
 import com.example.auracle.R
 import com.squareup.picasso.Picasso
 
-class StreamService : Service() {
+class MusicService : Service() {
 
-    private var player: Player? = null
+    private var player: PlayerFragment? = null
     private val binder = LocalBinder()
     private val mediaPlayer = MediaPlayer()
     private var title = ""
     private var thumbnail = ""
+    private var looping = false
     private val updateTimeUi = object: Runnable {
         override fun run() {
             player?.updateTimeUI(mediaPlayer.currentPosition)
@@ -40,16 +40,21 @@ class StreamService : Service() {
     private val handler = Handler(Looper.getMainLooper())
 
     inner class LocalBinder: Binder() {
-        fun getService(): StreamService {
+        fun getService(): MusicService {
             // Return this instance of StreamService so clients can call public methods
-            return this@StreamService
+            return this@MusicService
         }
     }
 
     override fun onCreate() {
         super.onCreate()
         mediaPlayer.reset()
-        mediaPlayer.setOnCompletionListener { player?.playNextEpisode() }
+        mediaPlayer.setOnCompletionListener {
+            if (looping)
+                mediaPlayer.seekTo(0)
+            else
+                player?.playNextEpisode()
+        }
         mediaPlayer.setOnPreparedListener {
             player?.newEpisodePlayUI(mediaPlayer.duration)
             showNotification(title, thumbnail)
@@ -69,7 +74,7 @@ class StreamService : Service() {
             "notification_action" -> {
                 sendBroadcast(Intent(intent.getStringExtra("notification_action")))
             }
-            Player.START_PLAYING -> {
+            PlayerFragment.START_PLAYING -> {
                 val audio = intent.getStringExtra("audio")
                 val title = intent.getStringExtra("title")
                 val thumbnail = intent.getStringExtra("thumbnail")
@@ -86,7 +91,7 @@ class StreamService : Service() {
                 this.thumbnail = thumbnail
             }
 
-            Player.TOGGLE_PLAYING -> {
+            PlayerFragment.TOGGLE_PLAYING -> {
                 if (mediaPlayer.isPlaying){
                     handler.removeCallbacks(updateTimeUi)
                     mediaPlayer.pause()
@@ -99,19 +104,19 @@ class StreamService : Service() {
                 showNotification(title, thumbnail)
             }
 
-            Player.PLAY_NEXT -> {
+            PlayerFragment.PLAY_NEXT -> {
                 player?.playNextEpisode()
             }
 
-            Player.PLAY_PREVIOUS -> {
+            PlayerFragment.PLAY_PREVIOUS -> {
                 player?.playPreviousEpisode()
             }
 
-            Player.TOGGLE_LOOPING -> {
-                mediaPlayer.isLooping = !mediaPlayer.isLooping
+            PlayerFragment.TOGGLE_LOOPING -> {
+                looping = !looping
             }
 
-            Player.SEEK -> {
+            PlayerFragment.SEEK -> {
                 val seekTo = intent.getIntExtra("seek", 0)
                 mediaPlayer.seekTo(seekTo)
             }
@@ -149,21 +154,21 @@ class StreamService : Service() {
 
     private fun createNotification(title: String, thumbnail: String): NotificationCompat.Builder {
 
-        val intent = Intent(baseContext, Player::class.java).apply {
+        val intent = Intent(baseContext, Homepage::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(baseContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1)
 
-        val nxtIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_PLAY_NEXT)
+        val nxtIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(PlayerFragment.NOTIFICATION_PLAY_NEXT)
         val nxtPendingIntent = PendingIntent.getBroadcast(baseContext, 0, nxtIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val nxtAction = NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", nxtPendingIntent).build()
 
-        val prevIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_PLAY_PREVIOUS)
+        val prevIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(PlayerFragment.NOTIFICATION_PLAY_PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(baseContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val prevAction = NotificationCompat.Action.Builder(R.drawable.previous, "Next", prevPendingIntent).build()
 
-        val togglePlayIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(Player.NOTIFICATION_TOGGLE_PLAYING)
+        val togglePlayIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(PlayerFragment.NOTIFICATION_TOGGLE_PLAYING)
         val togglePlayPendingIntent = PendingIntent.getBroadcast(baseContext, 0, togglePlayIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val togglePlayAction = NotificationCompat.Action.Builder(if(mediaPlayer.isPlaying) R.drawable.pause else R.drawable.play, "Next", togglePlayPendingIntent).build()
 
@@ -197,7 +202,7 @@ class StreamService : Service() {
 
     }
 
-    fun setParent(player: Player) {
+    fun setParent(player: PlayerFragment) {
         this.player = player
     }
 

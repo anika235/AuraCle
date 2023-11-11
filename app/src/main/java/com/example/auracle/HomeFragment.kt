@@ -21,8 +21,6 @@ import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
-    private val TAG = "HomeFragment"
-
     private lateinit var binding: FragmentHomeBinding
     private val listenNoteApi = ListenNoteApi()
 

@@ -1,19 +1,23 @@
 package com.example.auracle.episodecard
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
-import com.example.auracle.Player
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class EpisodeCardAdapter(private val context: Context, private val episodeList: ArrayList<ListenEpisodeShort>): RecyclerView.Adapter<EpisodeCardViewHolder>(){
-    override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): EpisodeCardViewHolder {
-        return EpisodeCardViewHolder(android.view.LayoutInflater.from(parent.context).inflate(com.example.auracle.R.layout.episode_card, parent, false))
+class EpisodeCardAdapter(
+    private val episodeList: ArrayList<ListenEpisodeShort>,
+    private val onPlayListener: ((ArrayList<ListenEpisodeShort>, Int) -> Unit)
+) : RecyclerView.Adapter<EpisodeCardViewHolder>() {
+    override fun onCreateViewHolder(
+        parent: android.view.ViewGroup,
+        viewType: Int
+    ): EpisodeCardViewHolder {
+        return EpisodeCardViewHolder(
+            android.view.LayoutInflater.from(parent.context)
+                .inflate(com.example.auracle.R.layout.episode_card, parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -25,18 +29,20 @@ class EpisodeCardAdapter(private val context: Context, private val episodeList: 
         val audioLen = "${currentItem.audioLengthSec!! / 60}m"
         holder.episodeTitle.text = currentItem.title
         holder.episodeDescription.text = currentItem.description?.parseAsHtml()
-        holder.episodeDate.text = SimpleDateFormat("yyyy-MM-dd").format(Date(currentItem.pubDateMs!!))
+        holder.episodeDate.text =
+            SimpleDateFormat("yyyy-MM-dd").format(Date(currentItem.pubDateMs!!))
         holder.episodePlay.text = audioLen
         holder.episodePlay.setOnClickListener {
-            val intent = Intent(context, Player::class.java)
-
-            val bundle = Bundle()
-            bundle.putInt("index", position)
-            bundle.putString("class", "EpisodeCardAdapter")
-            bundle.putParcelableArrayList("episodeList", episodeList)
-            intent.putExtra("baseInfo", bundle)
-
-            ContextCompat.startActivity(context, intent, null)
+//            val intent = Intent(context, Player::class.java)
+//
+//            val bundle = Bundle()
+//            bundle.putInt("index", position)
+//            bundle.putString("class", "EpisodeCardAdapter")
+//            bundle.putParcelableArrayList("episodeList", episodeList)
+//            intent.putExtra("baseInfo", bundle)
+//
+//            ContextCompat.startActivity(context, intent, null)
+            onPlayListener(episodeList, position)
         }
         holder.episodeSubscribe.setOnClickListener {
 
@@ -46,7 +52,7 @@ class EpisodeCardAdapter(private val context: Context, private val episodeList: 
     }
 
     private fun ellipsizeDescription(holder: EpisodeCardViewHolder, position: Int) {
-        val wordCount = episodeList[position].description?.count {it == ' '}
+        val wordCount = episodeList[position].description?.count { it == ' ' }
         val wordLimit = 30
 
         if (wordCount!! > wordLimit) {

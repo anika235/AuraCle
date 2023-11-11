@@ -1,14 +1,17 @@
 package com.example.auracle
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auracle.com.example.auracle.viewmodel.HomeViewModel
 import com.example.auracle.databinding.FragmentPodcastDetailsBinding
+import com.example.auracle.datapack.listennote.ListenEpisodeShort
 import com.example.auracle.datapack.listennote.ListenPodcastLong
 import com.example.auracle.episodecard.EpisodeCardAdapter
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -60,8 +63,7 @@ class PodcastDetailsFragment : Fragment() {
         binding.txtPodcastTotalTime.text = time
         binding.txtPodcastDescription.text = podcastDetails.description
 
-        binding.rcvPodcastEpisodeList.adapter =
-            EpisodeCardAdapter(requireContext(), podcastDetails.episodes)
+        binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(podcastDetails.episodes, this::toPlayer)
 
         binding.podcastDetailSkeleton.showOriginal()
     }
@@ -69,5 +71,20 @@ class PodcastDetailsFragment : Fragment() {
     private fun getPodcastDetails() {
         binding.podcastDetailSkeleton.showSkeleton()
         playlistViewModel.retrievePodcast(podcastId)
+    }
+
+    private fun toPlayer(podcastEpisodes: ArrayList<ListenEpisodeShort>, position: Int) {
+
+        val playerFragment = PlayerFragment()
+        val bundle = Bundle()
+        bundle.putParcelableArrayList("episodeList", podcastEpisodes)
+        bundle.putInt("index", position)
+        bundle.putString("class", "PodcastDetailsFragment")
+        playerFragment.arguments = bundle
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentDisplay, playerFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
