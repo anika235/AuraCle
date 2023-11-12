@@ -18,28 +18,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.auracle.com.example.auracle.PlayerInterface
 import com.example.auracle.com.example.auracle.viewmodel.PlaylistViewModel
 import com.example.auracle.databinding.FragmentPlayerBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
-import com.example.auracle.service.MediaUpdateReceiver
+import com.example.auracle.service.NotificationReceiver
 import com.example.auracle.service.MusicService
 import com.squareup.picasso.Picasso
 import java.util.concurrent.TimeUnit
 
-class PlayerFragment : Fragment() {
+class PlayerFragment : Fragment(), PlayerInterface {
+
     companion object {
-        const val START_PLAYING = "start_playing"
-        const val STOP_PLAYING = "stop_playing"
-        const val PLAY_NEXT = "play_next"
-        const val PLAY_PREVIOUS = "play_previous"
-        const val TOGGLE_PLAYING = "toggle_playing"
-        const val TOGGLE_LOOPING = "toggle_looping"
-        const val SEEK = "seek"
-        const val NOTIFICATION_START_PLAYING = "notification_start_playing"
-        const val NOTIFICATION_STOP_PLAYING = "notification_stop_playing"
-        const val NOTIFICATION_PLAY_NEXT = "notification_play_next"
-        const val NOTIFICATION_PLAY_PREVIOUS = "notification_play_previous"
-        const val NOTIFICATION_TOGGLE_PLAYING = "notification_toggle_playing"
+        const val tag = "PlayerFragment"
     }
 
     private var musicService: MusicService? = null
@@ -47,9 +38,10 @@ class PlayerFragment : Fragment() {
     private val playlistViewModel: PlaylistViewModel by activityViewModels()
     private var isPlaying = false
     private var isLooping = false
+    private var source: String? = null
     private var buttonMask = true  // buttonMask should mask the actions of player buttons
 
-    private val mediaUpdateReceiver = MediaUpdateReceiver()
+    private val notificationReceiver = NotificationReceiver()
     private val serviceConnection = object: ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val binder = service as MusicService.LocalBinder
@@ -67,11 +59,12 @@ class PlayerFragment : Fragment() {
         arguments?.let {
             val episodeList = it.getParcelableArrayList<ListenEpisodeShort>("episodeList")
             val index = it.getInt("index")
-            val source = it.getString("class")
+            source = it.getString("class")
 
             try {
                 if (source == "PodcastDetailsFragment")
-                    playlistViewModel.initPlaylist(episodeList!!, index) else TODO()
+                    playlistViewModel.initPlaylist(episodeList!!, index)
+                else ""
 
             } catch (e: Exception) {
                 Log.d("PlayerFragment", "Error: $e")
@@ -93,10 +86,18 @@ class PlayerFragment : Fragment() {
     ): View {
         binding = FragmentPlayerBinding.inflate(layoutInflater)
 
-        buttonMask = true
+
         registerInteractive()
         registerBroadcast()
-        playNewEpisode()
+        playlistViewModel.hideNowPlaying()
+
+        if (source == "PodcastDetailsFragment")
+            playNewEpisode()
+        else {
+            val intent = Intent(requireActivity(), MusicService::class.java)
+            intent.putExtra("action", PlayerInterface.RESUME_PLAYING)
+            requireContext().startService(intent)
+        }
 
         return binding.root
     }
@@ -105,7 +106,7 @@ class PlayerFragment : Fragment() {
         binding.playPauseButton.setOnClickListener {
             if (!buttonMask) {
                 val togglePlayIntent = Intent(requireActivity(), MusicService::class.java)
-                togglePlayIntent.putExtra("action", TOGGLE_PLAYING)
+                togglePlayIntent.putExtra("action", PlayerInterface.TOGGLE_PLAYING)
                 requireContext().startService(togglePlayIntent)
             }
         }
@@ -127,7 +128,7 @@ class PlayerFragment : Fragment() {
             isLooping = !isLooping
             binding.repeatButtonPA.setColorFilter(if(isLooping) ContextCompat.getColor(requireContext(), R.color.purple) else ContextCompat.getColor(requireContext(), R.color.pink))
             val intent = Intent(requireActivity(), MusicService::class.java)
-            intent.putExtra("action", TOGGLE_LOOPING)
+            intent.putExtra("action", PlayerInterface.TOGGLE_LOOPING)
             requireContext().startService(intent)
         }
 
@@ -145,7 +146,7 @@ class PlayerFragment : Fragment() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     val intent = Intent(requireActivity(), MusicService::class.java)
-                    intent.putExtra("action", SEEK)
+                    intent.putExtra("action", PlayerInterface.SEEK)
                     intent.putExtra("seek", progress)
                     requireContext().startService(intent)
                 }
@@ -160,11 +161,11 @@ class PlayerFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun registerBroadcast() {
         val intentFilter = IntentFilter()
-        intentFilter.addAction(START_PLAYING)
+        intentFilter.addAction(PlayerInterface.START_PLAYING)
 //        intentFilter.addAction(STOP_PLAYING)
-        intentFilter.addAction(PLAY_NEXT)
-        intentFilter.addAction(PLAY_PREVIOUS)
-        requireContext().registerReceiver(mediaUpdateReceiver, intentFilter, AppCompatActivity.RECEIVER_EXPORTED)
+        intentFilter.addAction(PlayerInterface.PLAY_NEXT)
+        intentFilter.addAction(PlayerInterface.PLAY_PREVIOUS)
+        requireContext().registerReceiver(notificationReceiver, intentFilter, AppCompatActivity.RECEIVER_EXPORTED)
     }
 
     private fun playNewEpisode() {
@@ -174,12 +175,11 @@ class PlayerFragment : Fragment() {
 
         binding.podcastLoadingSkeleton.showSkeleton()
         binding.playPauseButton.setIconResource(R.drawable.play)
-        Picasso.get().load(playlistViewModel.getEpisode().thumbnail).into(binding.PodcastThumbnail)
-        binding.EpisodeNamePA.text = playlistViewModel.getEpisode().title
+
         if(isLooping) binding.repeatButtonPA.setColorFilter(ContextCompat.getColor(requireContext(), R.color.purple))
 
         val playIntent = Intent(requireActivity(), MusicService::class.java)
-        playIntent.putExtra("action", START_PLAYING)
+        playIntent.putExtra("action", PlayerInterface.START_PLAYING)
 
         val episode = playlistViewModel.getEpisode()
         playIntent.putExtra("audio", episode.audio)
@@ -188,44 +188,56 @@ class PlayerFragment : Fragment() {
         requireContext().startService(playIntent)
     }
 
-    fun togglePlayingUI() {
+    override fun togglePlayingUI() {
         binding.playPauseButton.setIconResource(if(isPlaying) R.drawable.play else R.drawable.pause)
         isPlaying = !isPlaying
     }
 
-    fun newEpisodePlayUI(duration: Int) {
+    override fun newEpisodePlayUI(progress:Int, duration: Int) {
         buttonMask = false
         isPlaying = true
+
+        Picasso.get().load(playlistViewModel.getEpisode().thumbnail).into(binding.PodcastThumbnail)
+        binding.EpisodeNamePA.text = playlistViewModel.getEpisode().title
 
         binding.podcastLoadingSkeleton.showOriginal()
         binding.playPauseButton.setIconResource(R.drawable.pause)
 
-        val startTime = "00:00"
-        binding.tvSeekbarStart.text = startTime
+
+        binding.tvSeekbarStart.text = formatDuration(progress)
         binding.tvSeekbarEnd.text = formatDuration(duration)
-        binding.seekBarPA.progress = 0
+        binding.seekBarPA.progress = progress
         binding.seekBarPA.max = duration
     }
 
-    fun updateTimeUI(position: Int) {
+    override fun updateTimeUI(position: Int) {
         binding.tvSeekbarStart.text = formatDuration(position)
         binding.seekBarPA.progress = position
     }
 
-    fun playNextEpisode() {
+    override fun playNextEpisode() {
         playlistViewModel.toNextEpisode()
         playNewEpisode()
     }
 
-    fun playPreviousEpisode() {
+    override fun playPreviousEpisode() {
         playlistViewModel.toPreviousEpisode()
         playNewEpisode()
+    }
+
+    private fun showNowPlaying() {
+        playlistViewModel.showNowPlaying()
     }
 
     private fun formatDuration(duration: Int): String {
         val minutes = TimeUnit.MILLISECONDS.toMinutes(duration.toLong())
         val seconds = TimeUnit.MILLISECONDS.toSeconds(duration.toLong()) % 60
         return String.format("%02d:%02d", minutes, seconds)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        showNowPlaying()
     }
 
 }

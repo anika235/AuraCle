@@ -83,7 +83,7 @@ class PodcastDetailsFragment : Fragment() {
         playerFragment.arguments = bundle
 
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentDisplay, playerFragment)
+            .replace(R.id.fragmentDisplay, playerFragment, PlayerFragment.tag)
             .addToBackStack(null)
             .commit()
     }

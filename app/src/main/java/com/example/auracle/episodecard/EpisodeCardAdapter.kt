@@ -33,15 +33,6 @@ class EpisodeCardAdapter(
             SimpleDateFormat("yyyy-MM-dd").format(Date(currentItem.pubDateMs!!))
         holder.episodePlay.text = audioLen
         holder.episodePlay.setOnClickListener {
-//            val intent = Intent(context, Player::class.java)
-//
-//            val bundle = Bundle()
-//            bundle.putInt("index", position)
-//            bundle.putString("class", "EpisodeCardAdapter")
-//            bundle.putParcelableArrayList("episodeList", episodeList)
-//            intent.putExtra("baseInfo", bundle)
-//
-//            ContextCompat.startActivity(context, intent, null)
             onPlayListener(episodeList, position)
         }
         holder.episodeSubscribe.setOnClickListener {

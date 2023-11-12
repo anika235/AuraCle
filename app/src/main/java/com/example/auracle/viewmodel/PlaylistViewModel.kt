@@ -19,11 +19,11 @@ class PlaylistViewModel : ViewModel() {
 //    private val mutablePlaylist = MutableLiveData<ArrayList<ListenEpisodeShort>>()
 //    val playlist: LiveData<ArrayList<ListenEpisodeShort>> get() = mutablePlaylist
 
-//    private val mutablePlaylistPosition = MutableLiveData<Int>()
-//    val playlistPosition: LiveData<Int> get() = mutablePlaylistPosition
+    private val mutableNowPlaying = MutableLiveData<Boolean>()
+    val nowPlaying: LiveData<Boolean> get() = mutableNowPlaying
 
-    private var playlistPosition: Int = 0
-    private var playList: ArrayList<ListenEpisodeShort> = ArrayList()
+    var playlistPosition: Int = 0
+    var playList: ArrayList<ListenEpisodeShort> = ArrayList()
     private var playlistAvailable: Boolean = false
 
 
@@ -53,6 +53,14 @@ class PlaylistViewModel : ViewModel() {
         if (playlistAvailable) {
             playlistPosition = Math.floorMod(playlistPosition - 1, playList.size)
         }
+    }
+
+    fun showNowPlaying() {
+        mutableNowPlaying.value = true
+    }
+
+    fun hideNowPlaying() {
+        mutableNowPlaying.value = false
     }
 
 }

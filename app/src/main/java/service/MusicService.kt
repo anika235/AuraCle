@@ -14,20 +14,20 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.auracle.ApplicationClass
 import com.example.auracle.Homepage
 import com.example.auracle.PlayerFragment
 import com.example.auracle.R
+import com.example.auracle.com.example.auracle.PlayerInterface
 import com.squareup.picasso.Picasso
 
 class MusicService : Service() {
 
-    private var player: PlayerFragment? = null
+    private var player: PlayerInterface? = null
     private val binder = LocalBinder()
-    private val mediaPlayer = MediaPlayer()
+    val mediaPlayer = MediaPlayer()
     private var title = ""
     private var thumbnail = ""
     private var looping = false
@@ -51,12 +51,13 @@ class MusicService : Service() {
         mediaPlayer.reset()
         mediaPlayer.setOnCompletionListener {
             if (looping)
-                mediaPlayer.seekTo(0)
+                mediaPlayer.seekTo(1)
             else
                 player?.playNextEpisode()
         }
         mediaPlayer.setOnPreparedListener {
-            player?.newEpisodePlayUI(mediaPlayer.duration)
+            player?.newEpisodePlayUI(0, mediaPlayer.duration)
+
             showNotification(title, thumbnail)
             handler.post(updateTimeUi)
             mediaPlayer.start()
@@ -74,7 +75,7 @@ class MusicService : Service() {
             "notification_action" -> {
                 sendBroadcast(Intent(intent.getStringExtra("notification_action")))
             }
-            PlayerFragment.START_PLAYING -> {
+            PlayerInterface.START_PLAYING -> {
                 val audio = intent.getStringExtra("audio")
                 val title = intent.getStringExtra("title")
                 val thumbnail = intent.getStringExtra("thumbnail")
@@ -91,7 +92,7 @@ class MusicService : Service() {
                 this.thumbnail = thumbnail
             }
 
-            PlayerFragment.TOGGLE_PLAYING -> {
+            PlayerInterface.TOGGLE_PLAYING -> {
                 if (mediaPlayer.isPlaying){
                     handler.removeCallbacks(updateTimeUi)
                     mediaPlayer.pause()
@@ -104,19 +105,23 @@ class MusicService : Service() {
                 showNotification(title, thumbnail)
             }
 
-            PlayerFragment.PLAY_NEXT -> {
+            PlayerInterface.RESUME_PLAYING -> {
+                player?.newEpisodePlayUI(mediaPlayer.currentPosition, mediaPlayer.duration)
+            }
+
+            PlayerInterface.PLAY_NEXT -> {
                 player?.playNextEpisode()
             }
 
-            PlayerFragment.PLAY_PREVIOUS -> {
+            PlayerInterface.PLAY_PREVIOUS -> {
                 player?.playPreviousEpisode()
             }
 
-            PlayerFragment.TOGGLE_LOOPING -> {
+            PlayerInterface.TOGGLE_LOOPING -> {
                 looping = !looping
             }
 
-            PlayerFragment.SEEK -> {
+            PlayerInterface.SEEK -> {
                 val seekTo = intent.getIntExtra("seek", 0)
                 mediaPlayer.seekTo(seekTo)
             }
@@ -160,15 +165,15 @@ class MusicService : Service() {
         val pendingIntent: PendingIntent = PendingIntent.getActivity(baseContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1)
 
-        val nxtIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(PlayerFragment.NOTIFICATION_PLAY_NEXT)
+        val nxtIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(PlayerInterface.NOTIFICATION_PLAY_NEXT)
         val nxtPendingIntent = PendingIntent.getBroadcast(baseContext, 0, nxtIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val nxtAction = NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", nxtPendingIntent).build()
 
-        val prevIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(PlayerFragment.NOTIFICATION_PLAY_PREVIOUS)
+        val prevIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(PlayerInterface.NOTIFICATION_PLAY_PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(baseContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val prevAction = NotificationCompat.Action.Builder(R.drawable.previous, "Next", prevPendingIntent).build()
 
-        val togglePlayIntent = Intent(baseContext, MediaUpdateReceiver::class.java).setAction(PlayerFragment.NOTIFICATION_TOGGLE_PLAYING)
+        val togglePlayIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(PlayerInterface.NOTIFICATION_TOGGLE_PLAYING)
         val togglePlayPendingIntent = PendingIntent.getBroadcast(baseContext, 0, togglePlayIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val togglePlayAction = NotificationCompat.Action.Builder(if(mediaPlayer.isPlaying) R.drawable.pause else R.drawable.play, "Next", togglePlayPendingIntent).build()
 
@@ -202,7 +207,7 @@ class MusicService : Service() {
 
     }
 
-    fun setParent(player: PlayerFragment) {
+    fun setParent(player: PlayerInterface) {
         this.player = player
     }
 

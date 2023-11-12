@@ -4,30 +4,31 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.example.auracle.PlayerFragment
+import com.example.auracle.com.example.auracle.PlayerInterface
 
-class MediaUpdateReceiver : BroadcastReceiver() {
+class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
 
         when (intent.action) {
-            PlayerFragment.START_PLAYING -> {
+            PlayerInterface.START_PLAYING -> {
                 val roundaboutIntent = Intent(context, MusicService::class.java)
                 roundaboutIntent.putExtra("action", "notification_action")
-                roundaboutIntent.putExtra("notification_action", PlayerFragment.START_PLAYING)
+                roundaboutIntent.putExtra("notification_action", PlayerInterface.START_PLAYING)
                 context.startService(roundaboutIntent)
             }
-            PlayerFragment.NOTIFICATION_TOGGLE_PLAYING -> {
+            PlayerInterface.NOTIFICATION_TOGGLE_PLAYING -> {
                 val roundaboutIntent = Intent(context, MusicService::class.java)
-                roundaboutIntent.putExtra("action", PlayerFragment.TOGGLE_PLAYING)
+                roundaboutIntent.putExtra("action", PlayerInterface.TOGGLE_PLAYING)
                 context.startService(roundaboutIntent)
             }
-            PlayerFragment.NOTIFICATION_PLAY_NEXT -> {
+            PlayerInterface.NOTIFICATION_PLAY_NEXT -> {
                 val roundaboutIntent = Intent(context, MusicService::class.java)
-                roundaboutIntent.putExtra("action", PlayerFragment.PLAY_NEXT)
+                roundaboutIntent.putExtra("action", PlayerInterface.PLAY_NEXT)
                 context.startService(roundaboutIntent)
             }
-            PlayerFragment.NOTIFICATION_PLAY_PREVIOUS -> {
+            PlayerInterface.NOTIFICATION_PLAY_PREVIOUS -> {
                 val roundaboutIntent = Intent(context, MusicService::class.java)
-                roundaboutIntent.putExtra("action", PlayerFragment.PLAY_PREVIOUS)
+                roundaboutIntent.putExtra("action", PlayerInterface.PLAY_PREVIOUS)
                 context.startService(roundaboutIntent)
             }
         }

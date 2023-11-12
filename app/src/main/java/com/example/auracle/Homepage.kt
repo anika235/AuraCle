@@ -2,6 +2,7 @@ package com.example.auracle
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -20,14 +21,18 @@ class Homepage : AppCompatActivity() {
 
         binding = ActivityHomepageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(HomeFragment())
+        replaceFragment(binding.fragmentDisplay.id, HomeFragment())
+
+        viewModel.nowPlaying.observe(this) {
+            nowPlayingManager(it)
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId){
-                R.id.home_fragment -> replaceFragment(HomeFragment())
-                R.id.explore_fragment -> replaceFragment(ExploreFragment())
-                R.id.library_fragment -> replaceFragment(LibraryFragment())
+                R.id.home_fragment -> replaceFragment(binding.fragmentDisplay.id, HomeFragment())
+                R.id.explore_fragment -> replaceFragment(binding.fragmentDisplay.id, ExploreFragment())
+                R.id.library_fragment -> replaceFragment(binding.fragmentDisplay.id, LibraryFragment())
 
                 else->{
                 }
@@ -36,12 +41,26 @@ class Homepage : AppCompatActivity() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment)
+    private fun replaceFragment(view: Int, fragment: Fragment)
     {
+        binding.fragmentNowPlaying.visibility = View.VISIBLE
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(binding.fragmentDisplay.id, fragment)
+        fragmentTransaction.replace(view, fragment)
+        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+    }
+
+
+    private fun nowPlayingManager(show: Boolean) {
+        if (show) {
+            replaceFragment(binding.fragmentNowPlaying.id, NowPlayingFragment())
+            binding.bottomNavigationView.visibility = View.VISIBLE
+        } else {
+
+            binding.fragmentNowPlaying.visibility = View.GONE
+            binding.bottomNavigationView.visibility = View.GONE
+        }
     }
 
 }

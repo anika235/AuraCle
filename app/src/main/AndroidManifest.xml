@@ -42,7 +42,7 @@
         <activity
             android:name=".StartPage"
             android:exported="false" />
-        <receiver android:name=".service.MediaUpdateReceiver"
+        <receiver android:name=".service.NotificationReceiver"
             android:exported="false"
             android:enabled="true"/>
         <service android:name=".service.MusicService"/>
