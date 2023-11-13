@@ -76,9 +76,9 @@
             app:icon="@drawable/baseline_playlist_add_24"/>
 
         <Button
+            android:id="@+id/btnDownload"
             android:layout_marginStart="10dp"
             style="?attr/materialIconButtonStyle"
-            android:id="@+id/btnDownload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/baseline_download"/>

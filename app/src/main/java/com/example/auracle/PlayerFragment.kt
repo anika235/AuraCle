@@ -57,26 +57,24 @@ class PlayerFragment : Fragment(), PlayerInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+
+            requireActivity().bindService(Intent(requireContext(), MusicService::class.java), serviceConnection,
+                AppCompatActivity.BIND_AUTO_CREATE
+            )
+
             val episodeList = it.getParcelableArrayList<ListenEpisodeShort>("episodeList")
             val index = it.getInt("index")
             source = it.getString("class")
 
             try {
-                if (source == "PodcastDetailsFragment")
-                    playlistViewModel.initPlaylist(episodeList!!, index)
-                else ""
+//                if (source == "PodcastDetailsFragment")
+                playlistViewModel.initPlaylist(episodeList!!, index)
+//                else ""
 
             } catch (e: Exception) {
                 Log.d("PlayerFragment", "Error: $e")
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requireActivity().bindService(Intent(requireContext(), MusicService::class.java), serviceConnection,
-            AppCompatActivity.BIND_AUTO_CREATE
-        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -91,9 +89,10 @@ class PlayerFragment : Fragment(), PlayerInterface {
         registerBroadcast()
         playlistViewModel.hideNowPlaying()
 
+
         if (source == "PodcastDetailsFragment")
             playNewEpisode()
-        else {
+        else if (source == "NowPlayingFragment"){
             val intent = Intent(requireActivity(), MusicService::class.java)
             intent.putExtra("action", PlayerInterface.RESUME_PLAYING)
             requireContext().startService(intent)
@@ -196,6 +195,7 @@ class PlayerFragment : Fragment(), PlayerInterface {
     override fun newEpisodePlayUI(progress:Int, duration: Int) {
         buttonMask = false
         isPlaying = true
+
 
         Picasso.get().load(playlistViewModel.getEpisode().thumbnail).into(binding.PodcastThumbnail)
         binding.EpisodeNamePA.text = playlistViewModel.getEpisode().title

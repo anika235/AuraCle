@@ -8,23 +8,23 @@
     android:orientation="vertical"
     tools:context=".Player">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/backButtonPA"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="15dp"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@string/back_btn"
-            android:padding="10dp"
-            android:src="@drawable/back"
-            app:tint="@color/black" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/backButtonPA"-->
+<!--            style="?attr/materialIconButtonStyle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:icon="@drawable/back"-->
+<!--            app:iconSize="30dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/PlayListBtn"
@@ -35,15 +35,18 @@
             android:text="@string/podcast_name"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
-        <View
-            android:layout_width="50dp"
-            android:layout_height="40dp"/>
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.faltenreich.skeletonlayout.SkeletonLayout
         android:id="@+id/podcastLoadingSkeleton"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -69,9 +72,8 @@
                 android:id="@+id/EpisodeNamePA"
                 style="?attr/textAppearanceLabelSmall"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_weight="1"
                 android:text="Episode Name"
                 android:textAlignment="center"
                 android:textSize="18sp" />
@@ -80,9 +82,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_margin="10dp"
-        android:layout_weight="1"
+
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -112,9 +114,10 @@
             app:iconSize="50dp" />
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="25dp"
+        android:layout_weight="1"
         android:layout_margin="20dp"
         android:orientation="horizontal">
 
@@ -125,14 +128,21 @@
             android:gravity="center"
             android:text="@string/start_tv"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <SeekBar
             android:id="@+id/seekBarPA"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvSeekbarEnd"
+            app:layout_constraintStart_toEndOf="@+id/tvSeekbarStart"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvSeekbarEnd"
@@ -141,13 +151,17 @@
             android:gravity="center"
             android:text="@string/end_tv"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <ImageButton

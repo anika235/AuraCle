@@ -8,7 +8,8 @@ import java.util.Date
 
 class EpisodeCardAdapter(
     private val episodeList: ArrayList<ListenEpisodeShort>,
-    private val onPlayListener: ((ArrayList<ListenEpisodeShort>, Int) -> Unit)
+    private val onPlayListener: ((ArrayList<ListenEpisodeShort>, Int) -> Unit),
+    private val onSave: ((ListenEpisodeShort) -> Unit)
 ) : RecyclerView.Adapter<EpisodeCardViewHolder>() {
     override fun onCreateViewHolder(
         parent: android.view.ViewGroup,
@@ -37,6 +38,10 @@ class EpisodeCardAdapter(
         }
         holder.episodeSubscribe.setOnClickListener {
 
+        }
+
+        holder.episodeDownload.setOnClickListener {
+            onSave(currentItem)
         }
 
         ellipsizeDescription(holder, position)
