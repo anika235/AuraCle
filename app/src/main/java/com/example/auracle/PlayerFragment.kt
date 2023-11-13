@@ -64,7 +64,7 @@ class PlayerFragment : Fragment(), PlayerInterface {
             source = it.getString("class")
 
             try {
-                if (source == "PodcastDetailsFragment")
+                if (source == "PodcastDetailsFragment" ||  source == "FavoriteFragment")
                     playlistViewModel.initPlaylist(episodeList!!, index)
                 else ""
 
@@ -93,13 +93,14 @@ class PlayerFragment : Fragment(), PlayerInterface {
         registerBroadcast()
         playlistViewModel.hideNowPlaying()
 
-        if (source == "PodcastDetailsFragment")
+        if (source == "PodcastDetailsFragment" || source == "FavoriteFragment")
             playNewEpisode()
         else {
             val intent = Intent(requireActivity(), MusicService::class.java)
             intent.putExtra("action", PlayerInterface.RESUME_PLAYING)
             requireContext().startService(intent)
         }
+
 
         return binding.root
     }
@@ -148,12 +149,12 @@ class PlayerFragment : Fragment(), PlayerInterface {
             if(isFavorite){
                 isFavorite = false
                 binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
-                FavoritesActivity.favoritePodcasts.removeAt(fIndex)
+                FavoriteFragment.favoritePodcasts.removeAt(fIndex)
             }
             else{
                     isFavorite = true
                     binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
-                    FavoritesActivity.favoritePodcasts.add(playlistViewModel.getEpisode())
+                    FavoriteFragment.favoritePodcasts.add(playlistViewModel.getEpisode())
             }
         }
 
@@ -197,14 +198,18 @@ class PlayerFragment : Fragment(), PlayerInterface {
         playIntent.putExtra("action", PlayerInterface.START_PLAYING)
 
         val episode = playlistViewModel.getEpisode()
-        playIntent.putExtra("audio", episode.audio)
-        playIntent.putExtra("title", episode.title)
-        playIntent.putExtra("thumbnail", episode.thumbnail)
-        requireContext().startService(playIntent)
+        if (episode != null) {
+            val playIntent = Intent(requireActivity(), MusicService::class.java)
+            playIntent.putExtra("action", PlayerInterface.START_PLAYING)
+            playIntent.putExtra("audio", episode.audio)
+            playIntent.putExtra("title", episode.title)
+            playIntent.putExtra("thumbnail", episode.thumbnail)
+            requireContext().startService(playIntent)
 
-        fIndex = favoriteChecker(playlistViewModel.getEpisode().id)
-        if(isFavorite) binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
-        else binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
+            fIndex = favoriteChecker(playlistViewModel.getEpisode().id)
+            if (isFavorite) binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
+            else binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
+        }
 
     }
 
@@ -268,7 +273,7 @@ class PlayerFragment : Fragment(), PlayerInterface {
 
     fun favoriteChecker(id:String?):Int{
         isFavorite= false
-        FavoritesActivity.favoritePodcasts.forEachIndexed { index, listenEpisodeShort ->
+        FavoriteFragment.favoritePodcasts.forEachIndexed { index, listenEpisodeShort ->
             if(id == listenEpisodeShort.id){
                 isFavorite= true
                 return index

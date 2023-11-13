@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -46,7 +45,6 @@ class NowPlayingFragment : Fragment(), PlayerInterface {
         )
 
 
-
     }
 
     override fun onCreateView(
@@ -54,8 +52,10 @@ class NowPlayingFragment : Fragment(), PlayerInterface {
     ): View {
         binding = FragmentNowPlayingBinding.inflate(layoutInflater)
 
-        binding.podcastName.text = playlistViewModel.getEpisode().title
-        Picasso.get().load(playlistViewModel.getEpisode().thumbnail).into(binding.podcastImgNp)
+        if (playlistViewModel.playList.isNotEmpty()) {
+            binding.podcastName.text = playlistViewModel.getEpisode().title
+            Picasso.get().load(playlistViewModel.getEpisode().thumbnail).into(binding.podcastImgNp)
+        }
         registerInteractive()
 
         return binding.root
@@ -143,35 +143,5 @@ class NowPlayingFragment : Fragment(), PlayerInterface {
         TODO("Not yet implemented")
     }
 
-//
-//
-//    override fun onResume() {
-//        super.onResume()
-//
-//        binding.root.visibility = View.VISIBLE
-//        Playerbindings.podcastLoadingSkeleton.showSkeleton()
-//        Picasso.get().load(Player.podcastListPA[Player.podcastPosition].thumbnail).into(
-//           binding.podcastImgNp)
-//        binding.podcastnameNP.text = Player.podcastListPA[Player.podcastPosition].title
-//        if(Player.isPlaying) binding.PlayPauseBtnNp.setIconResource(R.drawable.pause)
-//        else binding.PlayPauseBtnNp.setIconResource(R.drawable.play)
-//
-//    }
-//
-//    private fun playMusic(){
-//        Player.musicService.mediaPlayer.start()
-//        binding.PlayPauseBtnNp.setIconResource(R.drawable.pause)
-//        Player.musicService.showNotification(R.drawable.pause)
-//        Playerbindings.nextBtn.setIconResource(R.drawable.pause)
-//        Player.isPlaying = true
-//    }
-//
-//    private fun pauseMusic(){
-//        Player.musicService.mediaPlayer.pause()
-//        binding.PlayPauseBtnNp.setIconResource(R.drawable.play)
-//        Player.musicService.showNotification(R.drawable.play)
-//        Player.binding.nextBtn.setIconResource(R.drawable.play)
-//        Player.isPlaying = false
-//    }
 
 }

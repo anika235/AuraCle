@@ -1,6 +1,5 @@
 package com.example.auracle
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,11 @@ class LibraryFragment : Fragment() {
         binding = FragmentLibraryBinding.inflate(layoutInflater)
 
         binding.FavouritesButton.setOnClickListener {
-            startActivity(Intent(requireContext(), FavoritesActivity::class.java))
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentDisplay, FavoriteFragment())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
         }
 
         return binding.root
