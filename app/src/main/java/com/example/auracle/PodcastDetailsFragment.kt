@@ -2,12 +2,14 @@ package com.example.auracle
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auracle.com.example.auracle.viewmodel.HomeViewModel
 import com.example.auracle.databinding.FragmentPodcastDetailsBinding
@@ -16,12 +18,18 @@ import com.example.auracle.datapack.listennote.ListenPodcastLong
 import com.example.auracle.episodecard.EpisodeCardAdapter
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+import java.net.URL
+
 
 class PodcastDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentPodcastDetailsBinding
     private lateinit var podcastId: String
     private val playlistViewModel: HomeViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +71,7 @@ class PodcastDetailsFragment : Fragment() {
         binding.txtPodcastTotalTime.text = time
         binding.txtPodcastDescription.text = podcastDetails.description
 
-        binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(podcastDetails.episodes, this::toPlayer)
+        binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(podcastDetails.episodes, this::toPlayer, this::saveEpisodeOffline)
 
         binding.podcastDetailSkeleton.showOriginal()
     }
@@ -86,5 +94,18 @@ class PodcastDetailsFragment : Fragment() {
             .replace(R.id.fragmentDisplay, playerFragment, PlayerFragment.tag)
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun saveEpisodeOffline(episode: ListenEpisodeShort) {
+        val url = URL(episode.audio)
+        Log.w("TTTTT", "Downloading: $url")
+        lifecycleScope.launch(Dispatchers.IO) {
+            val mp3Data = url.readBytes()
+            Log.w("TTTTT", requireContext().filesDir.toString())
+            val file = File(requireContext().filesDir, "${episode.id}.mp3")
+            file.createNewFile()
+            file.writeBytes(mp3Data)
+            Log.w("TTTTT", "Done")
+        }
     }
 }

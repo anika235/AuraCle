@@ -13,5 +13,6 @@ class EpisodeCardViewHolder(itemView: View): ViewHolder(itemView) {
     val episodeDescriptionExpand: TextView = itemView.findViewById(R.id.btnEpisodeExpand)
     val episodeDescriptionCollapse: TextView = itemView.findViewById(R.id.btnEpisodeCollapse)
     val episodePlay: Button = itemView.findViewById(R.id.btnPlay)
+    val episodeDownload: Button = itemView.findViewById(R.id.btnDownload)
     val episodeSubscribe: Button = itemView.findViewById(R.id.btnAddToList)
 }

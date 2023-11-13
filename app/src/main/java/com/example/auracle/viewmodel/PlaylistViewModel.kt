@@ -33,8 +33,6 @@ class PlaylistViewModel : ViewModel() {
     }
 
     fun getEpisode(): ListenEpisodeShort {
-        Log.w("PlaylistViewModel", "getEpisode: $playlistPosition")
-        Log.w("PlaylistViewModel", "getEpisode: $playList")
         return playList[playlistPosition]
     }
 
