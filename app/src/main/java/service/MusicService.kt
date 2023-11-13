@@ -18,7 +18,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.auracle.ApplicationClass
 import com.example.auracle.Homepage
-import com.example.auracle.PlayerFragment
 import com.example.auracle.R
 import com.example.auracle.com.example.auracle.PlayerInterface
 import com.squareup.picasso.Picasso
@@ -57,10 +56,9 @@ class MusicService : Service() {
         }
         mediaPlayer.setOnPreparedListener {
             player?.newEpisodePlayUI(0, mediaPlayer.duration)
-
-            showNotification(title, thumbnail)
             handler.post(updateTimeUi)
             mediaPlayer.start()
+            showNotification(title, thumbnail)
         }
     }
 

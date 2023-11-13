@@ -22,8 +22,8 @@ import com.example.auracle.com.example.auracle.PlayerInterface
 import com.example.auracle.com.example.auracle.viewmodel.PlaylistViewModel
 import com.example.auracle.databinding.FragmentPlayerBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
-import com.example.auracle.service.NotificationReceiver
 import com.example.auracle.service.MusicService
+import com.example.auracle.service.NotificationReceiver
 import com.squareup.picasso.Picasso
 import java.util.concurrent.TimeUnit
 
@@ -31,6 +31,8 @@ class PlayerFragment : Fragment(), PlayerInterface {
 
     companion object {
         const val tag = "PlayerFragment"
+        var isFavorite: Boolean = false
+        var fIndex:Int = -1
     }
 
     private var musicService: MusicService? = null
@@ -142,6 +144,19 @@ class PlayerFragment : Fragment(), PlayerInterface {
             }
         }
 
+        binding.favoriteBTNPA.setOnClickListener {
+            if(isFavorite){
+                isFavorite = false
+                binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
+                FavoritesActivity.favoritePodcasts.removeAt(fIndex)
+            }
+            else{
+                    isFavorite = true
+                    binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
+                    FavoritesActivity.favoritePodcasts.add(playlistViewModel.getEpisode())
+            }
+        }
+
         binding.seekBarPA.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -186,6 +201,11 @@ class PlayerFragment : Fragment(), PlayerInterface {
         playIntent.putExtra("title", episode.title)
         playIntent.putExtra("thumbnail", episode.thumbnail)
         requireContext().startService(playIntent)
+
+        fIndex = favoriteChecker(playlistViewModel.getEpisode().id)
+        if(isFavorite) binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
+        else binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
+
     }
 
     override fun togglePlayingUI() {
@@ -194,6 +214,8 @@ class PlayerFragment : Fragment(), PlayerInterface {
     }
 
     override fun newEpisodePlayUI(progress:Int, duration: Int) {
+        fIndex = favoriteChecker(playlistViewModel.getEpisode().id)
+
         buttonMask = false
         isPlaying = true
 
@@ -208,6 +230,10 @@ class PlayerFragment : Fragment(), PlayerInterface {
         binding.tvSeekbarEnd.text = formatDuration(duration)
         binding.seekBarPA.progress = progress
         binding.seekBarPA.max = duration
+
+
+        if(isFavorite) binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
+        else binding.favoriteBTNPA.setImageResource((R.drawable.favorite_empty))
     }
 
     override fun updateTimeUI(position: Int) {
@@ -239,5 +265,18 @@ class PlayerFragment : Fragment(), PlayerInterface {
         super.onDestroyView()
         showNowPlaying()
     }
+
+    fun favoriteChecker(id:String?):Int{
+        isFavorite= false
+        FavoritesActivity.favoritePodcasts.forEachIndexed { index, listenEpisodeShort ->
+            if(id == listenEpisodeShort.id){
+                isFavorite= true
+                return index
+            }
+        }
+        return -1
+    }
+
+
 
 }
