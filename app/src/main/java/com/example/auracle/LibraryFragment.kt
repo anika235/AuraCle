@@ -1,11 +1,13 @@
 package com.example.auracle
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.auracle.databinding.FragmentLibraryBinding
+import com.example.auracle.firebase.Authenticate
 
 class LibraryFragment : Fragment() {
 
@@ -25,6 +27,12 @@ class LibraryFragment : Fragment() {
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
+        binding.btnSignOut.setOnClickListener{
+            Authenticate().signOut()
+            val intent = Intent(requireContext(), StartPage::class.java)
+            startActivity(intent)
+        }
+
 
         return binding.root
     }

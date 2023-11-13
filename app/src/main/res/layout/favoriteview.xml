@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:background="@drawable/custom_input"
+    android:gravity="center_vertical">
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/podcastImageFV"
         android:layout_width="70dp"
@@ -15,7 +17,7 @@
 
     <TextView
         android:id="@+id/podcastnameFV"
-        android:layout_width="70dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:textColor="@color/black"

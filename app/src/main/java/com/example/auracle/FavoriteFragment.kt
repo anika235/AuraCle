@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auracle.databinding.FragmentFavoriteBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
 
@@ -25,7 +25,7 @@ class FavoriteFragment : Fragment() {
 
         binding.favoriteRV.setHasFixedSize(true)
         binding.favoriteRV.setItemViewCacheSize(13)
-        binding.favoriteRV.layoutManager = GridLayoutManager(requireContext(), 4)
+        binding.favoriteRV.layoutManager = LinearLayoutManager(requireContext())
         adapter = favorite_adapter(FavoriteFragment.favoritePodcasts, this::toPlayer)
         binding.favoriteRV.adapter = adapter
         return binding.root

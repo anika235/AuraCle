@@ -143,16 +143,18 @@ class PlayerFragment : Fragment(), PlayerInterface {
         }
 
         binding.favoriteBTNPA.setOnClickListener {
-            if(isFavorite){
-                isFavorite = false
-                binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
-                FavoriteFragment.favoritePodcasts.removeAt(fIndex)
-            }
-            else{
-                    isFavorite = true
-                    binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
-                    FavoriteFragment.favoritePodcasts.add(playlistViewModel.getEpisode())
-            }
+           if(!buttonMask){
+               if(isFavorite){
+                   isFavorite = false
+                   binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
+                   FavoriteFragment.favoritePodcasts.removeAt(fIndex)
+               }
+               else{
+                   isFavorite = true
+                   binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
+                   FavoriteFragment.favoritePodcasts.add(playlistViewModel.getEpisode())
+               }
+           }
         }
 
         binding.seekBarPA.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
@@ -175,7 +177,6 @@ class PlayerFragment : Fragment(), PlayerInterface {
     private fun registerBroadcast() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(PlayerInterface.START_PLAYING)
-//        intentFilter.addAction(STOP_PLAYING)
         intentFilter.addAction(PlayerInterface.PLAY_NEXT)
         intentFilter.addAction(PlayerInterface.PLAY_PREVIOUS)
         requireContext().registerReceiver(notificationReceiver, intentFilter, AppCompatActivity.RECEIVER_EXPORTED)
