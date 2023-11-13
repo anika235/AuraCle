@@ -72,9 +72,6 @@ class PlayerFragment : Fragment(), PlayerInterface {
                 if (source == "PodcastDetailsFragment" ||  source == "FavoriteFragment")
                     playlistViewModel.initPlaylist(episodeList!!, index)
                 else ""
-//                if (source == "PodcastDetailsFragment")
-                playlistViewModel.initPlaylist(episodeList!!, index)
-//                else ""
 
             } catch (e: Exception) {
                 Log.d("PlayerFragment", "Error: $e")
@@ -89,13 +86,10 @@ class PlayerFragment : Fragment(), PlayerInterface {
     ): View {
         binding = FragmentPlayerBinding.inflate(layoutInflater)
 
-
         registerInteractive()
         registerBroadcast()
         playlistViewModel.hideNowPlaying()
 
-
-        if (source == "PodcastDetailsFragment")
         if (source == "PodcastDetailsFragment" || source == "FavoriteFragment")
             playNewEpisode()
         else if (source == "NowPlayingFragment"){
