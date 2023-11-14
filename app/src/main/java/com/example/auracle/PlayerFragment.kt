@@ -18,13 +18,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.room.Room
 import com.example.auracle.com.example.auracle.PlayerInterface
+import com.example.auracle.com.example.auracle.api.roomapi.AppDatabase
 import com.example.auracle.com.example.auracle.viewmodel.PlaylistViewModel
 import com.example.auracle.databinding.FragmentPlayerBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
 import com.example.auracle.service.NotificationReceiver
 import com.example.auracle.service.MusicService
 import com.squareup.picasso.Picasso
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 class PlayerFragment : Fragment(), PlayerInterface {
@@ -36,6 +39,7 @@ class PlayerFragment : Fragment(), PlayerInterface {
     private var musicService: MusicService? = null
     private lateinit var binding: FragmentPlayerBinding
     private val playlistViewModel: PlaylistViewModel by activityViewModels()
+
     private var isPlaying = false
     private var isLooping = false
     private var source: String? = null
@@ -181,10 +185,15 @@ class PlayerFragment : Fragment(), PlayerInterface {
         playIntent.putExtra("action", PlayerInterface.START_PLAYING)
 
         val episode = playlistViewModel.getEpisode()
-        playIntent.putExtra("audio", episode.audio)
+        playIntent.putExtra("audio", returnAudioSource(episode))
         playIntent.putExtra("title", episode.title)
         playIntent.putExtra("thumbnail", episode.thumbnail)
         requireContext().startService(playIntent)
+    }
+
+    private fun returnAudioSource(episode: ListenEpisodeShort): String {
+        return if (episode.offlineLocation.isNullOrBlank()) episode.audio!!
+        else episode.offlineLocation!!
     }
 
     override fun togglePlayingUI() {

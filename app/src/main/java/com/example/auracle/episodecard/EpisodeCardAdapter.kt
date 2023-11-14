@@ -2,6 +2,7 @@ package com.example.auracle.episodecard
 
 import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
+import com.example.auracle.R
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -9,7 +10,7 @@ import java.util.Date
 class EpisodeCardAdapter(
     private val episodeList: ArrayList<ListenEpisodeShort>,
     private val onPlayListener: ((ArrayList<ListenEpisodeShort>, Int) -> Unit),
-    private val onSave: ((ListenEpisodeShort) -> Unit)
+    private val onDownload: ((Int) -> Unit)
 ) : RecyclerView.Adapter<EpisodeCardViewHolder>() {
     override fun onCreateViewHolder(
         parent: android.view.ViewGroup,
@@ -33,6 +34,16 @@ class EpisodeCardAdapter(
         holder.episodeDate.text =
             SimpleDateFormat("yyyy-MM-dd").format(Date(currentItem.pubDateMs!!))
         holder.episodePlay.text = audioLen
+        holder.episodeDownload.setIconResource(if (currentItem.offlineLocation.isNullOrBlank()) R.drawable.baseline_arrow_circle_down_24 else R.drawable.baseline_download)
+
+        if (currentItem.isDownloading) {
+            holder.progressIndicator.visibility = android.view.View.VISIBLE
+            holder.episodeDownload.visibility = android.view.View.GONE
+        } else {
+            holder.progressIndicator.visibility = android.view.View.GONE
+            holder.episodeDownload.visibility = android.view.View.VISIBLE
+        }
+
         holder.episodePlay.setOnClickListener {
             onPlayListener(episodeList, position)
         }
@@ -41,7 +52,11 @@ class EpisodeCardAdapter(
         }
 
         holder.episodeDownload.setOnClickListener {
-            onSave(currentItem)
+            currentItem.isDownloading = true
+            holder.progressIndicator.visibility = android.view.View.VISIBLE
+            holder.episodeDownload.visibility = android.view.View.GONE
+            
+            onDownload(position)
         }
 
         ellipsizeDescription(holder, position)

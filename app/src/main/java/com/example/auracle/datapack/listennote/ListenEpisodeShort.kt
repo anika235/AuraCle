@@ -19,5 +19,7 @@ data class ListenEpisodeShort (
     @SerializedName("audio_length_sec"     ) var audioLengthSec     : Int?     = null,
     @SerializedName("explicit_content"     ) var explicitContent    : Boolean? = null,
     @SerializedName("maybe_audio_invalid"  ) var maybeAudioInvalid  : Boolean? = null,
-    @SerializedName("listennotes_edit_url" ) var listennotesEditUrl : String?  = null
+    @SerializedName("listennotes_edit_url" ) var listennotesEditUrl : String?  = null,
+    @SerializedName("offline_location"     ) var offlineLocation    : String?  = null,
+    @SerializedName("is_downloading"       ) var isDownloading      : Boolean  = false
 ): Parcelable

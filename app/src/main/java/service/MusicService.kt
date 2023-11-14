@@ -23,6 +23,7 @@ import com.example.auracle.PlayerFragment
 import com.example.auracle.R
 import com.example.auracle.com.example.auracle.PlayerInterface
 import com.squareup.picasso.Picasso
+import java.io.File
 
 class MusicService : Service() {
 

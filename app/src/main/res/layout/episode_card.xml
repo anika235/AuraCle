@@ -67,7 +67,7 @@
             app:icon="@drawable/baseline_play_arrow_24"
             android:text="Play"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:layout_marginStart="10dp"
             style="?attr/materialIconButtonStyle"
             android:id="@+id/btnAddToList"
@@ -75,13 +75,19 @@
             android:layout_height="wrap_content"
             app:icon="@drawable/baseline_playlist_add_24"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDownload"
             android:layout_marginStart="10dp"
             style="?attr/materialIconButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/baseline_download"/>
+            app:icon="@drawable/baseline_arrow_circle_down_24"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressIndicator"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminate="true" />
 
     </LinearLayout>
 

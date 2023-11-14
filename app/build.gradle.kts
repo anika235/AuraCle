@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+//    id("com.google.devtools.ksp")
 }
 
 android {
@@ -44,6 +45,8 @@ android {
 
 dependencies {
 
+    val roomVersion = "2.6.0"
+
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
     implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
@@ -67,4 +70,12 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation ("com.faltenreich:skeletonlayout:5.0.0")
     implementation ("androidx.media:media:1.6.0")
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+//    ksp("androidx.room:room-compiler:$roomVersion")
+//    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
 }
