@@ -1,16 +1,10 @@
 package com.example.auracle.com.example.auracle.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.auracle.api.ListenNoteApi
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
-import com.example.auracle.datapack.listennote.ListenPodcastLong
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PlaylistViewModel : ViewModel() {
 

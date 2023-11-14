@@ -1,94 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LibraryFragment">
 
-    <Button
-        style="@style/Widget.Material3.Button.TextButton"
+    <LinearLayout
+        android:id="@+id/UserID"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_input"
+        android:gravity="center_vertical">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:shapeAppearanceOverlay="@style/curved"
+            app:strokeColor="@color/blue"
+            app:strokeWidth="2dp"
+            android:layout_marginStart="10dp"
+            android:layout_margin="7dp"
+            android:src="@drawable/profile"
+            />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/UserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textColor="@color/black"
+                android:text="Anika Tabassum"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/UserMail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textColor="@color/black"
+                android:text="anikatabassum@gmail.com"
+                android:textSize="15sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/SubscriptionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:text="Subscriptions"
-        app:icon="@drawable/subscriptions"
-        android:textSize="20sp"
-        app:iconTint = "@color/green"
-        app:iconSize = "30dp"
-        />
+        android:layout_below="@id/UserID"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_input"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <Button
-        style="@style/Widget.Material3.Button.TextButton"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/subscriptions"
+            android:tint="@color/green"
+            app:shapeAppearanceOverlay="@style/curved" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="Subscriptions"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/DownloadButton"
+        android:orientation="horizontal"
+        android:layout_below="@id/SubscriptionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginTop="50dp"
-        android:textColor="@color/black"
-        android:text="Download"
-        app:icon="@drawable/download"
-        android:textSize="20sp"
-        app:iconTint = "@color/blue"
-        app:iconSize = "30dp"
-        />
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_input"
+        android:gravity="center_vertical">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            app:shapeAppearanceOverlay="@style/curved"
+            android:layout_margin="5dp"
+            android:src="@drawable/download"
+            android:tint="@color/blue"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:text="Downloads"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"/>
+    </LinearLayout>
 
-    <Button
-        style="@style/Widget.Material3.Button.TextButton"
-        android:id="@+id/HistoryButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginTop="100dp"
-        android:textColor="@color/black"
-        android:text="History"
-        app:iconTint = "@color/black"
-        android:textSize="20sp"
-        app:icon="@drawable/history"
-        app:iconSize = "30dp"
-
-        />
-    <Button
-        style="@style/Widget.Material3.Button.TextButton"
+    <LinearLayout
         android:id="@+id/FavouritesButton"
+        android:orientation="horizontal"
+        android:layout_below="@id/DownloadButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginTop="150dp"
-        android:textColor="@color/black"
-        android:text="Favorites"
-        app:iconTint = "@color/red"
-        android:textSize="20sp"
-        app:icon="@drawable/favorites"
-        app:iconSize = "30dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_input"
+        android:gravity="center_vertical">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            app:shapeAppearanceOverlay="@style/curved"
+            android:layout_margin="5dp"
+            android:src="@drawable/favorites"
+            android:tint="@color/red"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:text="Favorites"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"/>
+    </LinearLayout>
 
-        />
-
-    <Button
-        style="@style/Widget.Material3.Button.TextButton"
+    <LinearLayout
         android:id="@+id/QueueButton"
+        android:orientation="horizontal"
+        android:layout_below="@id/FavouritesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginTop="200dp"
-        android:textColor="@color/black"
-        android:text="Queue"
-        app:iconTint = "@color/blue"
-        android:textSize="20sp"
-        app:icon="@drawable/queue"
-        app:iconSize = "30dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_input"
+        android:gravity="center_vertical">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            app:shapeAppearanceOverlay="@style/curved"
+            android:layout_margin="5dp"
+            android:src="@drawable/queue"
+            android:tint="@color/blue"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:text="Queue"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"/>
+    </LinearLayout>
 
-        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignOut"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="470dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="560dp"
         android:textSize="20sp"
         android:backgroundTint="@color/blue"
         android:text="SIGN OUT"
@@ -96,4 +187,4 @@
         android:textColor="@color/white" />
 
 
-</FrameLayout>
+</RelativeLayout>

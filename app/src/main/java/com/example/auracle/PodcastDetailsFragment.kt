@@ -32,6 +32,12 @@ class PodcastDetailsFragment : Fragment() {
     private lateinit var podcastId: String
     private val podcastViewModel: HomeViewModel by activityViewModels()
 
+    companion object {
+        var isSubscribe: Boolean = false
+        var SIndex: Int = -1
+
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,6 +120,16 @@ class PodcastDetailsFragment : Fragment() {
                 EpisodeCardAdapter(podcastDetails.episodes, this::toPlayer, this::onDownload)
 
             binding.podcastDetailSkeleton.showOriginal()
+
+            binding.btnSubscribe.setOnClickListener {
+                if (isSubscribe) {
+                    isSubscribe = false
+                    SubscriptionFragment.subscribes.removeAt(SIndex)
+                } else {
+                    isSubscribe = true
+//                SubscriptionFragment.subscribes.add(ExploreFragment().toPodcastDetails(podcastId))
+                }
+            }
         }
     }
 
@@ -200,5 +216,16 @@ class PodcastDetailsFragment : Fragment() {
 
 
         }
+    }
+
+    fun subscribechecker(id: String?): Int {
+        isSubscribe = false
+        SubscriptionFragment.subscribes.forEachIndexed { index, listenEpisodeLong ->
+            if (id == listenEpisodeLong.id) {
+                isSubscribe = true
+                return index
+            }
+        }
+        return -1
     }
 }

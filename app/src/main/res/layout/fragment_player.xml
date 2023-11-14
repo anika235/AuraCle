@@ -15,16 +15,6 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/backButtonPA"-->
-<!--            style="?attr/materialIconButtonStyle"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:icon="@drawable/back"-->
-<!--            app:iconSize="30dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/PlayListBtn"
@@ -40,7 +30,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -175,6 +164,7 @@
             app:tint="@android:color/holo_red_dark" />
 
         <ImageButton
+            android:id="@+id/favoriteBTNPA"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -1,21 +1,18 @@
 package com.example.auracle
 
 import android.os.Bundle
-
-import androidx.fragment.app.Fragment
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auracle.api.ListenNoteApi
-
 import com.example.auracle.databinding.FragmentExploreBinding
-import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.example.auracle.dataholder.FixedData
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.example.auracle.rcvgenrecard.GenreCardAdapter
 import com.example.auracle.rcvsearchpodcastcard.SearchPodcastCardAdapter
 import com.faltenreich.skeletonlayout.Skeleton
@@ -118,7 +115,7 @@ class ExploreFragment : Fragment() {
     }
 
 
-    private fun toPodcastDetails(podcastId: String) {
+    fun toPodcastDetails(podcastId: String) {
 
         val fragment = PodcastDetailsFragment()
         val args = Bundle()
