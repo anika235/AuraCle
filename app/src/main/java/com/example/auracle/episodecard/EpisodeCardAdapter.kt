@@ -37,8 +37,8 @@ class EpisodeCardAdapter(
         holder.episodeDownload.setIconResource(if (currentItem.offlineLocation.isNullOrBlank()) R.drawable.baseline_arrow_circle_down_24 else R.drawable.baseline_download)
 
         if (currentItem.isDownloading) {
-            holder.progressIndicator.visibility = android.view.View.VISIBLE
             holder.episodeDownload.visibility = android.view.View.GONE
+            holder.progressIndicator.visibility = android.view.View.VISIBLE
         } else {
             holder.progressIndicator.visibility = android.view.View.GONE
             holder.episodeDownload.visibility = android.view.View.VISIBLE
@@ -53,9 +53,9 @@ class EpisodeCardAdapter(
 
         holder.episodeDownload.setOnClickListener {
             currentItem.isDownloading = true
-            holder.progressIndicator.visibility = android.view.View.VISIBLE
             holder.episodeDownload.visibility = android.view.View.GONE
-            
+            holder.progressIndicator.visibility = android.view.View.VISIBLE
+
             onDownload(position)
         }
 
