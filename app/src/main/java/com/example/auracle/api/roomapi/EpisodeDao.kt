@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.auracle.com.example.auracle.datapack.room.RoomEpisode
+import retrofit2.http.Query
 import java.io.InputStream
 
 @Dao
