@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@drawable/custom_input"
     android:gravity="center_vertical">
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/podcastImageFV"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        app:shapeAppearanceOverlay="@style/curved"
-        android:contentDescription="@string/podcast_name"
-        android:src="@drawable/icon"/>
-
-    <TextView
-        android:id="@+id/podcastnameFV"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="2"
-        android:textColor="@color/black"
-        android:text="@string/podcast_name"
-        android:gravity="center"/>
+        android:gravity="center">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/podcastImageFV"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:shapeAppearanceOverlay="@style/curved"
+            android:contentDescription="@string/podcast_name"
+            android:src="@drawable/icon"/>
+
+        <TextView
+            android:id="@+id/podcastnameFV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:text="@string/podcast_name"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <Button
+        style="?attr/materialButtonOutlinedStyle"
+        android:id="@+id/playfromFav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/baseline_play_arrow_24"
+        android:text="Play"/>
 
 </LinearLayout>

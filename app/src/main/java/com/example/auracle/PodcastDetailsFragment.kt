@@ -1,12 +1,10 @@
 package com.example.auracle
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +27,12 @@ class PodcastDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPodcastDetailsBinding
     private lateinit var podcastId: String
     private val playlistViewModel: HomeViewModel by activityViewModels()
+
+    companion object{
+        var isSubscribe: Boolean = false
+        var SIndex:Int = -1
+
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +78,17 @@ class PodcastDetailsFragment : Fragment() {
         binding.rcvPodcastEpisodeList.adapter = EpisodeCardAdapter(podcastDetails.episodes, this::toPlayer, this::saveEpisodeOffline)
 
         binding.podcastDetailSkeleton.showOriginal()
+
+        binding.btnSubscribe.setOnClickListener {
+            if(isSubscribe){
+                isSubscribe= false
+                SubscriptionFragment.subscribes.removeAt(SIndex)
+            }
+            else{
+                isSubscribe= true
+//                SubscriptionFragment.subscribes.add(ExploreFragment().toPodcastDetails(podcastId))
+            }
+        }
     }
 
     private fun getPodcastDetails() {
@@ -107,5 +122,15 @@ class PodcastDetailsFragment : Fragment() {
             file.writeBytes(mp3Data)
             Log.w("TTTTT", "Done")
         }
+    }
+    fun subscribechecker(id:String?):Int{
+        isSubscribe = false
+        SubscriptionFragment.subscribes.forEachIndexed { index, listenEpisodeLong ->
+            if(id == listenEpisodeLong.id){
+                isSubscribe= true
+                return index
+            }
+        }
+        return -1
     }
 }

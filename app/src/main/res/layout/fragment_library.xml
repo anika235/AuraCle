@@ -18,7 +18,10 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:shapeAppearanceOverlay="@style/curved"
+            app:strokeColor="@color/blue"
+            app:strokeWidth="2dp"
             android:layout_marginStart="10dp"
+            android:layout_margin="7dp"
             android:src="@drawable/profile"
             />
         <LinearLayout

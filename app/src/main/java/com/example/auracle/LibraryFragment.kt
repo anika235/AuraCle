@@ -20,6 +20,14 @@ class LibraryFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentLibraryBinding.inflate(layoutInflater)
 
+        binding.SubscriptionButton.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentDisplay, SubscriptionFragment())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
         binding.FavouritesButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()

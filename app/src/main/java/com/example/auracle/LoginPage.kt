@@ -30,6 +30,10 @@ class LoginPage : AppCompatActivity() {
         binding.btnSignIn.setOnClickListener {
             signIn()
         }
+        binding.txtForgotPassword.setOnClickListener{
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun signIn() {
