@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.auracle.com.example.auracle.viewmodel.HomeViewModel
 import com.example.auracle.com.example.auracle.viewmodel.PlaylistViewModel
 import com.example.auracle.databinding.ActivityHomepageBinding
-import com.example.auracle.firebase.Authenticate
+import com.example.auracle.com.example.auracle.api.firebase.Authenticate
 
 class Homepage : AppCompatActivity() {
 

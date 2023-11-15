@@ -1,4 +1,4 @@
-package com.example.auracle.firebase
+package com.example.auracle.com.example.auracle.api.firebase
 
 import android.content.Context
 import android.util.Log

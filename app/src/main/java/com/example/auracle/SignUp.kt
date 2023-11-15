@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auracle.databinding.ActivitySignUpBinding
-import com.example.auracle.firebase.Authenticate
+import com.example.auracle.com.example.auracle.api.firebase.Authenticate
 import com.google.android.material.snackbar.Snackbar
 
 class SignUp : AppCompatActivity() {

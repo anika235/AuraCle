@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.auracle.databinding.FragmentLibraryBinding
-import com.example.auracle.firebase.Authenticate
+import com.example.auracle.com.example.auracle.api.firebase.Authenticate
 
 class LibraryFragment : Fragment() {
 
