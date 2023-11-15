@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.auracle.databinding.ActivitySignUpBinding
 import com.example.auracle.com.example.auracle.api.firebase.Authenticate
 import com.example.auracle.com.example.auracle.api.firebase.FirebaseRealtime
 import com.example.auracle.com.example.auracle.datapack.User
+import com.example.auracle.databinding.ActivitySignUpBinding
 import com.google.android.material.snackbar.Snackbar
 
 class SignUp : AppCompatActivity() {
@@ -50,7 +50,7 @@ class SignUp : AppCompatActivity() {
         val email = binding.txtSignUpEmail.text
         val password = binding.txtSignUpPassword.text
 
-        val user = User("", name.toString(), email.toString(), password.toString())
+        val user = User(email.toString(), name.toString(), password.toString(), "")
 
 
         auth.signUp(user)
