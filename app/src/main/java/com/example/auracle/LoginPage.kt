@@ -2,10 +2,13 @@ package com.example.auracle
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.auracle.databinding.ActivityLoginPageBinding
 import com.example.auracle.com.example.auracle.api.firebase.Authenticate
 import com.example.auracle.com.example.auracle.datapack.User
+import com.example.auracle.databinding.ActivityLoginPageBinding
 import com.google.android.material.snackbar.Snackbar
 
 class LoginPage : AppCompatActivity() {
@@ -34,6 +37,22 @@ class LoginPage : AppCompatActivity() {
         binding.txtForgotPassword.setOnClickListener{
             val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
+        }
+        binding.txtSignup.setOnClickListener{
+            val intent = Intent(this, SignUp::class.java)
+            startActivity(intent)
+        }
+
+        val imageViewpass: ImageView = binding.logineye
+        imageViewpass.setImageResource(R.drawable.hide_pass)
+        imageViewpass.setOnClickListener {
+            if (binding.txtPassword.transformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                binding.txtPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                imageViewpass.setImageResource(R.drawable.hide_pass)
+            } else {
+                binding.txtPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                imageViewpass.setImageResource(R.drawable.show_pass)
+            }
         }
     }
 

@@ -2,7 +2,10 @@ package com.example.auracle
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auracle.com.example.auracle.api.firebase.Authenticate
 import com.example.auracle.com.example.auracle.api.firebase.FirebaseRealtime
@@ -36,6 +39,18 @@ class SignUp : AppCompatActivity() {
         binding.btnSignUpToSignIn.setOnClickListener {
             switchToSignIn()
         }
+        val imageViewpass: ImageView = binding.eye
+        imageViewpass.setImageResource(R.drawable.hide_pass)
+        imageViewpass.setOnClickListener {
+            if (binding.txtSignUpPassword.transformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                binding.txtSignUpPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                imageViewpass.setImageResource(R.drawable.hide_pass)
+            } else {
+                binding.txtSignUpPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                imageViewpass.setImageResource(R.drawable.show_pass)
+            }
+        }
+
 
     }
 
