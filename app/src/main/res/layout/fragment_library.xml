@@ -6,24 +6,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LibraryFragment">
 
-    <LinearLayout
-        android:id="@+id/UserID"
-        android:orientation="horizontal"
+    <com.faltenreich.skeletonlayout.SkeletonLayout
+        android:id="@+id/profileSkeleton"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp">
+
+
+    <LinearLayout
+        android:id="@+id/UserID"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/custom_input"
-        android:gravity="center_vertical">
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:shapeAppearanceOverlay="@style/curved"
-            app:strokeColor="@color/blue"
-            app:strokeWidth="2dp"
-            android:layout_marginStart="10dp"
-            android:layout_margin="7dp"
-            android:src="@drawable/profile"
-            />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+<!--        <com.google.android.material.imageview.ShapeableImageView-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:layout_margin="7dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:src="@drawable/profile"-->
+<!--            app:shapeAppearanceOverlay="@style/curved"-->
+<!--            app:strokeColor="@color/blue"-->
+<!--            app:strokeWidth="2dp" />-->
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,34 +42,35 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/UserName"
+                android:id="@+id/userName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:textColor="@color/black"
+                android:gravity="center"
+                android:maxLines="1"
                 android:text="Anika Tabassum"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                android:gravity="center"/>
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/UserMail"
+                android:id="@+id/userMail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:textColor="@color/black"
+                android:gravity="center"
+                android:maxLines="1"
                 android:text="anikatabassum@gmail.com"
-                android:textSize="15sp"
-                android:gravity="center"/>
+                android:textColor="@color/black"
+                android:textSize="15sp" />
         </LinearLayout>
 
     </LinearLayout>
+    </com.faltenreich.skeletonlayout.SkeletonLayout>
 
     <LinearLayout
         android:id="@+id/SubscriptionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/UserID"
+        android:layout_below="@id/profileSkeleton"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auracle.databinding.ActivityLoginPageBinding
 import com.example.auracle.com.example.auracle.api.firebase.Authenticate
+import com.example.auracle.com.example.auracle.datapack.User
 import com.google.android.material.snackbar.Snackbar
 
 class LoginPage : AppCompatActivity() {
@@ -13,7 +14,7 @@ class LoginPage : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginPageBinding
 
-    private val auth = Authenticate()
+    private val auth = Authenticate.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -44,16 +45,14 @@ class LoginPage : AppCompatActivity() {
         val email = binding.txtEmail.text
         val password = binding.txtPassword.text
 
-        auth.signIn(email.toString(), password.toString())
+        val user = User("", "", email.toString(), password.toString())
+
+        auth.signIn(user)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful)
                     switchToHome()
                 else
-                    Snackbar.make(
-                        binding.btnSignIn,
-                        "Login Unsuccessful: ${task.exception?.message}",
-                        Snackbar.LENGTH_LONG
-                    ).show()
+                    Snackbar.make(binding.btnSignIn, "Login Unsuccessful: ${task.exception?.message}", Snackbar.LENGTH_LONG).show()
 
             }
     }

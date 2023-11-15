@@ -13,7 +13,7 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if (Authenticate().isSignedIn())
+            if (Authenticate.getInstance().isSignedIn())
                 startActivity(Intent(this, Homepage::class.java))
 
             else
