@@ -38,4 +38,13 @@ data class ListenSearchPodcast(
         descriptionHighlighted = longPodcast.description
 
     }
+
+    constructor(podcast: Map<*, *>): this() {
+        id = podcast["id"] as? String
+        thumbnail = podcast["thumbnail"] as? String
+        titleOriginal = podcast["titleOriginal"] as? String
+        publisherOriginal = podcast["publisherOriginal"] as? String
+        descriptionHighlighted = podcast["descriptionHighlighted"] as? String
+
+    }
 }

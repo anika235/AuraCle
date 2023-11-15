@@ -22,4 +22,23 @@ data class ListenEpisodeShort (
     @SerializedName("listennotes_edit_url" ) var listennotesEditUrl : String?  = null,
     @SerializedName("offline_location"     ) var offlineLocation    : String?  = null,
     @SerializedName("is_downloading"       ) var isDownloading      : Boolean  = false
-): Parcelable
+): Parcelable {
+    constructor(episode: Map<*, *>) : this() {
+        id                 = episode["id"] as? String
+        link               = episode["link"] as? String
+        audio              = episode["audio"] as? String
+        image              = episode["image"] as? String
+        title              = episode["title"] as? String
+        thumbnail          = episode["thumbnail"] as? String
+        description        = episode["description"] as? String
+        pubDateMs          = episode["pub_date_ms"] as? Long
+        guidFromRss        = episode["guid_from_rss"] as? String
+        listennotesUrl     = episode["listennotes_url"] as? String
+        audioLengthSec     = episode["audio_length_sec"] as? Int
+        explicitContent    = episode["explicit_content"] as? Boolean
+        maybeAudioInvalid  = episode["maybe_audio_invalid"] as? Boolean
+        listennotesEditUrl = episode["listennotes_edit_url"] as? String
+        offlineLocation    = episode["offline_location"] as? String
+        isDownloading      = episode["is_downloading"] as? Boolean == false
+    }
+}

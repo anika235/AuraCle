@@ -16,6 +16,6 @@ class EpisodeCardViewHolder(itemView: View): ViewHolder(itemView) {
     val episodeDescriptionCollapse: TextView = itemView.findViewById(R.id.btnEpisodeCollapse)
     val episodePlay: MaterialButton = itemView.findViewById(R.id.btnPlay)
     val episodeDownload: MaterialButton = itemView.findViewById(R.id.btnDownload)
-    val episodeSubscribe: MaterialButton = itemView.findViewById(R.id.btnAddToList)
+//    val episodeSubscribe: MaterialButton = itemView.findViewById(R.id.btnAddToList)
     val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progressIndicator)
 }

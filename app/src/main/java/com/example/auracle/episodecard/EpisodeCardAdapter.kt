@@ -16,9 +16,8 @@ class EpisodeCardAdapter(
         parent: android.view.ViewGroup,
         viewType: Int
     ): EpisodeCardViewHolder {
-        return EpisodeCardViewHolder(
-            android.view.LayoutInflater.from(parent.context)
-                .inflate(com.example.auracle.R.layout.episode_card, parent, false)
+        return EpisodeCardViewHolder(android.view.LayoutInflater.from(parent.context)
+            .inflate(R.layout.episode_card, parent, false)
         )
     }
 
@@ -47,9 +46,9 @@ class EpisodeCardAdapter(
         holder.episodePlay.setOnClickListener {
             onPlayListener(episodeList, position)
         }
-        holder.episodeSubscribe.setOnClickListener {
-
-        }
+//        holder.episodeSubscribe.setOnClickListener {
+//
+//        }
 
         holder.episodeDownload.setOnClickListener {
             currentItem.isDownloading = true

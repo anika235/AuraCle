@@ -1,48 +1,67 @@
 package com.example.auracle
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.auracle.com.example.auracle.subscribe_adapter
+import com.example.auracle.com.example.auracle.SubscribeAdapter
+import com.example.auracle.com.example.auracle.api.firebase.FirebaseRealtime
 import com.example.auracle.databinding.FragmentSubscriptionBinding
 import com.example.auracle.datapack.listennote.ListenPodcastLong
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
+import com.faltenreich.skeletonlayout.applySkeleton
 
 class SubscriptionFragment : Fragment() {
     private lateinit var binding: FragmentSubscriptionBinding
-    private lateinit var podcastId: String
-    private lateinit var adapter: subscribe_adapter
+    private val firebaseRealtime = FirebaseRealtime.getInstance()
+
     companion object{
         var subscribes: ArrayList<ListenPodcastLong> = ArrayList()
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            podcastId = it.getString("podcastId").toString()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding=  FragmentSubscriptionBinding.inflate(layoutInflater)
 
-        binding.subscribeRV.setHasFixedSize(true)
-        binding.subscribeRV.setItemViewCacheSize(13)
-        binding.subscribeRV.layoutManager = LinearLayoutManager(requireContext())
-        adapter = subscribe_adapter(subscribes, this::toPodcastDetails )
-        binding.subscribeRV.adapter = adapter
+        binding.rcvSubscribe.setHasFixedSize(true)
+        binding.rcvSubscribe.setItemViewCacheSize(13)
+        binding.rcvSubscribe.layoutManager = LinearLayoutManager(requireContext())
+
+        val rcvSubscribeSkeleton = binding.rcvSubscribe.applySkeleton(R.layout.favoriteview)
+        rcvSubscribeSkeleton.showSkeleton()
+
+        firebaseRealtime.getSubscriptions()?.addOnCompleteListener{
+            if(it.isSuccessful){
+                val values = it.result!!.value as HashMap<*, *>
+
+                val podcastList: ArrayList<ListenSearchPodcast> = ArrayList()
+
+                values.forEach { (_, va) ->
+
+                    Log.w("SubscriptionFragment", "va: $va")
+
+                    val episode = ListenSearchPodcast(va as Map<*, *>)
+                    podcastList.add(episode)
+                }
+                rcvSubscribeSkeleton.showOriginal()
+                binding.rcvSubscribe.adapter = SubscribeAdapter(podcastList, this::toPodcastDetails)
+            }
+        }
         return binding.root
     }
 
-    private fun toPodcastDetails(podcastList: ArrayList<ListenPodcastLong>, position: Int) {
-        val podcastId = podcastList[position].id
+    private fun toPodcastDetails(podcast: ListenSearchPodcast) {
+
+
+        val podcastId = podcast.id
         val fragment = PodcastDetailsFragment()
         val args = Bundle()
         args.putString("podcastId", podcastId)

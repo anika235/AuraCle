@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.room.Room
 import com.example.auracle.com.example.auracle.PlayerInterface
+import com.example.auracle.com.example.auracle.api.firebase.FirebaseRealtime
 import com.example.auracle.com.example.auracle.api.roomapi.AppDatabase
 import com.example.auracle.com.example.auracle.viewmodel.PlaylistViewModel
 import com.example.auracle.databinding.FragmentPlayerBinding
@@ -41,6 +42,7 @@ class PlayerFragment : Fragment(), PlayerInterface {
     private var musicService: MusicService? = null
     private lateinit var binding: FragmentPlayerBinding
     private val playlistViewModel: PlaylistViewModel by activityViewModels()
+    private val firebaseRealtime = FirebaseRealtime.getInstance()
 
     private var isPlaying = false
     private var isLooping = false
@@ -91,6 +93,7 @@ class PlayerFragment : Fragment(), PlayerInterface {
         binding = FragmentPlayerBinding.inflate(layoutInflater)
 
         registerInteractive()
+        favoriteChecker()
         registerBroadcast()
         playlistViewModel.hideNowPlaying()
 
@@ -103,6 +106,16 @@ class PlayerFragment : Fragment(), PlayerInterface {
             playNewEpisode()
 
         return binding.root
+    }
+
+    private fun favoriteChecker() {
+        firebaseRealtime.checkFavorite(playlistViewModel.getEpisode().id!!)?.addOnSuccessListener {
+            isFavorite = it.exists()
+            if(it.exists()){
+                if(isFavorite) binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
+                else binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
+            }
+        }
     }
 
     private fun registerInteractive() {
@@ -150,12 +163,12 @@ class PlayerFragment : Fragment(), PlayerInterface {
                if(isFavorite){
                    isFavorite = false
                    binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
-                   FavoriteFragment.favoritePodcasts.removeAt(fIndex)
+                   firebaseRealtime.removeFromFavorites(playlistViewModel.getEpisode().id!!)
                }
                else{
                    isFavorite = true
                    binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
-                   FavoriteFragment.favoritePodcasts.add(playlistViewModel.getEpisode())
+                   firebaseRealtime.addToFavorite(playlistViewModel.getEpisode())
                }
            }
         }
@@ -207,10 +220,6 @@ class PlayerFragment : Fragment(), PlayerInterface {
         playIntent.putExtra("thumbnail", episode.thumbnail)
         requireContext().startService(playIntent)
 
-        fIndex = favoriteChecker(playlistViewModel.getEpisode().id)
-        if (isFavorite) binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
-        else binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
-
     }
 
     private fun returnAudioSource(episode: ListenEpisodeShort): String {
@@ -224,7 +233,6 @@ class PlayerFragment : Fragment(), PlayerInterface {
     }
 
     override fun newEpisodePlayUI(progress:Int, duration: Int) {
-        fIndex = favoriteChecker(playlistViewModel.getEpisode().id)
 
         buttonMask = false
         isPlaying = true
@@ -254,11 +262,13 @@ class PlayerFragment : Fragment(), PlayerInterface {
 
     override fun playNextEpisode() {
         playlistViewModel.toNextEpisode()
+        favoriteChecker()
         playNewEpisode()
     }
 
     override fun playPreviousEpisode() {
         playlistViewModel.toPreviousEpisode()
+        favoriteChecker()
         playNewEpisode()
     }
 
@@ -276,18 +286,6 @@ class PlayerFragment : Fragment(), PlayerInterface {
         super.onDestroyView()
         showNowPlaying()
     }
-
-    fun favoriteChecker(id:String?):Int{
-        isFavorite= false
-        FavoriteFragment.favoritePodcasts.forEachIndexed { index, listenEpisodeShort ->
-            if(id == listenEpisodeShort.id){
-                isFavorite= true
-                return index
-            }
-        }
-        return -1
-    }
-
 
 
 }

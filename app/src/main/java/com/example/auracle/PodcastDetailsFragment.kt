@@ -10,13 +10,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.auracle.com.example.auracle.api.firebase.FirebaseRealtime
 import com.example.auracle.com.example.auracle.api.roomapi.AppDatabase
 import com.example.auracle.com.example.auracle.datapack.room.RoomEpisode
 import com.example.auracle.com.example.auracle.viewmodel.HomeViewModel
 import com.example.auracle.databinding.FragmentPodcastDetailsBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import com.example.auracle.episodecard.EpisodeCardAdapter
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,13 +34,8 @@ class PodcastDetailsFragment : Fragment() {
     private lateinit var db: AppDatabase
     private lateinit var podcastId: String
     private val podcastViewModel: HomeViewModel by activityViewModels()
-
-    companion object {
-        var isSubscribe: Boolean = false
-        var SIndex: Int = -1
-
-    }
-
+    private val firebaseRealtime = FirebaseRealtime.getInstance()
+    private var isSubscribe: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,11 +60,6 @@ class PodcastDetailsFragment : Fragment() {
         )
         binding.rcvPodcastEpisodeList.layoutManager = LinearLayoutManager(requireContext())
 
-        Log.w(
-            "TTTTT",
-            "initial values: ${podcastViewModel.playlistAvailable.value}, ${podcastViewModel.offlineAvailable.value}"
-        )
-
         podcastViewModel.playlistAvailable.observe(viewLifecycleOwner) {
             initializeLayout()
         }
@@ -74,10 +67,50 @@ class PodcastDetailsFragment : Fragment() {
             initializeLayout()
         }
 
+        checkIfSubscribed()
+        registerInteractive()
         getAvailableOfflineList()
         getPodcastDetails()
 
         return binding.root
+    }
+
+    private fun registerInteractive() {
+        binding.btnSubscribe.setOnClickListener {
+            if (isSubscribe) {
+                val isLoggedIn = firebaseRealtime.removeFromSubscriptions(podcastId)
+                if (isLoggedIn == null){
+                    Snackbar.make(binding.root, "Log In to Perform Action", Snackbar.LENGTH_LONG).show()
+                    isSubscribe = !isSubscribe
+                }
+                else
+                    binding.btnSubscribe.setIconResource(R.drawable.baseline_playlist_add_24)
+            }
+            else {
+                val isLoggedIn = firebaseRealtime.addToSubscription(ListenSearchPodcast(podcastViewModel.playlist))
+                if (isLoggedIn == null){
+                    Snackbar.make(binding.root, "Log In to Perform Action", Snackbar.LENGTH_LONG).show()
+                    isSubscribe = !isSubscribe
+                }
+                else
+                    binding.btnSubscribe.setIconResource(R.drawable.baseline_playlist_add_check_24)
+            }
+        }
+    }
+
+    private fun checkIfSubscribed() {
+
+        firebaseRealtime.checkSubscription(podcastId)?.addOnSuccessListener {
+
+            if (it.exists()) {
+                isSubscribe = true
+                binding.btnSubscribe.setIconResource(R.drawable.baseline_playlist_add_check_24)
+            }
+            else {
+                isSubscribe = false
+                binding.btnSubscribe.setIconResource(R.drawable.baseline_playlist_add_24)
+            }
+        }
     }
 
     private fun getAvailableOfflineList() {
@@ -121,15 +154,6 @@ class PodcastDetailsFragment : Fragment() {
 
             binding.podcastDetailSkeleton.showOriginal()
 
-            binding.btnSubscribe.setOnClickListener {
-                if (isSubscribe) {
-                    isSubscribe = false
-                    SubscriptionFragment.subscribes.removeAt(SIndex)
-                } else {
-                    isSubscribe = true
-//                SubscriptionFragment.subscribes.add(ExploreFragment().toPodcastDetails(podcastId))
-                }
-            }
         }
     }
 
@@ -178,10 +202,10 @@ class PodcastDetailsFragment : Fragment() {
 
                     episode.offlineLocation = writeFile.absolutePath
 
-                    Log.w("TTTTTT", "Downloading Done.")
+//                    Log.w("TTTTTT", "Downloading Done.")
 
                 } catch (e: Exception) {
-                    Log.w("TTTTTT", "Downloading Failed: $e")
+//                    Log.w("TTTTTT", "Downloading Failed: $e")
                 } finally {
                     withContext(Dispatchers.Main) {
                         episode.isDownloading = false

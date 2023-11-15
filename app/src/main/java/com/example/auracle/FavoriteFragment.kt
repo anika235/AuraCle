@@ -1,42 +1,63 @@
 package com.example.auracle
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.auracle.com.example.auracle.api.firebase.FirebaseRealtime
+import com.example.auracle.com.example.auracle.viewmodel.HomeViewModel
 import com.example.auracle.databinding.FragmentFavoriteBinding
 import com.example.auracle.datapack.listennote.ListenEpisodeShort
+import com.faltenreich.skeletonlayout.applySkeleton
+import kotlin.reflect.typeOf
 
 class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteBinding
-    private lateinit var adapter: favorite_adapter
-    companion object{
-        var favoritePodcasts: ArrayList<ListenEpisodeShort> = ArrayList()
+    private val firebaseRealtime = FirebaseRealtime.getInstance()
 
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentFavoriteBinding.inflate((layoutInflater))
 
         binding.favoriteRV.setHasFixedSize(true)
         binding.favoriteRV.setItemViewCacheSize(13)
-        binding.favoriteRV.layoutManager = LinearLayoutManager(requireContext())
-        adapter = favorite_adapter(FavoriteFragment.favoritePodcasts, this::toPlayer)
-        binding.favoriteRV.adapter = adapter
+        binding.favoriteRV.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        val favoriteRVSkeleton = binding.favoriteRV.applySkeleton(R.layout.favoriteview)
+        favoriteRVSkeleton.showSkeleton()
+
+        firebaseRealtime.getFavorites()?.addOnCompleteListener{
+            if(it.isSuccessful){
+                val values = it.result!!.value as HashMap<*, *>
+
+                val favoriteList: ArrayList<ListenEpisodeShort> = ArrayList()
+
+                values.forEach { (_, va) ->
+                    val episode = ListenEpisodeShort(va as Map<*, *>)
+                    favoriteList.add(episode)
+                }
+                favoriteRVSkeleton.showOriginal()
+                binding.favoriteRV.adapter = FavoriteAdapter(favoriteList, this::toPlayer)
+            }
+        }
+
         return binding.root
 
     }
-    private fun toPlayer(podcastEpisodes: ArrayList<ListenEpisodeShort>, position: Int) {
+    private fun toPlayer(episode: ListenEpisodeShort) {
 
         val playerFragment = PlayerFragment()
         val bundle = Bundle()
-        bundle.putParcelableArrayList("episodeList", podcastEpisodes)
-        bundle.putInt("index", position)
+        bundle.putParcelableArrayList("episodeList", arrayListOf(episode))
+        bundle.putInt("index", 0)
         bundle.putString("class", "FavoriteFragment")
         playerFragment.arguments = bundle
 

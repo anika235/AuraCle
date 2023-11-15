@@ -1,39 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SubscriptionFragment">
 
-    <LinearLayout
-        android:id="@+id/linearlayoutSubs"
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/peri">
+        android:gravity="center"
+        android:text="Subscriptions"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:background="@color/peri"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Subscriptions"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"/>
-
-    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/subscribeRV"
+        android:id="@+id/rcvSubscribe"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearlayoutSubs"
-        android:paddingBottom="100dp"
-        android:scrollbars="vertical"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

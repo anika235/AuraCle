@@ -5,10 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.auracle.R
 import com.example.auracle.api.ListenNoteApi
+import com.example.auracle.com.example.auracle.api.firebase.FirebaseRealtime
 import com.example.auracle.com.example.auracle.api.roomapi.EpisodeDao
 import com.example.auracle.com.example.auracle.datapack.room.RoomEpisode
+import com.example.auracle.datapack.listennote.ListenEpisodeShort
 import com.example.auracle.datapack.listennote.ListenPodcastLong
+import com.example.auracle.datapack.listennote.ListenSearchPodcast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,13 +25,14 @@ class HomeViewModel: ViewModel() {
     var playlist: ListenPodcastLong = ListenPodcastLong()
     var offlineAvailableList: ArrayList<RoomEpisode> = ArrayList()
 
-//    private val mutablePlaylist = MutableLiveData<ListenPodcastLong>()
-//    val playlist: LiveData<ListenPodcastLong> get() = mutablePlaylist
-
     private val mutablePlaylistAvailable = MutableLiveData<Boolean>()
     val playlistAvailable: LiveData<Boolean> get() = mutablePlaylistAvailable
+
     private val mutableOfflineAvailable = MutableLiveData<Boolean>()
     val offlineAvailable: LiveData<Boolean> get() = mutableOfflineAvailable
+
+    private val mutableSubscribed = MutableLiveData<Boolean>()
+    val subscribed: LiveData<Boolean> get() = mutableSubscribed
 
 
     fun retrievePodcast(podcastId: String) {
