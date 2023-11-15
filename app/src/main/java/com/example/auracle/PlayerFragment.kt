@@ -94,13 +94,13 @@ class PlayerFragment : Fragment(), PlayerInterface {
         registerBroadcast()
         playlistViewModel.hideNowPlaying()
 
-        if (source == "PodcastDetailsFragment" || source == "FavoriteFragment")
-            playNewEpisode()
-        else if (source == "NowPlayingFragment"){
+        if (source == "NowPlayingFragment"){
             val intent = Intent(requireActivity(), MusicService::class.java)
             intent.putExtra("action", PlayerInterface.RESUME_PLAYING)
             requireContext().startService(intent)
         }
+        else if (source == "PodcastDetailsFragment" || source == "FavoriteFragment" || source == "DownloadFragment")
+            playNewEpisode()
 
         return binding.root
     }
@@ -200,18 +200,16 @@ class PlayerFragment : Fragment(), PlayerInterface {
         playIntent.putExtra("action", PlayerInterface.START_PLAYING)
 
         val episode = playlistViewModel.getEpisode()
-        if (episode != null) {
-            val playIntent = Intent(requireActivity(), MusicService::class.java)
-            playIntent.putExtra("action", PlayerInterface.START_PLAYING)
-            playIntent.putExtra("audio", episode.audio)
-            playIntent.putExtra("title", episode.title)
-            playIntent.putExtra("thumbnail", episode.thumbnail)
-            requireContext().startService(playIntent)
 
-            fIndex = favoriteChecker(playlistViewModel.getEpisode().id)
-            if (isFavorite) binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
-            else binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
-        }
+        playIntent.putExtra("action", PlayerInterface.START_PLAYING)
+        playIntent.putExtra("audio", returnAudioSource(episode))
+        playIntent.putExtra("title", episode.title)
+        playIntent.putExtra("thumbnail", episode.thumbnail)
+        requireContext().startService(playIntent)
+
+        fIndex = favoriteChecker(playlistViewModel.getEpisode().id)
+        if (isFavorite) binding.favoriteBTNPA.setImageResource(R.drawable.favorite)
+        else binding.favoriteBTNPA.setImageResource(R.drawable.favorite_empty)
 
     }
 

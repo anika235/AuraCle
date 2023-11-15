@@ -7,5 +7,8 @@ import androidx.room.PrimaryKey
 data class RoomEpisode(
     @PrimaryKey val id: String,
     val podcastId: String,
-    val audioLocation: String,
+    val title: String?,
+    val thumbnail: String?,
+    val audioLength: Int?,
+    val audioLocation: String?,
 )

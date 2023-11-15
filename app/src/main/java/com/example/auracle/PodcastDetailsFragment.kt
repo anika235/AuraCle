@@ -81,7 +81,7 @@ class PodcastDetailsFragment : Fragment() {
     }
 
     private fun getAvailableOfflineList() {
-        podcastViewModel.retrieveOffline(podcastId, db.episodeDao())
+        podcastViewModel.retrieveOfflinePodcast(podcastId, db.episodeDao())
     }
 
     private fun foundOffline() {
@@ -172,7 +172,7 @@ class PodcastDetailsFragment : Fragment() {
                     writeFile.createNewFile()
                     writeFile.writeBytes(mp3Data)
 
-                    val saveEpisode = RoomEpisode(episode.id!!, podcastId, writeFile.absolutePath)
+                    val saveEpisode = RoomEpisode(episode.id!!, podcastId, episode.title, episode.thumbnail, episode.audioLengthSec, writeFile.absolutePath)
                     val episodeDao = db.episodeDao()
                     episodeDao.insert(saveEpisode)
 

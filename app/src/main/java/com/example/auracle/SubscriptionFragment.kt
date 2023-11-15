@@ -36,7 +36,7 @@ class SubscriptionFragment : Fragment() {
         binding.subscribeRV.setHasFixedSize(true)
         binding.subscribeRV.setItemViewCacheSize(13)
         binding.subscribeRV.layoutManager = LinearLayoutManager(requireContext())
-        adapter = subscribe_adapter(SubscriptionFragment.subscribes, this::toPodcastDetails )
+        adapter = subscribe_adapter(subscribes, this::toPodcastDetails )
         binding.subscribeRV.adapter = adapter
         return binding.root
     }

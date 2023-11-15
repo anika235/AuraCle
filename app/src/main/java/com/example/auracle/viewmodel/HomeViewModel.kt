@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auracle.api.ListenNoteApi
-import com.example.auracle.com.example.auracle.api.roomapi.AppDatabase
 import com.example.auracle.com.example.auracle.api.roomapi.EpisodeDao
 import com.example.auracle.com.example.auracle.datapack.room.RoomEpisode
 import com.example.auracle.datapack.listennote.ListenPodcastLong
@@ -41,10 +40,26 @@ class HomeViewModel: ViewModel() {
         }
     }
 
-    fun retrieveOffline(podcastId: String, episodeDao: EpisodeDao) {
+    fun retrieveOfflinePodcast(podcastId: String, episodeDao: EpisodeDao) {
         viewModelScope.launch(Dispatchers.IO) {
             val offlineList = episodeDao.getPodcast(podcastId)
             withContext(Dispatchers.Main) {
+                offlineAvailableList = offlineList as ArrayList<RoomEpisode>
+                mutableOfflineAvailable.value = true
+            }
+        }
+    }
+
+    fun retrieveOffline(episodeDao: EpisodeDao) {
+
+        mutableOfflineAvailable.value = false
+
+        Log.w("thing", "retrieving ofline")
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val offlineList = episodeDao.getAll()
+            withContext(Dispatchers.Main) {
+                Log.w("thing", "retrieved ofline: $offlineList")
                 offlineAvailableList = offlineList as ArrayList<RoomEpisode>
                 mutableOfflineAvailable.value = true
             }

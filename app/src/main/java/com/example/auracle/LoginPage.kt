@@ -45,7 +45,7 @@ class LoginPage : AppCompatActivity() {
         val email = binding.txtEmail.text
         val password = binding.txtPassword.text
 
-        val user = User("", "", email.toString(), password.toString())
+        val user = User( email.toString(),"", password.toString(), "")
 
         auth.signIn(user)
             .addOnCompleteListener { task ->

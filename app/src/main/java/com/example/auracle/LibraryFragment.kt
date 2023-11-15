@@ -47,6 +47,15 @@ class LibraryFragment : Fragment() {
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
+
+        binding.DownloadButton.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentDisplay, DownloadFragment())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
         binding.btnSignOut.setOnClickListener {
             Authenticate.getInstance().signOut()
             val intent = Intent(requireContext(), StartPage::class.java)

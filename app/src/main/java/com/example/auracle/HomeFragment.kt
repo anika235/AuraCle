@@ -58,18 +58,22 @@ class HomeFragment : Fragment() {
 
         lifecycleScope.launch(Dispatchers.IO) {
 
-            val bestPodcastList = listenNoteApi.bestSearch(id?.toString())
+            try {
+                val bestPodcastList = listenNoteApi.bestSearch(id?.toString())
 
-            withContext(Dispatchers.Main) {
-                viewHolder.rcvPopularList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                viewHolder.rcvPopularList.adapter = PopularPodcastAdapter(bestPodcastList) {
-                    onItemClicked(it)
+                withContext(Dispatchers.Main) {
+                    viewHolder.rcvPopularList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    viewHolder.rcvPopularList.adapter = PopularPodcastAdapter(bestPodcastList) {
+                        onItemClicked(it)
+                    }
+
+                    viewHolder.popularPodcastGhost.visibility = View.GONE
+                    viewHolder.rcvPopularList.visibility = View.VISIBLE
+
+                    viewHolder.popularGenreSkeleton.showOriginal()
                 }
-
-                viewHolder.popularPodcastGhost.visibility = View.GONE
-                viewHolder.rcvPopularList.visibility = View.VISIBLE
-
-                viewHolder.popularGenreSkeleton.showOriginal()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
 
         }
