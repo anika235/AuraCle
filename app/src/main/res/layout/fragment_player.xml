@@ -173,14 +173,14 @@
             android:src="@drawable/favorite_empty"
             app:tint="@android:color/holo_red_dark" />
 
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@string/Playlist"
-            android:src="@drawable/baseline_playlist_add_24"
-            app:tint="@android:color/holo_red_dark" />
+<!--        <ImageButton-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:backgroundTint="@android:color/transparent"-->
+<!--            android:contentDescription="@string/Playlist"-->
+<!--            android:src="@drawable/baseline_playlist_add_24"-->
+<!--            app:tint="@android:color/holo_red_dark" />-->
 
         <ImageButton
             android:id="@+id/ShareButtonPA"

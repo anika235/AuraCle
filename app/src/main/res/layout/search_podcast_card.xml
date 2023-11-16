@@ -75,13 +75,13 @@
                     android:layout_marginBottom="8dp"
                     android:text="body" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSearchPodcastSubscribe"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Subscribe"
-                    app:icon="@drawable/baseline_playlist_add_24" />
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    android:id="@+id/btnSearchPodcastSubscribe"-->
+<!--                    style="@style/Widget.Material3.Button.TextButton"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Subscribe"-->
+<!--                    app:icon="@drawable/baseline_playlist_add_24" />-->
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
