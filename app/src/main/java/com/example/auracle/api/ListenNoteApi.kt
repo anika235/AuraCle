@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ListenNoteApi {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://listen-api.listennotes.com/api/v2/")
+        .baseUrl("https://listen-api-test.listennotes.com/api/v2/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(ListenNoteRoutes::class.java)
