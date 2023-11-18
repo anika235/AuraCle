@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FavoriteFragment">
+    tools:context=".com.example.auracle.activitypack.homepagefragments.FavoriteFragment">
 
     <LinearLayout
         android:id="@+id/linearlayoutFV"

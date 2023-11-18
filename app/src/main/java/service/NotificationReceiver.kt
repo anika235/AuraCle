@@ -3,8 +3,7 @@ package com.example.auracle.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.auracle.PlayerFragment
-import com.example.auracle.com.example.auracle.PlayerInterface
+import com.example.auracle.com.example.auracle.activitypack.homepagefragments.PlayerInterface
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

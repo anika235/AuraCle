@@ -18,13 +18,13 @@
         android:theme="@style/Theme.AuraCle"
         tools:targetApi="31">
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".com.example.auracle.activitypack.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".FavoritesActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".com.example.auracle.activitypack.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,16 +36,16 @@
             android:name=".Player"
             android:exported="false" />
         <activity
-            android:name=".SignUp"
+            android:name=".com.example.auracle.activitypack.SignUp"
             android:exported="false" />
         <activity
-            android:name=".Homepage"
+            android:name=".com.example.auracle.activitypack.Homepage"
             android:exported="false" />
         <activity
-            android:name=".LoginPage"
+            android:name=".com.example.auracle.activitypack.LoginPage"
             android:exported="false" />
         <activity
-            android:name=".StartPage"
+            android:name=".com.example.auracle.activitypack.StartPage"
             android:exported="false" />
 
         <receiver

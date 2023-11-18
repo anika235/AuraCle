@@ -14,15 +14,13 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.auracle.ApplicationClass
-import com.example.auracle.Homepage
+import com.example.auracle.com.example.auracle.activitypack.Homepage
 import com.example.auracle.R
-import com.example.auracle.com.example.auracle.PlayerInterface
+import com.example.auracle.com.example.auracle.activitypack.homepagefragments.PlayerInterface
 import com.squareup.picasso.Picasso
-import java.io.File
 
 class MusicService : Service() {
 
@@ -165,15 +163,18 @@ class MusicService : Service() {
         val pendingIntent: PendingIntent = PendingIntent.getActivity(baseContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1)
 
-        val nxtIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(PlayerInterface.NOTIFICATION_PLAY_NEXT)
+        val nxtIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(
+            PlayerInterface.NOTIFICATION_PLAY_NEXT)
         val nxtPendingIntent = PendingIntent.getBroadcast(baseContext, 0, nxtIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val nxtAction = NotificationCompat.Action.Builder(R.drawable.next_icon, "Next", nxtPendingIntent).build()
 
-        val prevIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(PlayerInterface.NOTIFICATION_PLAY_PREVIOUS)
+        val prevIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(
+            PlayerInterface.NOTIFICATION_PLAY_PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(baseContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val prevAction = NotificationCompat.Action.Builder(R.drawable.previous, "Next", prevPendingIntent).build()
 
-        val togglePlayIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(PlayerInterface.NOTIFICATION_TOGGLE_PLAYING)
+        val togglePlayIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(
+            PlayerInterface.NOTIFICATION_TOGGLE_PLAYING)
         val togglePlayPendingIntent = PendingIntent.getBroadcast(baseContext, 0, togglePlayIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val togglePlayAction = NotificationCompat.Action.Builder(if(mediaPlayer.isPlaying) R.drawable.pause else R.drawable.play, "Next", togglePlayPendingIntent).build()
 

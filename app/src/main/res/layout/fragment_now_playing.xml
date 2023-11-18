@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/peri"
-        tools:context=".NowPlayingFragment">
+        tools:context=".com.example.auracle.activitypack.homepagefragments.NowPlayingFragment">
 
         <LinearLayout
             android:id="@+id/llClickable"

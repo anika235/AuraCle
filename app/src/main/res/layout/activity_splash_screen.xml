@@ -5,7 +5,7 @@
     android:id="@+id/splashMotionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashScreen"
+    tools:context=".com.example.auracle.activitypack.SplashScreen"
     app:layoutDescription="@xml/activity_splash_screen_scene">
 
     <androidx.constraintlayout.widget.ConstraintLayout

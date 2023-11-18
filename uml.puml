@@ -1,0 +1,398 @@
+@startuml
+class auracle.dataholder.PlaylistDataHolder$Companion {
+-  playlistDataHolder
++ PlaylistDataHolder getInstance()
+}
+class auracle.dataholder.PlaylistDataHolder {
+- ArrayList<ListenEpisodeShort>? episodeList
+- Int episodePosition
+- Boolean episodeDataAvailable
++ void initPlaylist(ArrayList<ListenEpisodeShort>,Int)
++ ArrayList<ListenEpisodeShort>? getPlaylist()
++ Int getPlaylistPosition()
+}
+class auracle.activitypack.homepagefragments.DownloadFragment {
+- FragmentDownloadBinding binding
+- HomeViewModel homeViewModel
+- AppDatabase db
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
+- void toPlayer(RoomEpisode)
+- void onDownload(Int)
+}
+class auracle.datapack.listennote.ListenSearchBest {
+}
+class auracle.api.ListenNoteApi$null {
+}
+class auracle.api.ListenNoteApi {
+-  retrofit
++ ArrayList<ListenSearchPodcast>? search(String)
++ ListenPodcastLong podcastDetails(String)
++ ArrayList<ListenSearchPodcast> bestSearch(String?)
+}
+class auracle.activitypack.homepagefragments.PlayerFragment$Companion {
++  tag
++ Boolean isFavorite
++ Int fIndex
+}
+class auracle.activitypack.homepagefragments.PlayerFragment {
+- MusicService? musicService
+- FragmentPlayerBinding binding
+- PlaylistViewModel playlistViewModel
+-  firebaseRealtime
+-  isPlaying
+-  isLooping
+- String? source
+-  buttonMask
+-  notificationReceiver
+-  serviceConnection
++ void onCreate(Bundle?)
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
+- void favoriteChecker()
+- void registerInteractive()
+- void registerBroadcast()
+- void playNewEpisode()
+- String returnAudioSource(ListenEpisodeShort)
++ void togglePlayingUI()
++ void newEpisodePlayUI(Int,Int)
++ void updateTimeUI(Int)
++ void playNextEpisode()
++ void playPreviousEpisode()
+- void showNowPlaying()
+- String formatDuration(Int)
++ void onDestroyView()
+}
+class auracle.activitypack.homepagefragments.PlayerInterface$Companion {
++  START_PLAYING
++  RESUME_PLAYING
++  STOP_PLAYING
++  PLAY_NEXT
++  PLAY_PREVIOUS
++  TOGGLE_PLAYING
++  TOGGLE_LOOPING
++  SEEK
++  NOTIFICATION_START_PLAYING
++  NOTIFICATION_STOP_PLAYING
++  NOTIFICATION_PLAY_NEXT
++  NOTIFICATION_PLAY_PREVIOUS
++  NOTIFICATION_TOGGLE_PLAYING
+}
+interface auracle.activitypack.homepagefragments.PlayerInterface {
++ void updateTimeUI(Int)
++ void newEpisodePlayUI(Int,Int)
++ void togglePlayingUI()
++ void playNextEpisode()
++ void playPreviousEpisode()
+}
+class auracle.rcvpack.rcvgenrecard.GenreCardViewHolder {
++ FrameLayout genreCard
++ TextView genreName
++ ImageView genreImage
++ CardView genreBg
+}
+class auracle.activitypack.StartPage {
+-  TAG
+- ActivityStartpageBinding binding
++ void onCreate(Bundle?)
+}
+class auracle.rcvpack.FavoriteAdapter {
+}
+class auracle.rcvpack.FavoriteViewHolder {
++  image
++  name
++  btnPlay
+}
+class auracle.datapack.listennote.ListenPodcastLookingFor {
+}
+class auracle.datapack.listennote.ListenSearch {
+}
+interface auracle.api.ListenNoteRoutes {
++ Call<ListenSearch> search(Map<String, String>)
++ Call<ListenPodcastLong> podcastDetail(String)
++ Call<ListenSearchBest> bestPodcasts(Map<String, String?>)
+}
+class auracle.rcvpack.episodecard.EpisodeCardAdapter {
+}
+class auracle.viewmodel.HomeViewModel {
+-  api
++ ListenPodcastLong playlist
++ ArrayList<RoomEpisode> offlineAvailableList
+-  mutablePlaylistAvailable
++ LiveData<Boolean> playlistAvailable
+-  mutableOfflineAvailable
++ LiveData<Boolean> offlineAvailable
+-  mutableSubscribed
++ LiveData<Boolean> subscribed
++ void retrievePodcast(String)
++ void retrieveOfflinePodcast(String,EpisodeDao)
++ void retrieveOffline(EpisodeDao)
+}
+class auracle.api.firebase.FirebaseRealtime$Companion {
++  USER_DATABASE
++  FAVORITES_DATABASE
++  SUBSCRIPTION_DATABASE
+- FirebaseRealtime? instance
++ FirebaseRealtime getInstance()
+}
+class auracle.api.firebase.FirebaseRealtime {
+-  database
++ Task<Void> createUser(User)
++ Task<DataSnapshot>? getCurrentUserDetails()
++ Task<Void>? addToFavorite(ListenEpisodeShort)
++ Task<DataSnapshot>? getFavorites()
++ Task<DataSnapshot>? checkFavorite(String)
++ Task<Void>? removeFromFavorites(String)
++ Task<Void>? addToSubscription(ListenSearchPodcast)
++ Task<DataSnapshot>? getSubscriptions()
++ Task<DataSnapshot>? checkSubscription(String)
++ Task<Void>? removeFromSubscriptions(String)
+}
+class auracle.rcvpack.rcvgenrecard.GenreCardAdapter {
++ GenreCardViewHolder onCreateViewHolder(ViewGroup,Int)
++ Int getItemCount()
++ void onBindViewHolder(GenreCardViewHolder,Int)
+}
+class auracle.activitypack.ForgotPasswordActivity {
+- Button continueButton
+- EditText forgotMail
+- FirebaseAuth auth
+- ActivityForgotPasswordBinding binding
++ void onCreate(Bundle?)
+- void validateData()
+- void forpass(String)
+}
+class auracle.activitypack.homepagefragments.NowPlayingFragment {
++ FragmentNowPlayingBinding binding
+- MusicService? musicService
+- PlaylistViewModel playlistViewModel
+-  isPlaying
+-  buttonMask
+-  serviceConnection
++ void onStart()
++ void onCreateView(void,LayoutInflater,ViewGroup?,Bundle?)
++ void null()
+- void registerInteractive()
+- void playNewEpisode()
++ void updateTimeUI(Int)
++ void newEpisodePlayUI(Int,Int)
++ void togglePlayingUI()
++ void playNextEpisode()
++ void playPreviousEpisode()
+}
+class auracle.datapack.listennote.ListenPodcastExtra {
+}
+class auracle.dataholder.FixedData {
++  highLevelGenreList
++  lowLevelGenreList
+}
+class auracle.activitypack.homepagefragments.ExploreFragment {
+- FragmentExploreBinding binding
+-  listenNoteApi
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
+- void populateGenreCards()
+- Skeleton searchInitiateUIChanges()
+- void onResultSetAdapter(ArrayList<ListenSearchPodcast>)
+- void onSearch(String)
+- void searchByGenre(String?)
++ void toPodcastDetails(String)
+}
+class auracle.rcvpack.rcvpopularpodcast.PopularPodcastViewHolder {
++ LinearLayout llPopularPodcast
++ ImageView imgPodcastThumbnail
++ TextView txtPodcastTitle
++ TextView txtPodcastAuthor
+}
+class auracle.viewmodel.PlaylistViewModel {
+-  api
+-  mutableNowPlaying
++ LiveData<Boolean> nowPlaying
++ Int playlistPosition
++ ArrayList<ListenEpisodeShort> playList
+- Boolean playlistAvailable
++ void initPlaylist(ArrayList<ListenEpisodeShort>,Int)
++ Boolean isPlaylistInitialized()
++ ListenEpisodeShort getEpisode()
++ void toNextEpisode()
++ void toPreviousEpisode()
++ void showNowPlaying()
++ void hideNowPlaying()
+}
+class auracle.rcvpack.episodecard.EpisodeCardViewHolder {
++ TextView episodeTitle
++ TextView episodeDescription
++ TextView episodeDate
++ TextView episodeDescriptionExpand
++ TextView episodeDescriptionCollapse
++ MaterialButton episodePlay
++ MaterialButton episodeDownload
++ CircularProgressIndicator progressIndicator
+}
+class auracle.activitypack.Homepage {
+- PlaylistViewModel viewModel
+- ActivityHomepageBinding binding
++ void onCreate(Bundle?)
+- void replaceFragment(Int,Fragment)
++ void null()
+- void nowPlayingManager(Boolean)
+}
+class auracle.rcvpack.SubscribeAdapter {
+}
+class auracle.rcvpack.SubscribeViewHolder {
+}
+class auracle.rcvpack.rcvpopulargenre.PopularGenreAdapter {
+}
+class auracle.rcvpack.rcvsearchpodcastcard.SearchPodcastCardAdapter {
++ SearchPodcastCardViewHolder onCreateViewHolder(ViewGroup,Int)
++ Int getItemCount()
++ void onBindViewHolder(SearchPodcastCardViewHolder,Int)
+}
+class auracle.datapack.PodcastCardData {
+}
+class auracle.datapack.User {
+}
+class auracle.datapack.listennote.ListenGenre {
+}
+class auracle.rcvpack.rcvsearchpodcastcard.SearchPodcastCardViewHolder {
++ ImageView podcastImage
++ TextView podcastTitle
++ TextView podcastAuthor
++ TextView podcastDescription
++ LinearLayoutCompat podcastClickable
+}
+class auracle.activitypack.homepagefragments.HomeFragment {
+- FragmentHomeBinding binding
+-  listenNoteApi
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
+- void populateGenrePopularList()
+- void populatePodcastPopularList(Int?,PopularGenreViewHolder)
+- void onItemClicked(ListenSearchPodcast)
+}
+interface auracle.api.roomapi.EpisodeDao {
++ List<RoomEpisode> getAll()
++ RoomEpisode getEpisode(String)
++ List<RoomEpisode> getPodcast(String)
++ void insertAll(RoomEpisode)
++ void insert(RoomEpisode)
++ void delete(String)
+}
+class auracle.datapack.listennote.ListenEpisodeShort {
+}
+class auracle.activitypack.homepagefragments.LibraryFragment {
+- FragmentLibraryBinding binding
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
+- void registerInteractive()
+- void getUserDetails()
+}
+class auracle.activitypack.LoginPage {
+-  TAG
+- ActivityLoginPageBinding binding
+-  auth
++ void onCreate(Bundle?)
+- void signIn()
+- Boolean validForm()
+- void switchToHome()
+}
+class auracle.datapack.listennote.ListenPodcastLong {
+}
+class auracle.rcvpack.rcvpopulargenre.PopularGenreViewHolder {
++ LinearLayout popularPodcastGhost
++ Skeleton popularGenreSkeleton
++ TextView popularTitle
++ RecyclerView rcvPopularList
+}
+class auracle.datapack.room.RoomEpisode {
+}
+class auracle.activitypack.homepagefragments.PodcastDetailsFragment {
+- FragmentPodcastDetailsBinding binding
+- AppDatabase db
+- String podcastId
+- HomeViewModel podcastViewModel
+-  firebaseRealtime
+- Boolean isSubscribe
++ void onCreate(Bundle?)
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
+- void registerInteractive()
+- void checkIfSubscribed()
+- void getAvailableOfflineList()
+- void foundOffline()
+- void initializeLayout()
+- void getPodcastDetails()
+- void toPlayer(ArrayList<ListenEpisodeShort>,Int)
+- void onDownload(Int)
++ Int subscribechecker(String?)
+}
+class auracle.activitypack.SignUp {
+-  TAG
+- ActivitySignUpBinding binding
+-  auth
+-  firebaseRealtime
++ void onCreate(Bundle?)
+- void signUp()
+- Boolean validForm()
+- void switchToSignIn()
+- void switchToHome()
+}
+class auracle.datapack.listennote.ListenSearchPodcast {
+}
+class auracle.api.firebase.Authenticate$Companion {
+- Authenticate? instance
++ Authenticate getInstance()
+}
+class auracle.api.firebase.Authenticate {
+- FirebaseAuth auth
++ Task<AuthResult> signUp(User)
++ Task<AuthResult> signIn(User)
++ void signOut()
++ FirebaseUser? user()
++ Boolean isSignedIn()
+}
+class auracle.activitypack.SplashScreen {
++ void onCreate(Bundle?)
+}
+class auracle.activitypack.homepagefragments.SubscriptionFragment$Companion {
++ ArrayList<ListenPodcastLong> subscribes
+}
+class auracle.activitypack.homepagefragments.SubscriptionFragment {
+- FragmentSubscriptionBinding binding
+-  firebaseRealtime
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
+- void toPodcastDetails(ListenSearchPodcast)
+}
+class auracle.rcvpack.rcvdownloaded.DownloadedViewHolder {
++ ShapeableImageView imgDownloaded
++ TextView txtPodcastName
++ MaterialButton btnPlay
++ MaterialButton btnDownload
+}
+class auracle.rcvpack.rcvpopularpodcast.PopularPodcastAdapter {
+}
+abstract class auracle.api.roomapi.AppDatabase {
++ EpisodeDao episodeDao()
+}
+class auracle.rcvpack.rcvdownloaded.DownloadedAdapter {
+}
+class auracle.activitypack.homepagefragments.FavoriteFragment {
+- FragmentFavoriteBinding binding
+-  firebaseRealtime
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
+- void toPlayer(ListenEpisodeShort)
+}
+
+
+auracle.dataholder.PlaylistDataHolder +.. auracle.dataholder.PlaylistDataHolder$Companion
+auracle.api.ListenNoteApi +.. auracle.api.ListenNoteApi$null
+auracle.activitypack.homepagefragments.PlayerFragment +.. auracle.activitypack.homepagefragments.PlayerFragment$Companion
+auracle.activitypack.homepagefragments.PlayerInterface <|.. auracle.activitypack.homepagefragments.PlayerFragment
+auracle.activitypack.homepagefragments.PlayerInterface +.. auracle.activitypack.homepagefragments.PlayerInterface$Companion
+auracle.api.firebase.FirebaseRealtime +.. auracle.api.firebase.FirebaseRealtime$Companion
+auracle.activitypack.homepagefragments.PlayerInterface <|.. auracle.activitypack.homepagefragments.NowPlayingFragment
+auracle.api.firebase.Authenticate +.. auracle.api.firebase.Authenticate$Companion
+auracle.activitypack.homepagefragments.SubscriptionFragment +.. auracle.activitypack.homepagefragments.SubscriptionFragment$Companion
+@enduml
