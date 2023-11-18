@@ -1,5 +1,7 @@
 package com.example.auracle
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -68,7 +70,6 @@ class PodcastDetailsFragment : Fragment() {
         }
 
         checkIfSubscribed()
-        registerInteractive()
         getAvailableOfflineList()
         getPodcastDetails()
 
@@ -76,6 +77,13 @@ class PodcastDetailsFragment : Fragment() {
     }
 
     private fun registerInteractive() {
+
+        binding.btnToWeb.setOnClickListener {
+            val uri = Uri.parse(podcastViewModel.playlist.website)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+
         binding.btnSubscribe.setOnClickListener {
             if (isSubscribe) {
                 val isLoggedIn = firebaseRealtime.removeFromSubscriptions(podcastId)
@@ -132,6 +140,7 @@ class PodcastDetailsFragment : Fragment() {
         if (podcastViewModel.playlistAvailable.value == true && podcastViewModel.offlineAvailable.value == true) {
 
             foundOffline()
+            registerInteractive()
 
             val podcastDetails = podcastViewModel.playlist
 
